@@ -1,7 +1,16 @@
 import { useMemo, useRef, useState } from 'react';
 import { CATEGORIES } from '../data/paperCatalog';
 import Placeholder from '../components/Placeholder';
+import TypeText from '../components/TypeText';
+import TypeAccentLine from '../components/TypeAccentLine';
+import Kicker from '../components/Kicker';
+import WordRoller from '../components/WordRoller';
+import MorphBadge from '../components/MorphBadge';
+import CountNumber from '../components/CountNumber';
+import { typeDelays } from '../lib/typeDelays';
 import { useScrollReveal } from '../lib/useScrollReveal';
+
+const KICKER_GRADIENT = 'linear-gradient(90deg, #1d4ed8 0%, #1d4ed8 42%, #8fb2ff 50%, #1d4ed8 58%, #1d4ed8 100%)';
 
 const WHATSAPP = '+60 12-345 6789';
 const WA_HREF = 'https://wa.me/' + WHATSAPP.replace(/[^0-9]/g, '');
@@ -41,6 +50,8 @@ const T = {
             { title: 'Bulk & wholesale discounts', copy: 'Tiered pricing that improves as your volume grows. Standing orders lock your rate for the year.' },
         ],
         closeL1: 'One supplier.', closeL2: 'Every material.', closeSub: 'Tell us what your shop prints and we will quote the full list — usually within the hour.', closeBtn: 'WhatsApp us now',
+        deliverPrefix: 'We deliver on your', deliverWords: ['schedule.', 'terms.', 'budget.', 'timeline.', 'schedule.'],
+        morphQ: 'No markup?', morphA: 'fair!',
         contactKicker: 'Contact', contactTitle: 'Talk to us',
         contactCopy: 'Call, WhatsApp or send an enquiry — we reply within the working day.',
         lPhone: 'Phone', lEmail: 'Email', lAddr: 'Address', formTitle: 'Send an enquiry',
@@ -66,6 +77,8 @@ const T = {
             { title: 'Diskaun pukal & borong', copy: 'Harga bertingkat yang semakin baik apabila volum anda meningkat. Pesanan tetap mengunci harga anda untuk setahun.' },
         ],
         closeL1: 'Satu pembekal.', closeL2: 'Semua bahan.', closeSub: 'Beritahu kami apa yang kedai anda cetak dan kami akan sebut harga senarai penuh — biasanya dalam masa sejam.', closeBtn: 'WhatsApp kami sekarang',
+        deliverPrefix: 'Kami hantar mengikut', deliverWords: ['jadual.', 'terma.', 'bajet.', 'garis masa.', 'jadual.'],
+        morphQ: 'Tiada markup?', morphA: 'adil!',
         contactKicker: 'Hubungi', contactTitle: 'Hubungi kami',
         contactCopy: 'Telefon, WhatsApp atau hantar pertanyaan — kami balas dalam hari bekerja yang sama.',
         lPhone: 'Telefon', lEmail: 'E-mel', lAddr: 'Alamat', formTitle: 'Hantar pertanyaan',
@@ -87,6 +100,8 @@ export default function V2() {
         () => CATEGORIES[cat].items.map(([name, spec], i) => ({ name, spec, id: `v2-p-${cat}-${i}` })),
         [cat],
     );
+    const heroDelays = useMemo(() => typeDelays([t.heroL1, t.heroL2], 42, 180, 120), [t.heroL1, t.heroL2]);
+    const heroDoneSec = (heroDelays[1] + t.heroL2.length * 42 + 200) / 1000;
 
     return (
         <div ref={scopeRef}>
@@ -114,20 +129,23 @@ export default function V2() {
 
             <section style={{ background: 'linear-gradient(180deg,#f4f8ff 0%,#ffffff 88%)' }}>
                 <div className="mx-auto grid max-w-[1200px] items-center gap-12 px-5 py-14 pb-18 md:px-12 md:py-24 lg:grid-cols-2 lg:gap-20">
-                    <div>
+                    <div key={lang}>
                         <span className="m2-rise inline-block rounded-full bg-[#e5eeff] px-4 py-1.5 text-[13px] font-bold text-[#1741ad]">{t.heroBadge}</span>
-                        <h1 className="m2-rise mt-5 text-[38px] leading-[1.08] font-extrabold tracking-tight sm:text-[50px] lg:text-[62px]" style={{ animationDelay: '.08s' }}>
-                            {t.heroL1}<br /><span style={{ color: BLUE }}>{t.heroL2}</span>
+                        <h1 className="mt-5 text-[38px] leading-[1.08] font-extrabold tracking-tight sm:text-[50px] lg:text-[62px]">
+                            <TypeText text={t.heroL1} delay={heroDelays[0]} /><br />
+                            <TypeAccentLine text={t.heroL2} delay={heroDelays[1]} accent={BLUE} from="#9aa7c2" />
                         </h1>
-                        <p className="m2-rise mt-5 max-w-[54ch] text-[17px] leading-[1.7] text-[#4c5d7a]" style={{ animationDelay: '.16s' }}>{t.heroSub}</p>
-                        <div className="m2-rise mt-8 flex flex-wrap gap-3.5" style={{ animationDelay: '.24s' }}>
+                        <p className="m2-rise mt-5 max-w-[54ch] text-[17px] leading-[1.7] text-[#4c5d7a]" style={{ animationDelay: `${heroDoneSec}s` }}>{t.heroSub}</p>
+                        <div className="m2-rise mt-8 flex flex-wrap gap-3.5" style={{ animationDelay: `${heroDoneSec + 0.08}s` }}>
                             <a href="#products" className="whitespace-nowrap rounded-full px-7 py-3.5 text-[15.5px] font-bold text-white no-underline shadow-[0_8px_24px_rgba(29,78,216,.3)]" style={{ background: BLUE }}>{t.heroBrowse}</a>
                             <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="whitespace-nowrap rounded-full border-[1.5px] border-[#dbe3f0] px-7 py-3.5 text-[15.5px] font-bold text-[#12203a] no-underline hover:border-[#1d4ed8] hover:text-[#1d4ed8]">{t.heroWa}</a>
                         </div>
-                        <div className="m2-rise mt-11 flex flex-wrap gap-6 sm:gap-11" style={{ animationDelay: '.32s' }}>
-                            {[['500+', t.stat1], ['60+', t.stat2], ['24h', t.stat3]].map(([n, l]) => (
+                        <div className="m2-rise mt-11 flex flex-wrap gap-6 sm:gap-11" style={{ animationDelay: `${heroDoneSec + 0.16}s` }}>
+                            {[[500, '+', t.stat1], [60, '+', t.stat2], [24, 'h', t.stat3]].map(([target, suffix, l]) => (
                                 <div key={l}>
-                                    <p className="m-0 text-[26px] font-extrabold text-[#12203a]">{n}</p>
+                                    <p className="m-0 text-[26px] font-extrabold">
+                                        <CountNumber target={target} suffix={suffix} from={BLUE} to="#12203a" delay={heroDoneSec + 0.16} />
+                                    </p>
                                     <p className="mt-1 text-[13.5px] text-[#64748f]">{l}</p>
                                 </div>
                             ))}
@@ -147,7 +165,7 @@ export default function V2() {
 
             <section id="products" className="mx-auto max-w-[1200px] px-5 py-14 pb-22 md:px-12">
                 <div data-reveal className="mx-auto max-w-[640px] text-center">
-                    <span className="text-[13.5px] font-bold tracking-[0.08em] text-[#1d4ed8] uppercase">{t.prodKicker}</span>
+                    <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.prodKicker}</Kicker>
                     <h2 className="m-0 mt-3 text-[28px] font-extrabold tracking-tight sm:text-[42px]">{t.prodTitle}</h2>
                 </div>
                 <div data-reveal className="my-9 flex justify-center">
@@ -188,7 +206,7 @@ export default function V2() {
                 <div className="mx-auto grid max-w-[1200px] items-center gap-11 px-5 py-20 md:px-12 lg:grid-cols-2 lg:gap-22">
                     <Placeholder data-reveal label="Warehouse / team photograph" className="rounded-3xl shadow-[0_20px_50px_rgba(16,42,90,.12)]" style={{ aspectRatio: '951/665' }} />
                     <div data-reveal>
-                        <span className="text-[13.5px] font-bold tracking-[0.08em] text-[#1d4ed8] uppercase">{t.aboutKicker}</span>
+                        <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.aboutKicker}</Kicker>
                         <h2 className="m-0 mt-3 text-[26px] font-extrabold tracking-tight sm:text-[38px]">{t.aboutTitle}</h2>
                         <p className="mt-5 max-w-[54ch] text-[15.5px] leading-[1.8] text-[#4c5d7a]">{t.aboutCopy1}</p>
                         <p className="mt-3.5 max-w-[54ch] text-[15.5px] leading-[1.8] font-semibold text-[#4c5d7a]">{t.aboutCopy2}</p>
@@ -196,9 +214,16 @@ export default function V2() {
                 </div>
             </section>
 
+            <section className="mx-auto max-w-[1200px] px-5 py-12 text-center md:px-12 md:py-16">
+                <p className="m-0 text-[22px] leading-snug font-extrabold tracking-tight sm:text-[30px]">
+                    {t.deliverPrefix}{' '}
+                    <WordRoller words={t.deliverWords} className="min-w-[7ch]" itemClassName="text-left" style={{ color: BLUE }} />
+                </p>
+            </section>
+
             <section id="why" className="mx-auto max-w-[1200px] px-5 py-21 md:px-12">
                 <div data-reveal className="mx-auto mb-11 max-w-[640px] text-center">
-                    <span className="text-[13.5px] font-bold tracking-[0.08em] text-[#1d4ed8] uppercase">{t.whyKicker}</span>
+                    <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.whyKicker}</Kicker>
                     <h2 className="m-0 mt-3 text-[28px] font-extrabold tracking-tight sm:text-[42px]">{t.whyTitle}</h2>
                 </div>
                 <div className="grid gap-5.5" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))' }}>
@@ -209,6 +234,11 @@ export default function V2() {
                             </span>
                             <h3 className="mt-4.5 text-[19px] font-bold tracking-tight">{w.title}</h3>
                             <p className="mt-2.5 text-[14.5px] leading-[1.75] text-[#4c5d7a]">{w.copy}</p>
+                            {i === 0 && (
+                                <p className="mt-3 text-[14.5px] font-bold">
+                                    <MorphBadge question={t.morphQ} answer={t.morphA} />
+                                </p>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -228,7 +258,7 @@ export default function V2() {
 
             <section id="contact" className="mx-auto grid max-w-[1200px] gap-12 px-5 py-21 pb-18 md:px-12 lg:grid-cols-2 lg:gap-22">
                 <div data-reveal>
-                    <span className="text-[13.5px] font-bold tracking-[0.08em] text-[#1d4ed8] uppercase">{t.contactKicker}</span>
+                    <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.contactKicker}</Kicker>
                     <h2 className="m-0 mt-3 text-[26px] font-extrabold tracking-tight sm:text-[38px]">{t.contactTitle}</h2>
                     <p className="mt-4.5 mb-7 max-w-[48ch] text-[15.5px] leading-[1.8] text-[#4c5d7a]">{t.contactCopy}</p>
                     <div className="grid gap-4">

@@ -1,0 +1,21 @@
+@keyframes m-type-reveal {
+    from {
+        clip-path: inset(0 101% 0 0);
+    }
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+.m-type-line {
+    display: inline-block;
+    clip-path: inset(0 101% 0 0);
+    animation-name: m-type-reveal;
+    animation-timing-function: steps(var(--m-type-steps, 12), end);
+    animation-fill-mode: forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+    .m-type-line {
+        animation: none;
+        clip-path: none;
+    }
+}

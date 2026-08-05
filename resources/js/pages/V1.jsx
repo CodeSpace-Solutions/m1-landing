@@ -1,6 +1,13 @@
 import { useMemo, useRef, useState } from 'react';
 import { CATEGORIES } from '../data/paperCatalog';
 import Placeholder from '../components/Placeholder';
+import TypeText from '../components/TypeText';
+import TypeAccentLine from '../components/TypeAccentLine';
+import PopIn from '../components/PopIn';
+import Kicker from '../components/Kicker';
+import WordRoller from '../components/WordRoller';
+import MorphBadge from '../components/MorphBadge';
+import { typeDelays } from '../lib/typeDelays';
 import { useScrollReveal } from '../lib/useScrollReveal';
 
 const WHATSAPP = '+60 12-345 6789';
@@ -23,6 +30,8 @@ const T = {
             { n: '03', title: 'Bulk & wholesale discounts', copy: 'Tiered pricing that improves as your volume grows. Standing orders lock your rate for the year.' },
         ],
         closeL1: 'One supplier.', closeL2: 'Every material.', closeBtn: 'WhatsApp us now',
+        deliverPrefix: 'We deliver on your', deliverWords: ['schedule.', 'terms.', 'budget.', 'timeline.', 'schedule.'],
+        morphQ: 'No markup?', morphA: 'fair!',
         contactKicker: 'Contact', contactTitle: 'Talk to us.',
         contactCopy: 'Call, WhatsApp or send an enquiry — we reply within the working day.',
         lPhone: 'Phone', lEmail: 'Email', lAddr: 'Address',
@@ -46,6 +55,8 @@ const T = {
             { n: '03', title: 'Diskaun pukal & borong', copy: 'Harga bertingkat yang semakin baik apabila volum anda meningkat. Pesanan tetap mengunci harga anda untuk setahun.' },
         ],
         closeL1: 'Satu pembekal.', closeL2: 'Semua bahan.', closeBtn: 'WhatsApp kami sekarang',
+        deliverPrefix: 'Kami hantar mengikut', deliverWords: ['jadual.', 'terma.', 'bajet.', 'garis masa.', 'jadual.'],
+        morphQ: 'Tiada markup?', morphA: 'adil!',
         contactKicker: 'Hubungi', contactTitle: 'Hubungi kami.',
         contactCopy: 'Telefon, WhatsApp atau hantar pertanyaan — kami balas dalam hari bekerja yang sama.',
         lPhone: 'Telefon', lEmail: 'E-mel', lAddr: 'Alamat',
@@ -58,6 +69,7 @@ const T = {
 const ACCENT = '#ec3013';
 const ACCENT_700 = '#ae1800';
 const ACCENT_600 = '#dd2b0f';
+const KICKER_GRADIENT = `linear-gradient(90deg, ${ACCENT_700} 0%, ${ACCENT_700} 42%, ${ACCENT} 50%, ${ACCENT_700} 58%, ${ACCENT_700} 100%)`;
 
 export default function V1() {
     const [lang, setLang] = useState('en');
@@ -71,6 +83,8 @@ export default function V1() {
         () => CATEGORIES[cat].items.map(([name, spec], i) => ({ name, spec, id: `p-${cat}-${i}` })),
         [cat],
     );
+    const heroDelays = useMemo(() => typeDelays([t.heroL1, t.heroL2]), [t.heroL1, t.heroL2]);
+    const heroDoneSec = (heroDelays[1] + t.heroL2.length * 42 + 250) / 1000;
 
     return (
         <div ref={scopeRef}>
@@ -93,13 +107,13 @@ export default function V1() {
             </nav>
 
             <div className="mx-auto max-w-[1200px] px-6 md:px-16">
-                <section className="py-18 md:py-28">
+                <section key={lang} className="py-18 md:py-28">
                     <h1 className="m-0 text-[44px] leading-[1.06] font-extrabold tracking-tight sm:text-[64px] lg:text-[84px]">
-                        <span className="m1-rise block" style={rise(0)}>{t.heroL1}</span>
-                        <span className="m1-rise block" style={{ color: ACCENT, ...rise(0.12) }}>{t.heroL2}</span>
+                        <span className="block"><TypeText text={t.heroL1} delay={heroDelays[0]} /></span>
+                        <span className="block"><TypeAccentLine text={t.heroL2} delay={heroDelays[1]} accent={ACCENT} from="#8a8785" /></span>
                     </h1>
-                    <p className="m1-rise mt-9 max-w-[58ch] text-[17px] leading-[1.65]" style={rise(0.25)}>{t.heroSub}</p>
-                    <div className="m1-rise mt-8 flex flex-wrap gap-3" style={rise(0.35)}>
+                    <p className="m1-rise mt-9 max-w-[58ch] text-[17px] leading-[1.65]" style={rise(heroDoneSec)}>{t.heroSub}</p>
+                    <div className="m1-rise mt-8 flex flex-wrap gap-3" style={rise(heroDoneSec + 0.1)}>
                         <a href="#products" className="whitespace-nowrap px-5 py-3 text-sm font-extrabold text-[#f3f2f2] no-underline" style={{ background: ACCENT }}>{t.heroBrowse}</a>
                         <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="whitespace-nowrap px-3 py-3 text-sm font-extrabold no-underline" style={{ color: ACCENT }}>{t.heroWa}</a>
                     </div>
@@ -108,7 +122,7 @@ export default function V1() {
                 <hr className="m-0 h-0.5 border-0 bg-[#201e1d]/40" />
 
                 <section id="products" className="py-16 md:py-24">
-                    <span data-reveal className="mb-3 block text-[13px] font-semibold tracking-[0.08em] uppercase" style={{ color: ACCENT_700 }}>{t.prodKicker}</span>
+                    <Kicker data-reveal gradient={KICKER_GRADIENT} className="mb-3 block text-[13px] font-semibold tracking-[0.08em] uppercase">{t.prodKicker}</Kicker>
                     <h2 data-reveal className="m-0 text-[30px] font-extrabold tracking-tight sm:text-[44px]">{t.prodTitle}</h2>
                     <div role="tablist" className="mt-10 flex flex-wrap gap-6 border-b-2 border-[#201e1d]/40 sm:gap-10">
                         {CATEGORIES.map((c, i) => (
@@ -147,7 +161,7 @@ export default function V1() {
 
                 <section id="about" className="grid items-center gap-7 py-16 md:py-24 lg:grid-cols-2 lg:gap-24">
                     <div data-reveal>
-                        <span className="mb-3 block text-[13px] font-semibold tracking-[0.08em] uppercase" style={{ color: ACCENT_700 }}>{t.aboutKicker}</span>
+                        <Kicker gradient={KICKER_GRADIENT} className="mb-3 block text-[13px] font-semibold tracking-[0.08em] uppercase">{t.aboutKicker}</Kicker>
                         <h2 className="m-0 text-[28px] font-extrabold tracking-tight sm:text-[40px]">{t.aboutTitle}</h2>
                         <p className="mt-6 max-w-[52ch] text-[15.5px] leading-[1.75]" style={{ color: 'color-mix(in srgb, #201e1d 78%, transparent)' }}>{t.aboutCopy1}</p>
                         <p className="mt-4 max-w-[52ch] text-[15.5px] leading-[1.75]" style={{ color: 'color-mix(in srgb, #201e1d 78%, transparent)' }}>{t.aboutCopy2}</p>
@@ -157,8 +171,22 @@ export default function V1() {
 
                 <hr className="m-0 h-0.5 border-0 bg-[#201e1d]/40" />
 
+                <section className="py-14 text-center md:py-20">
+                    <p className="m-0 text-[24px] leading-snug font-extrabold tracking-tight sm:text-[32px]">
+                        {t.deliverPrefix}{' '}
+                        <WordRoller
+                            words={t.deliverWords}
+                            className="min-w-[7ch]"
+                            itemClassName="text-left"
+                            style={{ color: ACCENT }}
+                        />
+                    </p>
+                </section>
+
+                <hr className="m-0 h-0.5 border-0 bg-[#201e1d]/40" />
+
                 <section id="why" className="py-16 pb-14 md:py-24">
-                    <span data-reveal className="mb-10 block text-[13px] font-semibold tracking-[0.08em] uppercase" style={{ color: ACCENT_700 }}>{t.whyKicker}</span>
+                    <Kicker data-reveal gradient={KICKER_GRADIENT} className="mb-10 block text-[13px] font-semibold tracking-[0.08em] uppercase">{t.whyKicker}</Kicker>
                     {t.why.map((w) => (
                         <div key={w.n} data-reveal className="grid grid-cols-[minmax(64px,160px)_minmax(0,1fr)] items-baseline gap-3.5 border-t-2 border-[#201e1d]/40 py-9" style={{ columnGap: 'clamp(24px,4vw,72px)' }}>
                             <p className="relative m-0 text-[15px] font-extrabold">
@@ -168,6 +196,11 @@ export default function V1() {
                             <div>
                                 <h3 className="m-0 text-[24px] leading-tight font-extrabold tracking-tight">{w.title}</h3>
                                 <p className="mt-3 max-w-[60ch] text-[15.5px] leading-[1.75]" style={{ color: 'color-mix(in srgb, #201e1d 78%, transparent)' }}>{w.copy}</p>
+                                {w.n === '01' && (
+                                    <p className="mt-3 text-[15px] font-bold">
+                                        <MorphBadge question={t.morphQ} answer={t.morphA} />
+                                    </p>
+                                )}
                             </div>
                         </div>
                     ))}
@@ -191,7 +224,7 @@ export default function V1() {
             <div className="mx-auto max-w-[1200px] px-6 md:px-16">
                 <section id="contact" className="grid gap-14 py-16 md:py-24 lg:grid-cols-2" style={{ columnGap: 'clamp(32px,6vw,110px)' }}>
                     <div data-reveal>
-                        <span className="mb-3 block text-[13px] font-semibold tracking-[0.08em] uppercase" style={{ color: ACCENT_700 }}>{t.contactKicker}</span>
+                        <Kicker gradient={KICKER_GRADIENT} className="mb-3 block text-[13px] font-semibold tracking-[0.08em] uppercase">{t.contactKicker}</Kicker>
                         <h2 className="m-0 text-[28px] font-extrabold tracking-tight sm:text-[40px]">{t.contactTitle}</h2>
                         <p className="mt-6 mb-8 max-w-[48ch] text-[15.5px] leading-[1.75]" style={{ color: 'color-mix(in srgb, #201e1d 78%, transparent)' }}>{t.contactCopy}</p>
                         <div className="grid gap-5 border-t-2 border-[#201e1d]/40 pt-7">

@@ -2,9 +2,17 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Placeholder from '../components/Placeholder';
+import TypeText from '../components/TypeText';
+import TypeAccentLine from '../components/TypeAccentLine';
+import Kicker from '../components/Kicker';
+import WordRoller from '../components/WordRoller';
+import MorphBadge from '../components/MorphBadge';
+import { typeDelays } from '../lib/typeDelays';
 import { useScrollReveal } from '../lib/useScrollReveal';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const KICKER_GRADIENT = 'linear-gradient(90deg, #71717a 0%, #71717a 42%, #161616 50%, #71717a 58%, #71717a 100%)';
 
 const WHATSAPP = '+60 12-345 6789';
 const WA_HREF = 'https://wa.me/' + WHATSAPP.replace(/[^0-9]/g, '');
@@ -92,6 +100,8 @@ const T = {
         fCompany: 'Company Name', fName: 'Your Name', fPhone: 'Phone Number', fEmail: 'Email Address', fMsg: 'Message',
         fSend: 'Send message', fSent: 'Sent — we will be in touch',
         fCompanyCol: 'Company', fSupport: 'Support', follow: 'Follow us', rights: 'All rights reserved.',
+        deliverPrefix: 'We deliver on your', deliverWords: ['schedule.', 'terms.', 'budget.', 'timeline.', 'schedule.'],
+        morphQ: 'No markup?', morphA: 'fair!',
     },
     bm: {
         navProducts: 'Produk', navAbout: 'Tentang kami', navWhy: 'Kenapa pilih kami', navContact: 'Hubungi', navCta: 'Hubungi kami',
@@ -116,20 +126,28 @@ const T = {
         fCompany: 'Nama Syarikat', fName: 'Nama Anda', fPhone: 'Nombor Telefon', fEmail: 'Alamat E-mel', fMsg: 'Mesej',
         fSend: 'Hantar mesej', fSent: 'Dihantar — kami akan hubungi anda',
         fCompanyCol: 'Syarikat', fSupport: 'Sokongan', follow: 'Ikuti kami', rights: 'Hak cipta terpelihara.',
+        deliverPrefix: 'Kami hantar mengikut', deliverWords: ['jadual.', 'terma.', 'bajet.', 'garis masa.', 'jadual.'],
+        morphQ: 'Tiada markup?', morphA: 'adil!',
     },
 };
 
 function CountStat({ icon, target, suffix, value, label }) {
     const ref = useRef(null);
+    const numRef = useRef(null);
     const [display, setDisplay] = useState(target ? '0' + suffix : value);
 
     useEffect(() => {
-        if (!target) { setDisplay(value); return; }
         const el = ref.current;
         const io = new IntersectionObserver(
             (entries) => {
                 if (!entries[0].isIntersecting) return;
                 io.disconnect();
+                gsap.fromTo(
+                    numRef.current,
+                    { scale: 0.6, color: '#5b5b60' },
+                    { scale: 1, color: '#ffffff', duration: 0.6, ease: 'back.out(2.4)' },
+                );
+                if (!target) { setDisplay(value); return; }
                 const obj = { v: 0 };
                 gsap.to(obj, {
                     v: target,
@@ -148,7 +166,7 @@ function CountStat({ icon, target, suffix, value, label }) {
         <div ref={ref} className="flex items-center gap-4">
             <span className="inline-flex h-11.5 w-11.5 flex-shrink-0 items-center justify-center rounded-full border border-[#3a3a3f] text-[#e4e4e7]">{icon}</span>
             <div>
-                <p className="m-0 text-[22px] font-black text-white">{display}</p>
+                <p ref={numRef} className="m-0 inline-block text-[22px] font-black" style={{ transformOrigin: '0% 50%' }}>{display}</p>
                 <p className="mt-0.5 text-[13.5px] text-[#9b9b9f]">{label}</p>
             </div>
         </div>
@@ -177,6 +195,8 @@ export default function V3() {
         { icon: <Icon paths={ICONS.truck} />, target: 0, suffix: '', value: t.s4v, label: t.s4 },
     ];
     const whyIcons = [ICONS.quality, ICONS.layers, ICONS.truck, ICONS.tag];
+    const heroDelays = useMemo(() => typeDelays([t.heroL1, t.heroL2, t.heroL3], 40, 150, 120), [t.heroL1, t.heroL2, t.heroL3]);
+    const heroDoneSec = (heroDelays[2] + t.heroL3.length * 40 + 300) / 1000;
 
     return (
         <div ref={scopeRef}>
@@ -198,14 +218,23 @@ export default function V3() {
                 </nav>
 
                 <div className="mx-auto grid max-w-[1240px] items-center gap-10 px-5 pt-10 md:gap-16 md:px-14 md:pt-22 lg:grid-cols-2">
-                    <div className="pb-8 md:pb-16">
+                    <div key={lang} className="pb-8 md:pb-16">
                         <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[58px]">
-                            <span className="m3-rise block">{t.heroL1}</span>
-                            <span className="m3-rise block" style={{ animationDelay: '.12s' }}>{t.heroL2}</span>
-                            <span className="m3-rise block text-transparent" style={{ WebkitTextStroke: '1.5px #9b9b9f', animationDelay: '.24s' }}>{t.heroL3}</span>
+                            <span className="block"><TypeText text={t.heroL1} delay={heroDelays[0]} speed={40} /></span>
+                            <span className="block"><TypeText text={t.heroL2} delay={heroDelays[1]} speed={40} /></span>
+                            <span className="block">
+                                <TypeAccentLine
+                                    text={t.heroL3}
+                                    delay={heroDelays[2]}
+                                    speed={40}
+                                    from="transparent"
+                                    accent="#ffffff"
+                                    style={{ WebkitTextStroke: '1.5px #9b9b9f' }}
+                                />
+                            </span>
                         </h1>
-                        <p className="m3-rise mt-6.5 max-w-[46ch] text-[16px] leading-[1.75] text-[#b9b9bf]" style={{ animationDelay: '.34s' }}>{t.heroSub1}<br />{t.heroSub2}</p>
-                        <div className="m3-rise mt-8" style={{ animationDelay: '.44s' }}>
+                        <p className="m3-rise mt-6.5 max-w-[46ch] text-[16px] leading-[1.75] text-[#b9b9bf]" style={{ animationDelay: `${heroDoneSec}s` }}>{t.heroSub1}<br />{t.heroSub2}</p>
+                        <div className="m3-rise mt-8" style={{ animationDelay: `${heroDoneSec + 0.1}s` }}>
                             <a href="#products" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md bg-white px-7.5 py-3.5 text-[12.5px] font-extrabold tracking-[0.1em] text-[#0b0b0c] uppercase no-underline hover:bg-[#d4d4d8]">
                                 {t.heroCta}
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
@@ -230,7 +259,7 @@ export default function V3() {
             <section id="products" style={{ background: '#fafafa' }}>
                 <div className="mx-auto max-w-[1240px] px-5 py-18 pb-21 md:px-14">
                     <div data-reveal>
-                        <span className="text-xs font-extrabold tracking-[0.14em] text-[#71717a] uppercase">{t.prodKicker}</span>
+                        <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.prodKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.prodTitle}</h2>
                     </div>
                     <div data-reveal role="tablist" className="mt-7 flex flex-wrap gap-2.5">
@@ -278,7 +307,7 @@ export default function V3() {
             <section id="about" className="bg-white">
                 <div className="grid items-stretch" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))' }}>
                     <div data-reveal className="ml-auto max-w-[600px] self-center px-5 py-14 md:px-14 md:py-22">
-                        <span className="text-xs font-extrabold tracking-[0.14em] text-[#71717a] uppercase">{t.aboutKicker}</span>
+                        <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.aboutKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] leading-tight font-black tracking-tight sm:text-[38px]">{t.aboutTitle}</h2>
                         <p className="mt-4.5 max-w-[48ch] text-[15px] leading-[1.8] text-[#52525b]">{t.aboutCopy1}</p>
                         <div className="mt-6.5">
@@ -295,10 +324,17 @@ export default function V3() {
                 </div>
             </section>
 
+            <section className="border-t border-[#ececee] bg-white py-12 text-center md:py-16">
+                <p className="m-0 text-[22px] leading-snug font-black tracking-tight uppercase sm:text-[30px]">
+                    {t.deliverPrefix}{' '}
+                    <WordRoller words={t.deliverWords} className="min-w-[7ch]" itemClassName="text-left" />
+                </p>
+            </section>
+
             <section id="why" className="border-t border-[#ececee]" style={{ background: '#fafafa' }}>
                 <div className="mx-auto max-w-[1240px] px-5 py-18 pb-21 md:px-14">
                     <div data-reveal>
-                        <span className="text-xs font-extrabold tracking-[0.14em] text-[#71717a] uppercase">{t.whyKicker}</span>
+                        <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.whyKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.whyTitle}</h2>
                     </div>
                     <div className="mt-11 grid gap-8 sm:gap-11" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))' }}>
@@ -310,6 +346,11 @@ export default function V3() {
                                 <div>
                                     <h3 className="m-0 text-[16.5px] font-extrabold">{w.title}</h3>
                                     <p className="mt-2 text-sm leading-[1.7] text-[#52525b]">{w.copy}</p>
+                                    {i === 3 && (
+                                        <p className="mt-2 text-sm font-bold">
+                                            <MorphBadge question={t.morphQ} answer={t.morphA} />
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -320,7 +361,7 @@ export default function V3() {
             <section id="contact" className="border-t border-[#ececee] bg-white">
                 <div className="mx-auto grid max-w-[1240px] gap-11 px-5 py-18 pb-21 md:px-14 lg:grid-cols-2 lg:gap-18">
                     <div data-reveal>
-                        <span className="text-xs font-extrabold tracking-[0.14em] text-[#71717a] uppercase">{t.contactKicker}</span>
+                        <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.contactKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.contactTitle}</h2>
                         <p className="mt-4 mb-7 max-w-[44ch] text-[15px] leading-[1.8] text-[#52525b]">{t.contactCopy}</p>
                         <div className="grid gap-4">
