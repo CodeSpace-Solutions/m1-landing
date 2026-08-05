@@ -3,7 +3,6 @@ import { CATEGORIES } from '../data/paperCatalog';
 import Placeholder from '../components/Placeholder';
 import TypeText from '../components/TypeText';
 import TypeAccentLine from '../components/TypeAccentLine';
-import PopIn from '../components/PopIn';
 import Kicker from '../components/Kicker';
 import WordRoller from '../components/WordRoller';
 import MorphBadge from '../components/MorphBadge';
