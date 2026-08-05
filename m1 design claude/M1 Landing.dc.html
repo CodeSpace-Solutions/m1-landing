@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-7107ee5c-ac21-417a-8e45-8690837dcb6b/styles.css">
+<script src="_ds/modernist-7107ee5c-ac21-417a-8e45-8690837dcb6b/_ds_bundle.js"></script>
+<script src="image-slot.js"></script>
+<style>
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;text-wrap:pretty}
+a{color:var(--color-text)} a:hover{color:var(--color-accent)}
+@keyframes m1rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+
+<nav class="nav" style="position:sticky;top:0;z-index:50;background:var(--color-bg);padding-inline:max(24px,calc((100% - 1200px) / 2 + 48px))">
+  <span class="nav-brand" style="display:inline-flex;align-items:center;gap:8px">M1<span style="display:inline-block;width:10px;height:10px;background:var(--color-accent)"></span></span>
+  <a href="#products">{{ t.navProducts }}</a>
+  <a href="#about">{{ t.navAbout }}</a>
+  <a href="#why">{{ t.navWhy }}</a>
+  <a href="#contact">{{ t.navContact }}</a>
+  <span style="display:inline-flex;align-items:center;gap:2px;margin-left:8px">
+    <button type="button" onClick="{{ setEn }}" style="{{ enStyle }}">EN</button>
+    <span style="font-size:13px;color:color-mix(in srgb, var(--color-text) 40%, transparent)">/</span>
+    <button type="button" onClick="{{ setBm }}" style="{{ bmStyle }}">BM</button>
+  </span>
+  <a href="{{ waHref }}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none;white-space:nowrap">{{ t.navCta }}</a>
+</nav>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,64px)">
+  <section style="padding:clamp(72px,10vh,120px) 0 84px">
+    <h1 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(44px,6.2vw,84px);line-height:1.06;letter-spacing:-0.02em;margin:0 0 0 -0.058em">
+      <span style="display:block;animation:m1rise .8s cubic-bezier(.22,1,.36,1) both">{{ t.heroL1 }}</span>
+      <span style="display:block;color:var(--color-accent);animation:m1rise .8s cubic-bezier(.22,1,.36,1) .12s both">{{ t.heroL2 }}</span>
+    </h1>
+    <p style="font-size:17px;line-height:1.65;max-width:58ch;margin:36px 0 0;animation:m1rise .8s cubic-bezier(.22,1,.36,1) .25s both">{{ t.heroSub }}</p>
+    <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;margin-top:32px;animation:m1rise .8s cubic-bezier(.22,1,.36,1) .35s both">
+      <a href="#products" class="btn btn-primary" style="text-decoration:none;white-space:nowrap">{{ t.heroBrowse }}</a>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" class="btn btn-ghost" style="text-decoration:none;white-space:nowrap">{{ t.heroWa }}</a>
+    </div>
+  </section>
+
+  <hr style="height:2px;border:0;margin:0;background:var(--color-divider)" />
+
+  <section id="products" style="padding:84px 0 96px">
+    <span style="display:block;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent-700);font-feature-settings:'tnum' 1;margin:0 0 14px">{{ t.prodKicker }}</span>
+    <h2 data-reveal style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(30px,3.4vw,44px);line-height:1.1;letter-spacing:-0.015em;margin:0 0 0 -0.058em">{{ t.prodTitle }}</h2>
+    <div role="tablist" style="display:flex;gap:clamp(16px,3vw,40px);flex-wrap:wrap;border-bottom:2px solid var(--color-divider);margin-top:42px">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+        <button type="button" role="tab" onClick="{{ c.select }}" style="{{ c.style }}" style-hover="color: var(--color-accent)">{{ c.label }}</button>
+      </sc-for>
+    </div>
+    <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px;background:var(--color-divider);border:2px solid var(--color-divider);border-top:0">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="12">
+        <div style="background:var(--color-bg);padding:18px 18px 20px;display:flex;flex-direction:column;gap:14px">
+          <div class="grayscale" style="width:100%"><image-slot id="{{ p.slotId }}" shape="rect" placeholder="Product photo" style="width:100%;aspect-ratio:4/3;display:block"></image-slot></div>
+          <div>
+            <p style="font-family:var(--font-heading);font-weight:600;font-size:16px;line-height:1.3;margin:0">{{ p.name }}</p>
+            <p style="font-size:13px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 70%, transparent);margin:6px 0 0;font-feature-settings:'tnum' 1">{{ p.spec }}</p>
+          </div>
+          <a href="{{ waHref }}" target="_blank" rel="noopener" style="margin-top:auto;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--color-accent-700)">{{ t.enquire }} &#8594;</a>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <hr style="height:2px;border:0;margin:0;background:var(--color-divider)" />
+
+  <section id="about" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px clamp(24px,5vw,96px);align-items:center;padding:84px 0 96px">
+    <div data-reveal>
+      <span style="display:block;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent-700);margin:0 0 14px">{{ t.aboutKicker }}</span>
+      <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(28px,3vw,40px);line-height:1.15;letter-spacing:-0.015em;margin:0 0 0 -0.058em">{{ t.aboutTitle }}</h2>
+      <p style="font-size:15.5px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:24px 0 0;max-width:52ch">{{ t.aboutCopy1 }}</p>
+      <p style="font-size:15.5px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:16px 0 0;max-width:52ch">{{ t.aboutCopy2 }}</p>
+    </div>
+    <figure data-reveal class="grayscale" style="margin:0"><image-slot id="about-photo" shape="rect" placeholder="Warehouse / stock photograph" style="width:100%;aspect-ratio:951/665;display:block"></image-slot></figure>
+  </section>
+
+  <hr style="height:2px;border:0;margin:0;background:var(--color-divider)" />
+
+  <section id="why" style="padding:84px 0 72px">
+    <span style="display:block;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent-700);margin:0 0 42px">{{ t.whyKicker }}</span>
+    <sc-for list="{{ whyRows }}" as="w" hint-placeholder-count="3">
+      <div data-reveal style="display:grid;grid-template-columns:minmax(64px,160px) minmax(0,1fr);gap:14px clamp(24px,4vw,72px);align-items:baseline;padding:36px 0;border-top:2px solid var(--color-divider)">
+        <p style="position:relative;font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:15px;margin:0;font-feature-settings:'tnum' 1">{{ w.n }}<span style="position:absolute;left:-24px;top:3px;width:10px;height:10px;background:var(--color-accent)"></span></p>
+        <div>
+          <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:24px;line-height:1.2;letter-spacing:-0.01em;margin:0">{{ w.title }}</h3>
+          <p style="font-size:15.5px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:12px 0 0;max-width:60ch">{{ w.copy }}</p>
+        </div>
+      </div>
+    </sc-for>
+  </section>
+</div>
+
+<section style="background:var(--color-accent);color:var(--color-bg)">
+  <div data-reveal style="max-width:1200px;margin:0 auto;padding:84px clamp(24px,5vw,64px)">
+    <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(34px,4.2vw,56px);line-height:1.06;letter-spacing:-0.015em;margin:0 0 0 -0.058em">
+      <span style="display:block">{{ t.closeL1 }}</span>
+      <span style="display:block">{{ t.closeL2 }}</span>
+    </h3>
+    <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;margin-top:42px">
+      <a href="{{ waHref }}" target="_blank" rel="noopener" class="btn btn-ghost" style="color:var(--color-bg);border-color:var(--color-bg);text-decoration:none;white-space:nowrap">{{ t.closeBtn }}</a>
+    </div>
+  </div>
+</section>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,64px)">
+  <section id="contact" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:56px clamp(32px,6vw,110px);padding:84px 0 96px">
+    <div data-reveal>
+      <span style="display:block;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent-700);margin:0 0 14px">{{ t.contactKicker }}</span>
+      <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(28px,3vw,40px);line-height:1.15;letter-spacing:-0.015em;margin:0 0 0 -0.058em">{{ t.contactTitle }}</h2>
+      <p style="font-size:15.5px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:24px 0 32px;max-width:48ch">{{ t.contactCopy }}</p>
+      <div style="display:grid;gap:20px;border-top:2px solid var(--color-divider);padding-top:28px">
+        <div><p style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent);margin:0 0 4px">{{ t.lPhone }}</p><p style="font-size:16px;margin:0;font-feature-settings:'tnum' 1">+60 3-8060 1234</p></div>
+        <div><p style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent);margin:0 0 4px">{{ t.lEmail }}</p><p style="font-size:16px;margin:0">sales@m1supplies.my</p></div>
+        <div><p style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent);margin:0 0 4px">{{ t.lAddr }}</p><p style="font-size:16px;line-height:1.6;margin:0">Lot 12, Jalan Industri 3,<br>47100 Puchong, Selangor</p></div>
+      </div>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none;white-space:nowrap;margin-top:32px">{{ t.heroWa }}</a>
+      <div class="grayscale" style="margin-top:36px"><image-slot id="map-slot" shape="rect" placeholder="Map screenshot" style="width:100%;aspect-ratio:16/7;display:block"></image-slot></div>
+    </div>
+    <form data-reveal onSubmit="{{ submit }}" style="display:grid;gap:20px;align-content:start">
+      <div class="field"><label for="f-name">{{ t.fName }}</label><input id="f-name" class="input" type="text" required="required" /></div>
+      <div class="field"><label for="f-shop">{{ t.fShop }}</label><input id="f-shop" class="input" type="text" /></div>
+      <div class="field"><label for="f-mail">{{ t.fPhoneEmail }}</label><input id="f-mail" class="input" type="text" required="required" /></div>
+      <div class="field"><label for="f-msg">{{ t.fMsg }}</label><textarea id="f-msg" class="input" rows="6"></textarea></div>
+      <div><button type="submit" class="btn btn-primary" style="white-space:nowrap">{{ sendLabel }}</button></div>
+    </form>
+  </section>
+
+  <hr style="height:2px;border:0;margin:0;background:var(--color-divider)" />
+  <footer style="padding:28px 0 56px;font-size:13px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 70%, transparent);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <span>© 2026 M1 Supplies Sdn Bhd</span>
+    <span>{{ t.footerNote }}</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;bm&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en' | 'bm'&quot;,&quot;section&quot;:&quot;Language&quot;},&quot;whatsapp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;+60 12-345 6789&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact&quot;},&quot;reveals&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  state = { lang: null, cat: 0, sent: false };
+
+  static CATS = [
+    { en: 'Copier paper', bm: 'Kertas fotostat', items: [
+      ['Premium Copier 70gsm', 'A4 · 500 sheets'], ['Premium Copier 80gsm', 'A4 · 500 sheets'],
+      ['Premium Copier 80gsm', 'A3 · 500 sheets'], ['High-White Laser 90gsm', 'A4 · 500 sheets'],
+      ['Color Laser 100gsm', 'A4 · 500 sheets'], ['Color Laser 120gsm', 'A4 · 250 sheets'],
+      ['Recycled Copier 75gsm', 'A4 · 500 sheets'], ['Carbonless NCR 2-ply', 'A4 · 100 sets'],
+      ['Digital Gloss 128gsm', 'SRA3 · 250 sheets'], ['Digital Matt 128gsm', 'SRA3 · 250 sheets'],
+      ['Card Stock 230gsm', 'A4 · 100 sheets'], ['Art Card 260gsm', 'SRA3 · 100 sheets'] ]},
+    { en: 'Poster & photo', bm: 'Poster & foto', items: [
+      ['Photo Gloss 180gsm', 'A4 · 20 sheets'], ['Photo Gloss 230gsm', 'A4 · 20 sheets'],
+      ['Photo Satin 260gsm', 'A3 · 20 sheets'], ['RC Photo Lustre 260gsm', '24" × 30m roll'],
+      ['Matte Coated 128gsm', '36" × 30m roll'], ['Matte Coated 180gsm', '24" × 30m roll'],
+      ['Poster Gloss 200gsm', '36" × 30m roll'], ['Synthetic Paper PP', '24" × 30m roll'],
+      ['PP Matte + Lamination', '36" × 30m roll'], ['Backlit Film 215mic', '36" × 30m roll'],
+      ['Canvas Matte 360gsm', '24" × 18m roll'], ['Art Paper 157gsm', 'A3 · 100 sheets'] ]},
+    { en: 'Banner & bunting', bm: 'Banner & bunting', items: [
+      ['Frontlit Banner 280gsm', '10ft × 50m roll'], ['Frontlit Banner 340gsm', '10ft × 50m roll'],
+      ['Backlit Banner 440gsm', '10ft × 50m roll'], ['Blockout Banner 610gsm', '10ft × 50m roll'],
+      ['Mesh Banner 270gsm', '10ft × 50m roll'], ['Tarpaulin 550gsm', '6ft × 50m roll'],
+      ['Double-Side Banner', '10ft × 50m roll'], ['Fabric Banner 110gsm', '5ft × 100m roll'],
+      ['X-Stand Bunting Film', '60 × 160 cm'], ['Roll-Up Bunting Film', '85 × 200 cm'],
+      ['Eyelets & Rope', 'Carton · assorted'], ['Banner Hemming Tape', '48mm × 50m'] ]},
+    { en: 'Sticker & label', bm: 'Pelekat & label', items: [
+      ['Vinyl Sticker Gloss', '24" / 48" roll'], ['Vinyl Sticker Matte', '24" / 48" roll'],
+      ['Transparent Vinyl', '24" roll'], ['One-Way Vision', '48" × 50m roll'],
+      ['Mirrorkote Sticker', 'A4 · 100 sheets'], ['Simili Sticker', 'A4 · 100 sheets'],
+      ['Transparent PVC Sheet', 'A4 · 50 sheets'], ['Kraft Label Sticker', 'A4 · 100 sheets'],
+      ['Reflective Sticker', '24" roll'], ['Floor Graphic Vinyl', '48" roll'],
+      ['Cutting Vinyl Colours', '12" / 24" roll'], ['A4 Label Sheets Die-cut', '100 sheets'] ]},
+    { en: 'Lamination & finishing', bm: 'Laminasi & kemasan', items: [
+      ['Cold Lamination Gloss', '24" × 50m roll'], ['Cold Lamination Matte', '36" × 50m roll'],
+      ['Hot Pouch 100mic', 'A4 · 100 pcs'], ['Hot Pouch 125mic', 'A3 · 100 pcs'],
+      ['Roll Film Gloss 25mic', '320mm × 200m'], ['Roll Film Matte 25mic', '320mm × 200m'],
+      ['Binding Combs & Coils', 'Box · assorted'], ['PVC Binding Cover', 'A4 · 100 sheets'],
+      ['Foam Board 5mm', "4 × 8 ft sheet"], ['PVC Board 3mm', '4 × 8 ft sheet'],
+      ['Double-Sided Tape', 'Carton · assorted'], ['Corner Rounder & Blades', 'Tools'] ]},
+  ];
+
+  static T = {
+    en: {
+      navProducts: 'Products', navAbout: 'About', navWhy: 'Why M1', navContact: 'Contact', navCta: 'Get a quote',
+      heroL1: 'The best value.', heroL2: 'In Malaysia.',
+      heroSub: 'M1 supplies the materials your printing shop runs on — copier paper, photo media, banner rolls, sticker stock and finishing — at wholesale prices, delivered nationwide.',
+      heroBrowse: 'Browse products', heroWa: 'WhatsApp us',
+      prodKicker: 'Products', prodTitle: 'Everything your shop runs on.', enquire: 'Enquire',
+      aboutKicker: 'About us', aboutTitle: 'Built for printing shops.',
+      aboutCopy1: 'M1 is a materials supplier, not a middleman. We stock the paper, media and finishing your presses and large-format printers actually run — tested on the machines our customers use, warehoused in Malaysia, and delivered on a schedule you can plan a job around.',
+      aboutCopy2: 'One account, one delivery, every material. That is the whole idea.',
+      whyKicker: 'Why choose us',
+      why: [
+        { n: '01', title: 'Lowest price in Malaysia', copy: 'We buy at volume and sell at wholesale. Find the same material quoted lower and we will match it — that is the standing offer.' },
+        { n: '02', title: 'Quality guarantee', copy: 'Every ream and roll is checked before it ships. Jams, ghosting or coating defects — we replace the batch. No forms, no argument.' },
+        { n: '03', title: 'Bulk & wholesale discounts', copy: 'Tiered pricing that improves as your volume grows. Standing orders lock your rate for the year.' } ],
+      closeL1: 'One supplier.', closeL2: 'Every material.', closeBtn: 'WhatsApp us now',
+      contactKicker: 'Contact', contactTitle: 'Talk to us.',
+      contactCopy: 'Call, WhatsApp or send an enquiry — we reply within the working day.',
+      lPhone: 'Phone', lEmail: 'Email', lAddr: 'Address',
+      fName: 'Name', fShop: 'Shop / company', fPhoneEmail: 'Phone or email', fMsg: 'What do you need?',
+      fSend: 'Send enquiry', fSent: 'Sent — we will be in touch',
+      footerNote: 'Wholesale printing materials, delivered nationwide.'
+    },
+    bm: {
+      navProducts: 'Produk', navAbout: 'Tentang', navWhy: 'Kenapa M1', navContact: 'Hubungi', navCta: 'Minta sebut harga',
+      heroL1: 'Nilai terbaik.', heroL2: 'Di Malaysia.',
+      heroSub: 'M1 membekalkan bahan yang kedai cetak anda perlukan — kertas fotostat, media foto, gulungan banner, stok pelekat dan kemasan — pada harga borong, dihantar ke seluruh negara.',
+      heroBrowse: 'Lihat produk', heroWa: 'WhatsApp kami',
+      prodKicker: 'Produk', prodTitle: 'Semua yang kedai anda perlukan.', enquire: 'Tanya',
+      aboutKicker: 'Tentang kami', aboutTitle: 'Dibina untuk kedai cetak.',
+      aboutCopy1: 'M1 ialah pembekal bahan, bukan orang tengah. Kami menyimpan kertas, media dan kemasan yang benar-benar digunakan oleh mesin cetak anda — diuji, disimpan di Malaysia, dan dihantar mengikut jadual yang boleh anda rancang.',
+      aboutCopy2: 'Satu akaun, satu penghantaran, semua bahan. Itulah idea kami.',
+      whyKicker: 'Kenapa pilih kami',
+      why: [
+        { n: '01', title: 'Harga terendah di Malaysia', copy: 'Kami beli secara pukal dan jual pada harga borong. Jumpa bahan sama dengan harga lebih rendah? Kami padankan.' },
+        { n: '02', title: 'Jaminan kualiti', copy: 'Setiap rim dan gulungan diperiksa sebelum dihantar. Kecacatan salutan atau cetakan — kami ganti. Tanpa borang, tanpa soal.' },
+        { n: '03', title: 'Diskaun pukal & borong', copy: 'Harga bertingkat yang semakin baik apabila volum anda meningkat. Pesanan tetap mengunci harga anda untuk setahun.' } ],
+      closeL1: 'Satu pembekal.', closeL2: 'Semua bahan.', closeBtn: 'WhatsApp kami sekarang',
+      contactKicker: 'Hubungi', contactTitle: 'Hubungi kami.',
+      contactCopy: 'Telefon, WhatsApp atau hantar pertanyaan — kami balas dalam hari bekerja yang sama.',
+      lPhone: 'Telefon', lEmail: 'E-mel', lAddr: 'Alamat',
+      fName: 'Nama', fShop: 'Kedai / syarikat', fPhoneEmail: 'Telefon atau e-mel', fMsg: 'Apa yang anda perlukan?',
+      fSend: 'Hantar pertanyaan', fSent: 'Dihantar — kami akan hubungi anda',
+      footerNote: 'Bahan cetakan borong, dihantar ke seluruh negara.'
+    }
+  };
+
+  componentDidMount() {
+    if ((this.props.reveals ?? true) === false) return;
+    const els = [...document.querySelectorAll('[data-reveal]')];
+    els.forEach(el => {
+      el.style.opacity = '0'; el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1)';
+    });
+    this._io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'none'; this._io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => this._io.observe(el));
+  }
+  componentWillUnmount() { if (this._io) this._io.disconnect(); }
+
+  renderVals() {
+    const lang = this.state.lang ?? (this.props.defaultLang ?? 'en');
+    const t = Component.T[lang];
+    const wa = String(this.props.whatsapp ?? '+60 12-345 6789').replace(/[^0-9]/g, '');
+    const waHref = 'https://wa.me/' + wa;
+    const langBtn = (active) => ({
+      fontFamily: 'var(--font-heading)', fontWeight: 600, fontSize: '13px', letterSpacing: '0.04em',
+      padding: '4px 2px', background: 'none', border: 0, cursor: 'pointer',
+      color: active ? 'var(--color-accent)' : 'color-mix(in srgb, var(--color-text) 55%, transparent)'
+    });
+    const cats = Component.CATS.map((c, i) => ({
+      label: c[lang],
+      select: () => this.setState({ cat: i }),
+      style: {
+        fontFamily: 'var(--font-heading)', fontWeight: 600, fontSize: '14px', letterSpacing: '0.05em',
+        textTransform: 'uppercase', textAlign: 'left', padding: '14px 0', margin: '0 0 -2px 0',
+        background: 'none', border: 0, cursor: 'pointer',
+        borderBottom: i === this.state.cat ? '2px solid var(--color-accent)' : '2px solid transparent',
+        color: i === this.state.cat ? 'var(--color-accent-700)' : 'color-mix(in srgb, var(--color-text) 62%, transparent)'
+      }
+    }));
+    const active = Component.CATS[this.state.cat];
+    const products = active.items.map(([name, spec], i) => ({ name, spec, slotId: 'p-' + this.state.cat + '-' + i }));
+    return {
+      t, waHref, cats, products, whyRows: t.why,
+      enStyle: langBtn(lang === 'en'), bmStyle: langBtn(lang === 'bm'),
+      setEn: () => this.setState({ lang: 'en' }),
+      setBm: () => this.setState({ lang: 'bm' }),
+      sendLabel: this.state.sent ? t.fSent : t.fSend,
+      submit: (e) => { e.preventDefault(); this.setState({ sent: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

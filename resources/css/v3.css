@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&display=swap');
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: 'Nunito Sans', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+body {
+    margin: 0;
+    background: #fff;
+    color: #161616;
+    text-wrap: pretty;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+@keyframes m3rise {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: none; }
+}
+@keyframes m3fade {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+.m3-rise {
+    animation: m3rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.m3-fade {
+    animation: m3fade 0.6s ease both;
+}
+::selection {
+    background: #e4e4e4;
+}

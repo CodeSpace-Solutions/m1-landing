@@ -1,0 +1,403 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Placeholder from '../components/Placeholder';
+import { useScrollReveal } from '../lib/useScrollReveal';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const WHATSAPP = '+60 12-345 6789';
+const WA_HREF = 'https://wa.me/' + WHATSAPP.replace(/[^0-9]/g, '');
+
+const PRODUCT_IMAGES = {
+    0: '/images/v3/prod-0.webp',
+    1: '/images/v3/prod-1.webp',
+    2: '/images/v3/prod-2.webp',
+    3: '/images/v3/prod-3.webp',
+    4: '/images/v3/prod-4.webp',
+    5: '/images/v3/prod-5.webp',
+};
+
+const PRODUCTS = [
+    { cat: 'A4 Paper', name: 'Double A A4 Paper', spec: '70gsm / 80gsm' },
+    { cat: 'A4 Paper', name: 'PaperOne A4 Paper', spec: '75gsm / 80gsm' },
+    { cat: 'A4 Paper', name: 'IK Yellow A4 Paper', spec: '70gsm / 80gsm' },
+    { cat: 'A4 Paper', name: 'IK Plus A4 Paper', spec: '80gsm' },
+    { cat: 'Poster & Banner', name: 'Glossy Photo Paper', spec: '188gsm / 260gsm' },
+    { cat: 'Poster & Banner', name: 'Flexi Banner', spec: '440gsm / 510gsm' },
+    { cat: 'Poster & Banner', name: 'Backlit Film', spec: '215mic' },
+    { cat: 'Poster & Banner', name: 'Photo Satin Poster', spec: '200gsm' },
+    { cat: 'Sticker', name: 'Sticker Paper', spec: 'Glossy / Matte' },
+    { cat: 'Sticker', name: 'Mirrorkote Sticker', spec: 'A4 · 100 sheets' },
+    { cat: 'Sticker', name: 'Simili Sticker', spec: 'A4 · 100 sheets' },
+    { cat: 'Vinyl', name: 'Adhesive Vinyl', spec: 'Glossy / Matte' },
+    { cat: 'Vinyl', name: 'One-Way Vision', spec: '48" × 50m roll' },
+    { cat: 'Vinyl', name: 'Cutting Vinyl', spec: '12" / 24" roll' },
+    { cat: 'Ink & Consumables', name: 'Ink & Consumables', spec: 'Original & Compatible' },
+    { cat: 'Ink & Consumables', name: 'Eco-Solvent Ink CMYK', spec: '1L bottles' },
+    { cat: 'Ink & Consumables', name: 'Lamination Film', spec: 'Gloss / Matte rolls' },
+    { cat: 'Others', name: 'Foam Board', spec: '5mm / 10mm · 4×8 ft' },
+    { cat: 'Others', name: 'Roll-Up & X-Stand', spec: 'Display hardware' },
+];
+
+const TABS = [
+    { en: 'All', bm: 'Semua', match: null },
+    { en: 'A4 Paper', bm: 'Kertas A4', match: 'A4 Paper' },
+    { en: 'Poster & Banner', bm: 'Poster & Banner', match: 'Poster & Banner' },
+    { en: 'Sticker', bm: 'Pelekat', match: 'Sticker' },
+    { en: 'Vinyl', bm: 'Vinil', match: 'Vinyl' },
+    { en: 'Ink & Consumables', bm: 'Dakwat & Bekalan', match: 'Ink & Consumables' },
+    { en: 'Others', bm: 'Lain-lain', match: 'Others' },
+];
+
+const ICONS = {
+    badge: ['M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76', 'm9 12 2 2 4-4'],
+    store: ['M2 7 4.41 2.59A1 1 0 0 1 5.3 2h13.4a1 1 0 0 1 .89.59L22 7', 'M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7', 'M2 7h20', 'M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6'],
+    box: ['M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z', 'm3.3 7 8.7 5 8.7-5', 'M12 22V12'],
+    truck: ['M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2', 'M15 18H9', 'M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14', 'M17 18a2 2 0 1 0 4 0 2 2 0 0 0-4 0', 'M5 18a2 2 0 1 0 4 0 2 2 0 0 0-4 0'],
+    quality: ['M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z', 'm9 12 2 2 4-4'],
+    layers: ['m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z', 'm22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65', 'm22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65'],
+    tag: ['M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z', 'M7.5 8.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2'],
+};
+
+function Icon({ paths, size = 20 }) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+            {paths.map((d, i) => <path key={i} d={d} />)}
+        </svg>
+    );
+}
+
+const T = {
+    en: {
+        navProducts: 'Products', navAbout: 'About us', navWhy: 'Why choose us', navContact: 'Contact', navCta: 'Get in touch',
+        heroL1: 'The best value', heroL2: 'printing materials', heroL3: 'in Malaysia',
+        heroSub1: 'Trusted wholesale supplier for printing shops.', heroSub2: 'Quality materials. Consistent supply. Competitive pricing.',
+        heroCta: 'Explore products',
+        s1: 'Years Experience', s2: 'Printing Shops', s3: 'Products', s4: 'Delivery', s4v: 'Nationwide',
+        prodKicker: 'Our products', prodTitle: 'Quality Materials for Every Need', viewDetails: 'View details',
+        aboutKicker: 'About M1', aboutTitle: 'Your Trusted Partner in Printing Business',
+        aboutCopy1: 'M1 is a wholesale supplier of premium printing materials in Malaysia. We are committed to providing consistent quality, stable supply and the best value to support your business growth.',
+        learnMore: 'Learn more',
+        whyKicker: 'Why choose M1', whyTitle: 'The M1 Advantage',
+        why: [
+            { title: 'Premium Quality', copy: 'Carefully selected materials from reliable manufacturers.' },
+            { title: 'Stable Supply', copy: 'Large inventory and strong supply chain.' },
+            { title: 'Fast Delivery', copy: 'Nationwide delivery to keep your business running.' },
+            { title: 'Competitive Pricing', copy: 'Best wholesale pricing for printing professionals.' },
+        ],
+        contactKicker: "Let's grow together", contactTitle: 'Contact Us',
+        contactCopy: 'Have questions or need a quotation? Our team is ready to help.',
+        hours: 'Mon - Sat: 9:00 AM - 6:00 PM', waBtn: 'WhatsApp us',
+        fCompany: 'Company Name', fName: 'Your Name', fPhone: 'Phone Number', fEmail: 'Email Address', fMsg: 'Message',
+        fSend: 'Send message', fSent: 'Sent — we will be in touch',
+        fCompanyCol: 'Company', fSupport: 'Support', follow: 'Follow us', rights: 'All rights reserved.',
+    },
+    bm: {
+        navProducts: 'Produk', navAbout: 'Tentang kami', navWhy: 'Kenapa pilih kami', navContact: 'Hubungi', navCta: 'Hubungi kami',
+        heroL1: 'Bahan cetakan', heroL2: 'nilai terbaik', heroL3: 'di Malaysia',
+        heroSub1: 'Pembekal borong dipercayai untuk kedai cetak.', heroSub2: 'Bahan berkualiti. Bekalan konsisten. Harga kompetitif.',
+        heroCta: 'Terokai produk',
+        s1: 'Tahun Pengalaman', s2: 'Kedai Cetak', s3: 'Produk', s4: 'Penghantaran', s4v: 'Seluruh Negara',
+        prodKicker: 'Produk kami', prodTitle: 'Bahan Berkualiti untuk Setiap Keperluan', viewDetails: 'Lihat butiran',
+        aboutKicker: 'Tentang M1', aboutTitle: 'Rakan Dipercayai dalam Perniagaan Percetakan',
+        aboutCopy1: 'M1 ialah pembekal borong bahan cetakan premium di Malaysia. Kami komited menyediakan kualiti konsisten, bekalan stabil dan nilai terbaik untuk menyokong pertumbuhan perniagaan anda.',
+        learnMore: 'Ketahui lanjut',
+        whyKicker: 'Kenapa pilih M1', whyTitle: 'Kelebihan M1',
+        why: [
+            { title: 'Kualiti Premium', copy: 'Bahan dipilih teliti daripada pengeluar yang dipercayai.' },
+            { title: 'Bekalan Stabil', copy: 'Inventori besar dan rantaian bekalan yang kukuh.' },
+            { title: 'Penghantaran Pantas', copy: 'Penghantaran seluruh negara untuk memastikan perniagaan anda berjalan.' },
+            { title: 'Harga Kompetitif', copy: 'Harga borong terbaik untuk profesional percetakan.' },
+        ],
+        contactKicker: 'Mari berkembang bersama', contactTitle: 'Hubungi Kami',
+        contactCopy: 'Ada soalan atau perlukan sebut harga? Pasukan kami sedia membantu.',
+        hours: 'Isn - Sab: 9:00 AM - 6:00 PM', waBtn: 'WhatsApp kami',
+        fCompany: 'Nama Syarikat', fName: 'Nama Anda', fPhone: 'Nombor Telefon', fEmail: 'Alamat E-mel', fMsg: 'Mesej',
+        fSend: 'Hantar mesej', fSent: 'Dihantar — kami akan hubungi anda',
+        fCompanyCol: 'Syarikat', fSupport: 'Sokongan', follow: 'Ikuti kami', rights: 'Hak cipta terpelihara.',
+    },
+};
+
+function CountStat({ icon, target, suffix, value, label }) {
+    const ref = useRef(null);
+    const [display, setDisplay] = useState(target ? '0' + suffix : value);
+
+    useEffect(() => {
+        if (!target) { setDisplay(value); return; }
+        const el = ref.current;
+        const io = new IntersectionObserver(
+            (entries) => {
+                if (!entries[0].isIntersecting) return;
+                io.disconnect();
+                const obj = { v: 0 };
+                gsap.to(obj, {
+                    v: target,
+                    duration: 1.4,
+                    ease: 'power3.out',
+                    onUpdate: () => setDisplay(Math.round(obj.v) + suffix),
+                });
+            },
+            { threshold: 0.3 },
+        );
+        io.observe(el);
+        return () => io.disconnect();
+    }, [target, suffix, value]);
+
+    return (
+        <div ref={ref} className="flex items-center gap-4">
+            <span className="inline-flex h-11.5 w-11.5 flex-shrink-0 items-center justify-center rounded-full border border-[#3a3a3f] text-[#e4e4e7]">{icon}</span>
+            <div>
+                <p className="m-0 text-[22px] font-black text-white">{display}</p>
+                <p className="mt-0.5 text-[13.5px] text-[#9b9b9f]">{label}</p>
+            </div>
+        </div>
+    );
+}
+
+export default function V3() {
+    const [lang, setLang] = useState('en');
+    const [cat, setCat] = useState(0);
+    const [tick, setTick] = useState(0);
+    const [sent, setSent] = useState(false);
+    const scopeRef = useRef(null);
+    useScrollReveal(scopeRef);
+
+    const t = T[lang];
+    const tab = TABS[cat];
+    const products = useMemo(() => {
+        const pool = tab.match ? PRODUCTS.filter((p) => p.cat === tab.match) : PRODUCTS;
+        return pool.map((p) => ({ ...p, index: PRODUCTS.indexOf(p) }));
+    }, [tab]);
+
+    const stats = [
+        { icon: <Icon paths={ICONS.badge} />, target: 20, suffix: '+', label: t.s1 },
+        { icon: <Icon paths={ICONS.store} />, target: 500, suffix: '+', label: t.s2 },
+        { icon: <Icon paths={ICONS.box} />, target: 1000, suffix: '+', label: t.s3 },
+        { icon: <Icon paths={ICONS.truck} />, target: 0, suffix: '', value: t.s4v, label: t.s4 },
+    ];
+    const whyIcons = [ICONS.quality, ICONS.layers, ICONS.truck, ICONS.tag];
+
+    return (
+        <div ref={scopeRef}>
+            <section style={{ background: '#0b0b0c', color: '#fff' }}>
+                <nav className="mx-auto flex max-w-[1240px] items-center gap-6 px-5 py-5.5 md:gap-10 md:px-14">
+                    <span className="text-[26px] font-black tracking-tight">M1</span>
+                    <div className="ml-auto flex flex-wrap items-center gap-4 md:gap-8">
+                        <a href="#products" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navProducts}</a>
+                        <a href="#about" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navAbout}</a>
+                        <a href="#why" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navWhy}</a>
+                        <a href="#contact" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navContact}</a>
+                        <span className="inline-flex items-center gap-0.5">
+                            <button type="button" onClick={() => setLang('en')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'en' ? '#fff' : '#71717a' }}>EN</button>
+                            <span className="text-xs text-[#52525b]">/</span>
+                            <button type="button" onClick={() => setLang('bm')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'bm' ? '#fff' : '#71717a' }}>BM</button>
+                        </span>
+                        <a href="#contact" className="whitespace-nowrap rounded-full bg-white px-6 py-3 text-[12.5px] font-extrabold tracking-[0.08em] text-[#0b0b0c] uppercase no-underline hover:bg-[#d4d4d8]">{t.navCta}</a>
+                    </div>
+                </nav>
+
+                <div className="mx-auto grid max-w-[1240px] items-center gap-10 px-5 pt-10 md:gap-16 md:px-14 md:pt-22 lg:grid-cols-2">
+                    <div className="pb-8 md:pb-16">
+                        <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[58px]">
+                            <span className="m3-rise block">{t.heroL1}</span>
+                            <span className="m3-rise block" style={{ animationDelay: '.12s' }}>{t.heroL2}</span>
+                            <span className="m3-rise block text-transparent" style={{ WebkitTextStroke: '1.5px #9b9b9f', animationDelay: '.24s' }}>{t.heroL3}</span>
+                        </h1>
+                        <p className="m3-rise mt-6.5 max-w-[46ch] text-[16px] leading-[1.75] text-[#b9b9bf]" style={{ animationDelay: '.34s' }}>{t.heroSub1}<br />{t.heroSub2}</p>
+                        <div className="m3-rise mt-8" style={{ animationDelay: '.44s' }}>
+                            <a href="#products" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md bg-white px-7.5 py-3.5 text-[12.5px] font-extrabold tracking-[0.1em] text-[#0b0b0c] uppercase no-underline hover:bg-[#d4d4d8]">
+                                {t.heroCta}
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="m3-rise relative min-h-[320px] self-stretch" style={{ animationDelay: '.2s' }}>
+                        <div className="absolute inset-0 grayscale">
+                            <img src="/images/v3/hero.webp" alt="Paper rolls" className="h-full w-full object-cover" />
+                        </div>
+                        <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 45%),linear-gradient(0deg,rgba(11,11,12,.55) 0%,rgba(11,11,12,0) 35%)' }} />
+                    </div>
+                </div>
+
+                <div className="border-t border-[#232326]">
+                    <div className="mx-auto grid max-w-[1240px] gap-6 px-5 py-7 md:px-14" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))' }}>
+                        {stats.map((s) => <CountStat key={s.label} {...s} />)}
+                    </div>
+                </div>
+            </section>
+
+            <section id="products" style={{ background: '#fafafa' }}>
+                <div className="mx-auto max-w-[1240px] px-5 py-18 pb-21 md:px-14">
+                    <div data-reveal>
+                        <span className="text-xs font-extrabold tracking-[0.14em] text-[#71717a] uppercase">{t.prodKicker}</span>
+                        <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.prodTitle}</h2>
+                    </div>
+                    <div data-reveal role="tablist" className="mt-7 flex flex-wrap gap-2.5">
+                        {TABS.map((c, i) => (
+                            <button
+                                key={c.en}
+                                type="button"
+                                role="tab"
+                                onClick={() => { setCat(i); setTick((n) => n + 1); }}
+                                className="cursor-pointer rounded whitespace-nowrap px-5 py-2.5 text-[13.5px] font-bold transition-colors hover:border-[#161616] hover:text-[#161616]"
+                                style={{
+                                    border: i === cat ? '1px solid #161616' : '1px solid #d4d4d8',
+                                    background: i === cat ? '#161616' : '#fff',
+                                    color: i === cat ? '#fff' : '#52525b',
+                                }}
+                            >
+                                {c[lang]}
+                            </button>
+                        ))}
+                    </div>
+                    <div data-reveal key={tick} className="m3-fade">
+                        <div className="mt-8 grid gap-5.5" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(230px,1fr))' }}>
+                            {products.map((p) => (
+                                <div key={p.name} className="flex flex-col overflow-hidden rounded-md bg-white transition-all hover:-translate-y-1 hover:shadow-[0_14px_34px_rgba(0,0,0,.1)]">
+                                    {PRODUCT_IMAGES[p.index] ? (
+                                        <img src={PRODUCT_IMAGES[p.index]} alt={p.name} className="aspect-[4/3] w-full object-cover" />
+                                    ) : (
+                                        <Placeholder label="Product photo" className="w-full" style={{ aspectRatio: '4/3' }} />
+                                    )}
+                                    <div className="flex flex-1 flex-col gap-1 border-t border-[#f0f0f1] px-5 pt-4.5 pb-5">
+                                        <p className="m-0 text-[16px] leading-tight font-extrabold">{p.name}</p>
+                                        <p className="m-0 text-[13.5px] text-[#71717a]">{p.spec}</p>
+                                        <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-3.5 inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.08em] text-[#161616] uppercase no-underline">
+                                            {t.viewDetails}
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" className="bg-white">
+                <div className="grid items-stretch" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))' }}>
+                    <div data-reveal className="ml-auto max-w-[600px] self-center px-5 py-14 md:px-14 md:py-22">
+                        <span className="text-xs font-extrabold tracking-[0.14em] text-[#71717a] uppercase">{t.aboutKicker}</span>
+                        <h2 className="m-0 mt-2.5 text-[26px] leading-tight font-black tracking-tight sm:text-[38px]">{t.aboutTitle}</h2>
+                        <p className="mt-4.5 max-w-[48ch] text-[15px] leading-[1.8] text-[#52525b]">{t.aboutCopy1}</p>
+                        <div className="mt-6.5">
+                            <a href="#why" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#161616] px-6.5 py-3 text-xs font-extrabold tracking-[0.1em] text-[#161616] uppercase no-underline hover:bg-[#161616] hover:text-white">
+                                {t.learnMore}
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="relative min-h-[340px]">
+                        <Placeholder label="Warehouse photograph" className="absolute inset-0 h-full w-full grayscale" />
+                        <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 40%)' }} />
+                    </div>
+                </div>
+            </section>
+
+            <section id="why" className="border-t border-[#ececee]" style={{ background: '#fafafa' }}>
+                <div className="mx-auto max-w-[1240px] px-5 py-18 pb-21 md:px-14">
+                    <div data-reveal>
+                        <span className="text-xs font-extrabold tracking-[0.14em] text-[#71717a] uppercase">{t.whyKicker}</span>
+                        <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.whyTitle}</h2>
+                    </div>
+                    <div className="mt-11 grid gap-8 sm:gap-11" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))' }}>
+                        {t.why.map((w, i) => (
+                            <div key={w.title} data-reveal className="flex items-start gap-4">
+                                <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border-[1.5px] border-[#d4d4d8] bg-white text-[#161616]">
+                                    <Icon paths={whyIcons[i]} />
+                                </span>
+                                <div>
+                                    <h3 className="m-0 text-[16.5px] font-extrabold">{w.title}</h3>
+                                    <p className="mt-2 text-sm leading-[1.7] text-[#52525b]">{w.copy}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" className="border-t border-[#ececee] bg-white">
+                <div className="mx-auto grid max-w-[1240px] gap-11 px-5 py-18 pb-21 md:px-14 lg:grid-cols-2 lg:gap-18">
+                    <div data-reveal>
+                        <span className="text-xs font-extrabold tracking-[0.14em] text-[#71717a] uppercase">{t.contactKicker}</span>
+                        <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.contactTitle}</h2>
+                        <p className="mt-4 mb-7 max-w-[44ch] text-[15px] leading-[1.8] text-[#52525b]">{t.contactCopy}</p>
+                        <div className="grid gap-4">
+                            <div className="flex items-center gap-3">
+                                <span className="inline-flex text-[#161616]"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span>
+                                <span className="text-[14.5px] font-semibold">+60 12-345 6789</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="inline-flex text-[#161616]"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span>
+                                <span className="text-[14.5px] font-semibold">sales@m1.com.my</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="inline-flex text-[#161616]"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></span>
+                                <span className="text-[14.5px] font-semibold">{t.hours}</span>
+                            </div>
+                        </div>
+                        <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#161616] px-6.5 py-3 text-xs font-extrabold tracking-[0.1em] text-[#161616] uppercase no-underline hover:bg-[#161616] hover:text-white">
+                            {t.waBtn}
+                        </a>
+                    </div>
+                    <form
+                        data-reveal
+                        onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+                        className="grid content-start gap-3.5"
+                        style={{ gridTemplateColumns: '1fr 1fr' }}
+                    >
+                        <input type="text" placeholder={t.fCompany} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" />
+                        <input type="text" placeholder={t.fName} required className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" />
+                        <input type="text" placeholder={t.fPhone} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" />
+                        <input type="email" placeholder={t.fEmail} required className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" />
+                        <textarea placeholder={t.fMsg} rows={5} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" style={{ gridColumn: '1 / -1' }} />
+                        <div style={{ gridColumn: '1 / -1' }}>
+                            <button type="submit" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md bg-[#161616] px-7 py-3.5 text-xs font-extrabold tracking-[0.1em] text-white uppercase hover:bg-[#3f3f46]">
+                                {sent ? t.fSent : t.fSend}
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <footer style={{ background: '#0b0b0c', color: '#9b9b9f' }}>
+                <div className="mx-auto grid max-w-[1240px] gap-9 px-5 pt-13 pb-10 md:px-14" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))' }}>
+                    <div>
+                        <span className="text-2xl font-black text-white">M1</span>
+                        <p className="mt-3.5 text-[13px] leading-[1.7]">© 2026 M1 Printing Materials.<br />{t.rights}</p>
+                    </div>
+                    <div>
+                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.navProducts}</p>
+                        <div className="grid gap-2">
+                            {TABS.slice(1).map((c) => (
+                                <a key={c.en} href="#products" className="text-[13.5px] text-[#9b9b9f] no-underline hover:text-white">{c[lang]}</a>
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.fCompanyCol}</p>
+                        <div className="grid gap-2">
+                            <a href="#about" className="text-[13.5px] text-[#9b9b9f] no-underline hover:text-white">{t.navAbout}</a>
+                            <a href="#why" className="text-[13.5px] text-[#9b9b9f] no-underline hover:text-white">{t.navWhy}</a>
+                        </div>
+                    </div>
+                    <div>
+                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.fSupport}</p>
+                        <div className="grid gap-2">
+                            <a href="#contact" className="text-[13.5px] text-[#9b9b9f] no-underline hover:text-white">{t.navContact}</a>
+                        </div>
+                    </div>
+                    <div>
+                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.follow}</p>
+                        <div className="flex gap-3">
+                            <a href="#contact" aria-label="Facebook" className="inline-flex text-[#9b9b9f] hover:text-white"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg></a>
+                            <a href={WA_HREF} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="inline-flex text-[#9b9b9f] hover:text-white"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" /></svg></a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    );
+}

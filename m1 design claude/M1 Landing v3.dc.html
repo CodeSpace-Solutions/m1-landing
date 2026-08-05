@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&display=swap">
+<script src="image-slot.js"></script>
+<style>
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#fff;color:#161616;font-family:'Nunito Sans',sans-serif;text-wrap:pretty}
+a{color:#161616} a:hover{color:#000}
+::selection{background:#e4e4e4}
+@keyframes m3rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes m3fadeA{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes m3fadeB{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+
+<section style="background:#0b0b0c;color:#fff">
+  <nav style="max-width:1240px;margin:0 auto;padding:22px clamp(20px,4vw,56px);display:flex;align-items:center;gap:clamp(16px,3vw,40px)">
+    <span style="font-family:'Nunito Sans',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.02em">M1</span>
+    <div style="display:flex;gap:clamp(14px,2.4vw,34px);margin-left:auto;align-items:center;flex-wrap:wrap">
+      <a href="#products" style="text-decoration:none;color:#d4d4d8;font-weight:700;font-size:12.5px;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap" style-hover="color:#fff">{{ t.navProducts }}</a>
+      <a href="#about" style="text-decoration:none;color:#d4d4d8;font-weight:700;font-size:12.5px;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap" style-hover="color:#fff">{{ t.navAbout }}</a>
+      <a href="#why" style="text-decoration:none;color:#d4d4d8;font-weight:700;font-size:12.5px;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap" style-hover="color:#fff">{{ t.navWhy }}</a>
+      <a href="#contact" style="text-decoration:none;color:#d4d4d8;font-weight:700;font-size:12.5px;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap" style-hover="color:#fff">{{ t.navContact }}</a>
+      <span style="display:inline-flex;align-items:center;gap:2px">
+        <button type="button" onClick="{{ setEn }}" style="{{ enStyle }}">EN</button>
+        <span style="font-size:12px;color:#52525b">/</span>
+        <button type="button" onClick="{{ setBm }}" style="{{ bmStyle }}">BM</button>
+      </span>
+      <a href="#contact" style="text-decoration:none;white-space:nowrap;background:#fff;color:#0b0b0c;font-weight:800;font-size:12.5px;letter-spacing:0.08em;text-transform:uppercase;padding:12px 24px;border-radius:999px" style-hover="background:#d4d4d8">{{ t.navCta }}</a>
+    </div>
+  </nav>
+
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(40px,7vh,88px) clamp(20px,4vw,56px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px clamp(24px,4vw,64px);align-items:center">
+    <div style="padding-bottom:clamp(32px,5vh,64px)">
+      <h1 style="font-weight:900;font-size:clamp(36px,4.6vw,58px);line-height:1.12;letter-spacing:-0.01em;text-transform:uppercase;margin:0">
+        <span style="display:block;animation:m3rise .8s cubic-bezier(.22,1,.36,1) both">{{ t.heroL1 }}</span>
+        <span style="display:block;animation:m3rise .8s cubic-bezier(.22,1,.36,1) .12s both">{{ t.heroL2 }}</span>
+        <span style="display:block;color:transparent;-webkit-text-stroke:1.5px #9b9b9f;animation:m3rise .8s cubic-bezier(.22,1,.36,1) .24s both">{{ t.heroL3 }}</span>
+      </h1>
+      <p style="font-size:16px;line-height:1.75;color:#b9b9bf;max-width:46ch;margin:26px 0 0;animation:m3rise .8s cubic-bezier(.22,1,.36,1) .34s both">{{ t.heroSub1 }}<br>{{ t.heroSub2 }}</p>
+      <div style="margin-top:32px;animation:m3rise .8s cubic-bezier(.22,1,.36,1) .44s both">
+        <a href="#products" style="text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:10px;background:#fff;color:#0b0b0c;font-weight:800;font-size:12.5px;letter-spacing:0.1em;text-transform:uppercase;padding:15px 30px;border-radius:6px" style-hover="background:#d4d4d8">{{ t.heroCta }} <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+      </div>
+    </div>
+    <div style="position:relative;align-self:stretch;min-height:320px;animation:m3rise 1s cubic-bezier(.22,1,.36,1) .2s both">
+      <div style="position:absolute;inset:0;filter:grayscale(1)"><image-slot id="v3-hero" shape="rect" placeholder="Paper roll / stock photo (dark background)" style="width:100%;height:100%;display:block"></image-slot></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 45%),linear-gradient(0deg,rgba(11,11,12,.55) 0%,rgba(11,11,12,0) 35%);pointer-events:none"></div>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid #232326">
+    <div style="max-width:1240px;margin:0 auto;padding:28px clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:16px">
+          <span style="width:46px;height:46px;border-radius:50%;border:1px solid #3a3a3f;display:inline-flex;align-items:center;justify-content:center;color:#e4e4e7;flex-shrink:0">{{ s.icon }}</span>
+          <div><p data-count="{{ s.target }}" data-suffix="{{ s.suffix }}" style="font-weight:900;font-size:22px;margin:0;color:#fff">{{ s.value }}</p><p style="font-size:13.5px;color:#9b9b9f;margin:2px 0 0">{{ s.label }}</p></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="products" style="background:#fafafa">
+  <div style="max-width:1240px;margin:0 auto;padding:72px clamp(20px,4vw,56px) 84px">
+    <div data-reveal>
+      <span style="font-weight:800;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#71717a">{{ t.prodKicker }}</span>
+      <h2 style="font-weight:900;font-size:clamp(26px,3vw,38px);letter-spacing:-0.015em;margin:10px 0 0">{{ t.prodTitle }}</h2>
+    </div>
+    <div data-reveal role="tablist" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:28px">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
+        <button type="button" role="tab" onClick="{{ c.select }}" style="{{ c.style }}" style-hover="border-color:#161616;color:#161616">{{ c.label }}</button>
+      </sc-for>
+    </div>
+    <div data-reveal style="{{ featAnim }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px;margin-top:32px">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="8">
+          <div style="background:#fff;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .3s ease, transform .3s ease" style-hover="box-shadow:0 14px 34px rgba(0,0,0,.1);transform:translateY(-3px)">
+            <image-slot id="{{ p.slotId }}" shape="rect" placeholder="Product photo" style="width:100%;aspect-ratio:4/3;display:block"></image-slot>
+            <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:4px;flex:1;border-top:1px solid #f0f0f1">
+              <p style="font-weight:800;font-size:16px;line-height:1.35;margin:0">{{ p.name }}</p>
+              <p style="font-size:13.5px;color:#71717a;margin:0">{{ p.spec }}</p>
+              <a href="{{ waHref }}" target="_blank" rel="noopener" style="margin-top:14px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;color:#161616;font-weight:800;font-size:12px;letter-spacing:0.08em;text-transform:uppercase" style-hover="gap:12px">{{ t.viewDetails }} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="about" style="background:#fff">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));align-items:stretch">
+    <div data-reveal style="max-width:600px;margin-left:auto;padding:clamp(48px,7vh,88px) clamp(20px,4vw,56px);box-sizing:border-box;align-self:center">
+      <span style="font-weight:800;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#71717a">{{ t.aboutKicker }}</span>
+      <h2 style="font-weight:900;font-size:clamp(26px,3vw,38px);letter-spacing:-0.015em;line-height:1.2;margin:10px 0 0">{{ t.aboutTitle }}</h2>
+      <p style="font-size:15px;line-height:1.8;color:#52525b;margin:18px 0 0;max-width:48ch">{{ t.aboutCopy1 }}</p>
+      <div style="margin-top:26px"><a href="#why" style="text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:10px;border:1.5px solid #161616;color:#161616;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;padding:12px 26px;border-radius:6px" style-hover="background:#161616;color:#fff">{{ t.learnMore }} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></div>
+    </div>
+    <div style="position:relative;min-height:340px">
+      <div style="position:absolute;inset:0;filter:grayscale(1)"><image-slot id="v3-about" shape="rect" placeholder="Warehouse photograph" style="width:100%;height:100%;display:block"></image-slot></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 40%);pointer-events:none"></div>
+    </div>
+  </div>
+</section>
+
+<section id="why" style="background:#fafafa;border-top:1px solid #ececee">
+  <div style="max-width:1240px;margin:0 auto;padding:72px clamp(20px,4vw,56px) 84px">
+    <div data-reveal>
+      <span style="font-weight:800;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#71717a">{{ t.whyKicker }}</span>
+      <h2 style="font-weight:900;font-size:clamp(26px,3vw,38px);letter-spacing:-0.015em;margin:10px 0 0">{{ t.whyTitle }}</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:clamp(24px,3vw,44px);margin-top:44px">
+      <sc-for list="{{ whyRows }}" as="w" hint-placeholder-count="4">
+        <div data-reveal style="display:flex;gap:16px;align-items:flex-start">
+          <span style="width:48px;height:48px;border-radius:8px;border:1.5px solid #d4d4d8;background:#fff;display:inline-flex;align-items:center;justify-content:center;color:#161616;flex-shrink:0">{{ w.icon }}</span>
+          <div><h3 style="font-weight:800;font-size:16.5px;margin:0">{{ w.title }}</h3><p style="font-size:14px;line-height:1.7;color:#52525b;margin:8px 0 0">{{ w.copy }}</p></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background:#fff;border-top:1px solid #ececee">
+  <div style="max-width:1240px;margin:0 auto;padding:72px clamp(20px,4vw,56px) 84px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:44px clamp(28px,4vw,72px)">
+    <div data-reveal>
+      <span style="font-weight:800;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#71717a">{{ t.contactKicker }}</span>
+      <h2 style="font-weight:900;font-size:clamp(26px,3vw,38px);letter-spacing:-0.015em;margin:10px 0 0">{{ t.contactTitle }}</h2>
+      <p style="font-size:15px;line-height:1.8;color:#52525b;margin:16px 0 28px;max-width:44ch">{{ t.contactCopy }}</p>
+      <div style="display:grid;gap:16px">
+        <div style="display:flex;align-items:center;gap:12px"><span style="color:#161616;display:inline-flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span><span style="font-size:14.5px;font-weight:600">+60 12-345 6789</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><span style="color:#161616;display:inline-flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></span><span style="font-size:14.5px;font-weight:600">sales@m1.com.my</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><span style="color:#161616;display:inline-flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span><span style="font-size:14.5px;font-weight:600">{{ t.hours }}</span></div>
+      </div>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" style="text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:10px;margin-top:28px;border:1.5px solid #161616;color:#161616;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;padding:12px 26px;border-radius:6px" style-hover="background:#161616;color:#fff">{{ t.waBtn }}</a>
+    </div>
+    <form data-reveal onSubmit="{{ submit }}" style="display:grid;gap:14px;align-content:start;grid-template-columns:1fr 1fr">
+      <input type="text" placeholder="{{ t.fCompany }}" style="font-family:'Nunito Sans',sans-serif;font-size:14px;padding:13px 16px;border:1px solid #d4d4d8;border-radius:6px;background:#fff;color:#161616;outline:none" style-focus="border-color:#161616" />
+      <input type="text" placeholder="{{ t.fName }}" required="required" style="font-family:'Nunito Sans',sans-serif;font-size:14px;padding:13px 16px;border:1px solid #d4d4d8;border-radius:6px;background:#fff;color:#161616;outline:none" style-focus="border-color:#161616" />
+      <input type="text" placeholder="{{ t.fPhone }}" style="font-family:'Nunito Sans',sans-serif;font-size:14px;padding:13px 16px;border:1px solid #d4d4d8;border-radius:6px;background:#fff;color:#161616;outline:none" style-focus="border-color:#161616" />
+      <input type="email" placeholder="{{ t.fEmail }}" required="required" style="font-family:'Nunito Sans',sans-serif;font-size:14px;padding:13px 16px;border:1px solid #d4d4d8;border-radius:6px;background:#fff;color:#161616;outline:none" style-focus="border-color:#161616" />
+      <textarea placeholder="{{ t.fMsg }}" rows="5" style="grid-column:1 / -1;font-family:'Nunito Sans',sans-serif;font-size:14px;padding:13px 16px;border:1px solid #d4d4d8;border-radius:6px;background:#fff;color:#161616;outline:none;resize:vertical" style-focus="border-color:#161616"></textarea>
+      <div style="grid-column:1 / -1"><button type="submit" style="font-family:'Nunito Sans',sans-serif;white-space:nowrap;display:inline-flex;align-items:center;gap:10px;background:#161616;color:#fff;font-weight:800;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;padding:14px 28px;border:0;border-radius:6px;cursor:pointer" style-hover="background:#3f3f46">{{ sendLabel }} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button></div>
+    </form>
+  </div>
+</section>
+
+<footer style="background:#0b0b0c;color:#9b9b9f">
+  <div style="max-width:1240px;margin:0 auto;padding:52px clamp(20px,4vw,56px) 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:36px">
+    <div>
+      <span style="font-weight:900;font-size:24px;color:#fff">M1</span>
+      <p style="font-size:13px;line-height:1.7;margin:14px 0 0">© 2026 M1 Printing Materials.<br>{{ t.rights }}</p>
+    </div>
+    <div>
+      <p style="font-weight:800;font-size:13px;color:#fff;margin:0 0 12px">{{ t.navProducts }}</p>
+      <div style="display:grid;gap:8px">
+        <sc-for list="{{ footCats }}" as="f" hint-placeholder-count="6"><a href="#products" style="text-decoration:none;color:#9b9b9f;font-size:13.5px" style-hover="color:#fff">{{ f }}</a></sc-for>
+      </div>
+    </div>
+    <div>
+      <p style="font-weight:800;font-size:13px;color:#fff;margin:0 0 12px">{{ t.fCompanyCol }}</p>
+      <div style="display:grid;gap:8px">
+        <a href="#about" style="text-decoration:none;color:#9b9b9f;font-size:13.5px" style-hover="color:#fff">{{ t.navAbout }}</a>
+        <a href="#why" style="text-decoration:none;color:#9b9b9f;font-size:13.5px" style-hover="color:#fff">{{ t.navWhy }}</a>
+      </div>
+    </div>
+    <div>
+      <p style="font-weight:800;font-size:13px;color:#fff;margin:0 0 12px">{{ t.fSupport }}</p>
+      <div style="display:grid;gap:8px">
+        <a href="#contact" style="text-decoration:none;color:#9b9b9f;font-size:13.5px" style-hover="color:#fff">{{ t.navContact }}</a>
+      </div>
+    </div>
+    <div>
+      <p style="font-weight:800;font-size:13px;color:#fff;margin:0 0 12px">{{ t.follow }}</p>
+      <div style="display:flex;gap:12px">
+        <a href="#contact" aria-label="Facebook" style="color:#9b9b9f;display:inline-flex" style-hover="color:#fff"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+        <a href="{{ waHref }}" target="_blank" rel="noopener" aria-label="WhatsApp" style="color:#9b9b9f;display:inline-flex" style-hover="color:#fff"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"></path></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;bm&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en' | 'bm'&quot;,&quot;section&quot;:&quot;Language&quot;},&quot;whatsapp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;+60 12-345 6789&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact&quot;},&quot;reveals&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  state = { lang: null, cat: 0, feat: 0, tick: 0, sent: false };
+
+  static PRODUCTS = [
+    { cat: 'A4 Paper', name: 'Double A A4 Paper', spec: '70gsm / 80gsm', all: true },
+    { cat: 'A4 Paper', name: 'PaperOne A4 Paper', spec: '75gsm / 80gsm', all: true },
+    { cat: 'A4 Paper', name: 'IK Yellow A4 Paper', spec: '70gsm / 80gsm', all: true },
+    { cat: 'A4 Paper', name: 'IK Plus A4 Paper', spec: '80gsm' },
+    { cat: 'Poster & Banner', name: 'Glossy Photo Paper', spec: '188gsm / 260gsm', all: true },
+    { cat: 'Poster & Banner', name: 'Flexi Banner', spec: '440gsm / 510gsm', all: true },
+    { cat: 'Poster & Banner', name: 'Backlit Film', spec: '215mic' },
+    { cat: 'Poster & Banner', name: 'Photo Satin Poster', spec: '200gsm' },
+    { cat: 'Sticker', name: 'Sticker Paper', spec: 'Glossy / Matte', all: true },
+    { cat: 'Sticker', name: 'Mirrorkote Sticker', spec: 'A4 · 100 sheets' },
+    { cat: 'Sticker', name: 'Simili Sticker', spec: 'A4 · 100 sheets' },
+    { cat: 'Vinyl', name: 'Adhesive Vinyl', spec: 'Glossy / Matte', all: true },
+    { cat: 'Vinyl', name: 'One-Way Vision', spec: '48" × 50m roll' },
+    { cat: 'Vinyl', name: 'Cutting Vinyl', spec: '12" / 24" roll' },
+    { cat: 'Ink & Consumables', name: 'Ink & Consumables', spec: 'Original & Compatible', all: true },
+    { cat: 'Ink & Consumables', name: 'Eco-Solvent Ink CMYK', spec: '1L bottles' },
+    { cat: 'Ink & Consumables', name: 'Lamination Film', spec: 'Gloss / Matte rolls' },
+    { cat: 'Others', name: 'Foam Board', spec: '5mm / 10mm · 4×8 ft' },
+    { cat: 'Others', name: 'Roll-Up & X-Stand', spec: 'Display hardware' }
+  ];
+
+  static TABS = [
+    { en: 'All', bm: 'Semua', match: null },
+    { en: 'A4 Paper', bm: 'Kertas A4', match: 'A4 Paper' },
+    { en: 'Poster & Banner', bm: 'Poster & Banner', match: 'Poster & Banner' },
+    { en: 'Sticker', bm: 'Pelekat', match: 'Sticker' },
+    { en: 'Vinyl', bm: 'Vinil', match: 'Vinyl' },
+    { en: 'Ink & Consumables', bm: 'Dakwat & Bekalan', match: 'Ink & Consumables' },
+    { en: 'Others', bm: 'Lain-lain', match: 'Others' }
+  ];
+
+  static T = {
+    en: {
+      navProducts: 'Products', navAbout: 'About us', navWhy: 'Why choose us', navContact: 'Contact', navCta: 'Get in touch',
+      heroL1: 'The best value', heroL2: 'printing materials', heroL3: 'in Malaysia',
+      heroSub1: 'Trusted wholesale supplier for printing shops.', heroSub2: 'Quality materials. Consistent supply. Competitive pricing.',
+      heroCta: 'Explore products',
+      s1: 'Years Experience', s2: 'Printing Shops', s3: 'Products', s4: 'Delivery', s4v: 'Nationwide',
+      prodKicker: 'Our products', prodTitle: 'Quality Materials for Every Need', viewDetails: 'View details', viewAll: 'View all products',
+      aboutKicker: 'About M1', aboutTitle: 'Your Trusted Partner in Printing Business',
+      aboutCopy1: 'M1 is a wholesale supplier of premium printing materials in Malaysia. We are committed to providing consistent quality, stable supply and the best value to support your business growth.',
+      learnMore: 'Learn more',
+      whyKicker: 'Why choose M1', whyTitle: 'The M1 Advantage',
+      why: [
+        { title: 'Premium Quality', copy: 'Carefully selected materials from reliable manufacturers.' },
+        { title: 'Stable Supply', copy: 'Large inventory and strong supply chain.' },
+        { title: 'Fast Delivery', copy: 'Nationwide delivery to keep your business running.' },
+        { title: 'Competitive Pricing', copy: 'Best wholesale pricing for printing professionals.' } ],
+      contactKicker: "Let's grow together", contactTitle: 'Contact Us',
+      contactCopy: 'Have questions or need a quotation? Our team is ready to help.',
+      hours: 'Mon - Sat: 9:00 AM - 6:00 PM', waBtn: 'WhatsApp us',
+      fCompany: 'Company Name', fName: 'Your Name', fPhone: 'Phone Number', fEmail: 'Email Address', fMsg: 'Message',
+      fSend: 'Send message', fSent: 'Sent — we will be in touch',
+      fCompanyCol: 'Company', fSupport: 'Support', follow: 'Follow us', rights: 'All rights reserved.'
+    },
+    bm: {
+      navProducts: 'Produk', navAbout: 'Tentang kami', navWhy: 'Kenapa pilih kami', navContact: 'Hubungi', navCta: 'Hubungi kami',
+      heroL1: 'Bahan cetakan', heroL2: 'nilai terbaik', heroL3: 'di Malaysia',
+      heroSub1: 'Pembekal borong dipercayai untuk kedai cetak.', heroSub2: 'Bahan berkualiti. Bekalan konsisten. Harga kompetitif.',
+      heroCta: 'Terokai produk',
+      s1: 'Tahun Pengalaman', s2: 'Kedai Cetak', s3: 'Produk', s4: 'Penghantaran', s4v: 'Seluruh Negara',
+      prodKicker: 'Produk kami', prodTitle: 'Bahan Berkualiti untuk Setiap Keperluan', viewDetails: 'Lihat butiran', viewAll: 'Lihat semua produk',
+      aboutKicker: 'Tentang M1', aboutTitle: 'Rakan Dipercayai dalam Perniagaan Percetakan',
+      aboutCopy1: 'M1 ialah pembekal borong bahan cetakan premium di Malaysia. Kami komited menyediakan kualiti konsisten, bekalan stabil dan nilai terbaik untuk menyokong pertumbuhan perniagaan anda.',
+      learnMore: 'Ketahui lanjut',
+      whyKicker: 'Kenapa pilih M1', whyTitle: 'Kelebihan M1',
+      why: [
+        { title: 'Kualiti Premium', copy: 'Bahan dipilih teliti daripada pengeluar yang dipercayai.' },
+        { title: 'Bekalan Stabil', copy: 'Inventori besar dan rantaian bekalan yang kukuh.' },
+        { title: 'Penghantaran Pantas', copy: 'Penghantaran seluruh negara untuk memastikan perniagaan anda berjalan.' },
+        { title: 'Harga Kompetitif', copy: 'Harga borong terbaik untuk profesional percetakan.' } ],
+      contactKicker: 'Mari berkembang bersama', contactTitle: 'Hubungi Kami',
+      contactCopy: 'Ada soalan atau perlukan sebut harga? Pasukan kami sedia membantu.',
+      hours: 'Isn - Sab: 9:00 AM - 6:00 PM', waBtn: 'WhatsApp kami',
+      fCompany: 'Nama Syarikat', fName: 'Nama Anda', fPhone: 'Nombor Telefon', fEmail: 'Alamat E-mel', fMsg: 'Mesej',
+      fSend: 'Hantar mesej', fSent: 'Dihantar — kami akan hubungi anda',
+      fCompanyCol: 'Syarikat', fSupport: 'Sokongan', follow: 'Ikuti kami', rights: 'Hak cipta terpelihara.'
+    }
+  };
+
+  static ICONS = {
+    badge: ['M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76', 'm9 12 2 2 4-4'],
+    store: ['M2 7 4.41 2.59A1 1 0 0 1 5.3 2h13.4a1 1 0 0 1 .89.59L22 7', 'M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7', 'M2 7h20', 'M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6'],
+    box: ['M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z', 'm3.3 7 8.7 5 8.7-5', 'M12 22V12'],
+    truck: ['M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2', 'M15 18H9', 'M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14', 'M17 18a2 2 0 1 0 4 0 2 2 0 0 0-4 0', 'M5 18a2 2 0 1 0 4 0 2 2 0 0 0-4 0'],
+    quality: ['M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z', 'm9 12 2 2 4-4'],
+    layers: ['m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z', 'm22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65', 'm22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65'],
+    tag: ['M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z', 'M7.5 8.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2']
+  };
+
+  componentDidMount() {
+    const els = [...document.querySelectorAll('[data-reveal]')];
+    if ((this.props.reveals ?? true) !== false && typeof IntersectionObserver !== 'undefined') {
+      const show = (el) => { el.style.opacity = '1'; el.style.transform = 'none'; };
+      els.forEach(el => {
+        el.style.opacity = '0'; el.style.transform = 'translateY(26px)';
+        el.style.transition = 'opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1)';
+      });
+      this._io = new IntersectionObserver(entries => {
+        this._ioAlive = true;
+        entries.forEach(e => {
+          if (e.isIntersecting) { show(e.target); this._io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      els.forEach(el => this._io.observe(el));
+      // fail-safe: if the observer never fires (or misses elements), force-reveal
+      setTimeout(() => { if (!this._ioAlive) els.forEach(show); }, 1200);
+      setTimeout(() => els.forEach(el => { if (getComputedStyle(el).opacity === '0' && el.getBoundingClientRect().top < innerHeight) show(el); }), 2500);
+    }
+    // count-up stats
+    const nums = [...document.querySelectorAll('[data-count]')];
+    this._cio = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        this._cio.unobserve(e.target);
+        const target = parseInt(e.target.getAttribute('data-count'), 10);
+        if (!target) return;
+        const suffix = e.target.getAttribute('data-suffix') || '';
+        const t0 = performance.now(), dur = 1400;
+        const step = (now) => {
+          const p = Math.min(1, (now - t0) / dur), ease = 1 - Math.pow(1 - p, 3);
+          e.target.textContent = Math.round(target * ease) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(el => this._cio.observe(el));
+  }
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+    if (this._cio) this._cio.disconnect();
+    clearInterval(this._timer);
+  }
+
+  icon(paths) {
+    return React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' },
+      paths.map((d, i) => React.createElement('path', { key: i, d })));
+  }
+
+  renderVals() {
+    const lang = this.state.lang ?? (this.props.defaultLang ?? 'en');
+    const t = Component.T[lang];
+    const wa = String(this.props.whatsapp ?? '+60 12-345 6789').replace(/[^0-9]/g, '');
+    const waHref = 'https://wa.me/' + wa;
+    const I = Component.ICONS;
+    const langBtn = (active) => ({
+      fontFamily: "'Nunito Sans',sans-serif", fontWeight: 800, fontSize: '12px',
+      padding: '4px', background: 'none', border: 0, cursor: 'pointer',
+      color: active ? '#fff' : '#71717a'
+    });
+    const tab = Component.TABS[this.state.cat];
+    const pool = tab.match ? Component.PRODUCTS.filter(p => p.cat === tab.match) : Component.PRODUCTS;
+    const products = pool.map(p => ({
+      name: p.name, spec: p.spec, slotId: 'v3-prod-' + Component.PRODUCTS.indexOf(p)
+    }));
+    const cats = Component.TABS.map((c, i) => {
+      const active = i === this.state.cat;
+      return {
+        label: c[lang],
+        select: () => this.setState(s => ({ cat: i, tick: s.tick + 1 })),
+        style: {
+          fontFamily: "'Nunito Sans',sans-serif", fontWeight: 700, fontSize: '13.5px', whiteSpace: 'nowrap',
+          padding: '9px 20px', borderRadius: '4px', cursor: 'pointer',
+          border: active ? '1px solid #161616' : '1px solid #d4d4d8',
+          background: active ? '#161616' : '#fff',
+          color: active ? '#fff' : '#52525b',
+          transition: 'background .25s ease, color .25s ease, border-color .25s ease'
+        }
+      };
+    });
+    const stats = [
+      { icon: this.icon(I.badge), value: '20+', target: 20, suffix: '+', label: t.s1 },
+      { icon: this.icon(I.store), value: '500+', target: 500, suffix: '+', label: t.s2 },
+      { icon: this.icon(I.box), value: '1000+', target: 1000, suffix: '+', label: t.s3 },
+      { icon: this.icon(I.truck), value: t.s4v, target: 0, suffix: '', label: t.s4 }
+    ];
+    const whyIcons = [I.quality, I.layers, I.truck, I.tag];
+    return {
+      t, waHref, cats, products, stats,
+      featAnim: { animation: (this.state.tick % 2 ? 'm3fadeA' : 'm3fadeB') + ' .6s ease both' },
+      whyRows: t.why.map((w, i) => ({ ...w, icon: this.icon(whyIcons[i]) })),
+      footCats: Component.TABS.slice(1).map(c => c[lang]),
+      enStyle: langBtn(lang === 'en'), bmStyle: langBtn(lang === 'bm'),
+      setEn: () => this.setState({ lang: 'en' }),
+      setBm: () => this.setState({ lang: 'bm' }),
+      sendLabel: this.state.sent ? t.fSent : t.fSend,
+      submit: (e) => { e.preventDefault(); this.setState({ sent: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

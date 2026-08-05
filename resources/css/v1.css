@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: 'Archivo', system-ui, sans-serif;
+    --font-heading: 'Archivo', system-ui, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+body {
+    margin: 0;
+    background: #f3f2f2;
+    color: #201e1d;
+    text-wrap: pretty;
+    font-family: 'Archivo', system-ui, sans-serif;
+}
+::selection {
+    background: color-mix(in srgb, #ec3013 30%, transparent);
+}
+
+@keyframes m1rise {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+.m1-rise {
+    animation: m1rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
