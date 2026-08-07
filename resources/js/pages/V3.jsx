@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { CATEGORIES } from '../data/paperCatalog';
 import Placeholder from '../components/Placeholder';
 import TypeText from '../components/TypeText';
 import TypeAccentLine from '../components/TypeAccentLine';
@@ -17,45 +18,22 @@ const KICKER_GRADIENT = 'linear-gradient(90deg, #71717a 0%, #71717a 42%, #161616
 const WHATSAPP = '+60 12-345 6789';
 const WA_HREF = 'https://wa.me/' + WHATSAPP.replace(/[^0-9]/g, '');
 
-const PRODUCT_IMAGES = {
-    0: '/images/v3/prod-0.webp',
-    1: '/images/v3/prod-1.webp',
-    2: '/images/v3/prod-2.webp',
-    3: '/images/v3/prod-3.webp',
-    4: '/images/v3/prod-4.webp',
-    5: '/images/v3/prod-5.webp',
-};
-
-const PRODUCTS = [
-    { cat: 'A4 Paper', name: 'Double A A4 Paper', spec: '70gsm / 80gsm' },
-    { cat: 'A4 Paper', name: 'PaperOne A4 Paper', spec: '75gsm / 80gsm' },
-    { cat: 'A4 Paper', name: 'IK Yellow A4 Paper', spec: '70gsm / 80gsm' },
-    { cat: 'A4 Paper', name: 'IK Plus A4 Paper', spec: '80gsm' },
-    { cat: 'Poster & Banner', name: 'Glossy Photo Paper', spec: '188gsm / 260gsm' },
-    { cat: 'Poster & Banner', name: 'Flexi Banner', spec: '440gsm / 510gsm' },
-    { cat: 'Poster & Banner', name: 'Backlit Film', spec: '215mic' },
-    { cat: 'Poster & Banner', name: 'Photo Satin Poster', spec: '200gsm' },
-    { cat: 'Sticker', name: 'Sticker Paper', spec: 'Glossy / Matte' },
-    { cat: 'Sticker', name: 'Mirrorkote Sticker', spec: 'A4 · 100 sheets' },
-    { cat: 'Sticker', name: 'Simili Sticker', spec: 'A4 · 100 sheets' },
-    { cat: 'Vinyl', name: 'Adhesive Vinyl', spec: 'Glossy / Matte' },
-    { cat: 'Vinyl', name: 'One-Way Vision', spec: '48" × 50m roll' },
-    { cat: 'Vinyl', name: 'Cutting Vinyl', spec: '12" / 24" roll' },
-    { cat: 'Ink & Consumables', name: 'Ink & Consumables', spec: 'Original & Compatible' },
-    { cat: 'Ink & Consumables', name: 'Eco-Solvent Ink CMYK', spec: '1L bottles' },
-    { cat: 'Ink & Consumables', name: 'Lamination Film', spec: 'Gloss / Matte rolls' },
-    { cat: 'Others', name: 'Foam Board', spec: '5mm / 10mm · 4×8 ft' },
-    { cat: 'Others', name: 'Roll-Up & X-Stand', spec: 'Display hardware' },
-];
+const PRODUCTS = CATEGORIES.flatMap((category) =>
+    category.items.map(([name, spec], index) => ({
+        cat: category.en,
+        name,
+        spec,
+        image: `/images/products/${category.imageFolder}/${String(index + 1).padStart(2, '0')}.png?v=logo-fixed-v2-4x3`,
+    })),
+);
 
 const TABS = [
     { en: 'All', bm: 'Semua', match: null },
-    { en: 'A4 Paper', bm: 'Kertas A4', match: 'A4 Paper' },
-    { en: 'Poster & Banner', bm: 'Poster & Banner', match: 'Poster & Banner' },
-    { en: 'Sticker', bm: 'Pelekat', match: 'Sticker' },
-    { en: 'Vinyl', bm: 'Vinil', match: 'Vinyl' },
-    { en: 'Ink & Consumables', bm: 'Dakwat & Bekalan', match: 'Ink & Consumables' },
-    { en: 'Others', bm: 'Lain-lain', match: 'Others' },
+    ...CATEGORIES.map((category) => ({
+        en: category.en,
+        bm: category.bm,
+        match: category.en,
+    })),
 ];
 
 const ICONS = {
@@ -185,13 +163,13 @@ export default function V3() {
     const tab = TABS[cat];
     const products = useMemo(() => {
         const pool = tab.match ? PRODUCTS.filter((p) => p.cat === tab.match) : PRODUCTS;
-        return pool.map((p) => ({ ...p, index: PRODUCTS.indexOf(p) }));
+        return pool;
     }, [tab]);
 
     const stats = [
         { icon: <Icon paths={ICONS.badge} />, target: 20, suffix: '+', label: t.s1 },
         { icon: <Icon paths={ICONS.store} />, target: 500, suffix: '+', label: t.s2 },
-        { icon: <Icon paths={ICONS.box} />, target: 1000, suffix: '+', label: t.s3 },
+        { icon: <Icon paths={ICONS.box} />, target: PRODUCTS.length, suffix: '', label: t.s3 },
         { icon: <Icon paths={ICONS.truck} />, target: 0, suffix: '', value: t.s4v, label: t.s4 },
     ];
     const whyIcons = [ICONS.quality, ICONS.layers, ICONS.truck, ICONS.tag];
@@ -202,7 +180,9 @@ export default function V3() {
         <div ref={scopeRef}>
             <section style={{ background: '#0b0b0c', color: '#fff' }}>
                 <nav className="mx-auto flex max-w-[1240px] items-center gap-6 px-5 py-5.5 md:gap-10 md:px-14">
-                    <span className="text-[26px] font-black tracking-tight">M1</span>
+                    <span className="inline-flex rounded bg-white px-2 py-1">
+                        <img src="/images/m-one-logo.png" alt="M One Material" className="h-9 w-auto" />
+                    </span>
                     <div className="ml-auto flex flex-wrap items-center gap-4 md:gap-8">
                         <a href="#products" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navProducts}</a>
                         <a href="#about" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navAbout}</a>
@@ -284,14 +264,10 @@ export default function V3() {
                         <div className="mt-8 grid gap-5.5" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(230px,1fr))' }}>
                             {products.map((p) => (
                                 <div key={p.name} className="flex flex-col overflow-hidden rounded-md bg-white transition-all hover:-translate-y-1 hover:shadow-[0_14px_34px_rgba(0,0,0,.1)]">
-                                    {PRODUCT_IMAGES[p.index] ? (
-                                        <img src={PRODUCT_IMAGES[p.index]} alt={p.name} className="aspect-[4/3] w-full object-cover" />
-                                    ) : (
-                                        <Placeholder label="Product photo" className="w-full" style={{ aspectRatio: '4/3' }} />
-                                    )}
+                                    <img src={p.image} alt={p.name} loading="lazy" className="aspect-[4/3] w-full bg-white object-contain" />
                                     <div className="flex flex-1 flex-col gap-1 border-t border-[#f0f0f1] px-5 pt-4.5 pb-5">
                                         <p className="m-0 text-[16px] leading-tight font-extrabold">{p.name}</p>
-                                        <p className="m-0 text-[13.5px] text-[#71717a]">{p.spec}</p>
+                                        {p.spec && <p className="m-0 text-[13.5px] text-[#71717a]">{p.spec}</p>}
                                         <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-3.5 inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.08em] text-[#161616] uppercase no-underline">
                                             {t.viewDetails}
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
@@ -406,7 +382,9 @@ export default function V3() {
             <footer style={{ background: '#0b0b0c', color: '#9b9b9f' }}>
                 <div className="mx-auto grid max-w-[1240px] gap-9 px-5 pt-13 pb-10 md:px-14" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))' }}>
                     <div>
-                        <span className="text-2xl font-black text-white">M1</span>
+                        <span className="inline-flex rounded bg-white px-2 py-1">
+                            <img src="/images/m-one-logo.png" alt="M One Material" className="h-11 w-auto" />
+                        </span>
                         <p className="mt-3.5 text-[13px] leading-[1.7]">© 2026 M1 Printing Materials.<br />{t.rights}</p>
                     </div>
                     <div>

@@ -79,7 +79,15 @@ export default function V1() {
 
     const t = T[lang];
     const products = useMemo(
-        () => CATEGORIES[cat].items.map(([name, spec], i) => ({ name, spec, id: `p-${cat}-${i}` })),
+        () => {
+            const category = CATEGORIES[cat];
+            return category.items.map(([name, spec], i) => ({
+                name,
+                spec,
+                image: `/images/products/${category.imageFolder}/${String(i + 1).padStart(2, '0')}.png?v=logo-fixed-v2-4x3`,
+                id: `p-${cat}-${i}`,
+            }));
+        },
         [cat],
     );
     const heroDelays = useMemo(() => typeDelays([t.heroL1, t.heroL2]), [t.heroL1, t.heroL2]);
@@ -88,9 +96,7 @@ export default function V1() {
     return (
         <div ref={scopeRef}>
             <nav className="sticky top-0 z-50 flex items-center gap-4 border-b-2 border-[#201e1d]/40 bg-[#f3f2f2] px-6 py-3 md:px-12">
-                <span className="mr-auto inline-flex items-center gap-2 font-extrabold text-lg">
-                    M1<span className="inline-block h-2.5 w-2.5" style={{ background: ACCENT }} />
-                </span>
+                <img src="/images/m-one-logo.png" alt="M One Material" className="mr-auto h-10 w-auto" />
                 <a href="#products" className="hidden text-sm hover:text-[#ec3013] sm:inline">{t.navProducts}</a>
                 <a href="#about" className="hidden text-sm hover:text-[#ec3013] sm:inline">{t.navAbout}</a>
                 <a href="#why" className="hidden text-sm hover:text-[#ec3013] sm:inline">{t.navWhy}</a>
@@ -140,13 +146,13 @@ export default function V1() {
                             </button>
                         ))}
                     </div>
-                    <div data-reveal className="mt-0.5 grid gap-0.5 border-2 border-t-0 border-[#201e1d]/40 bg-[#201e1d]/40" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(230px,1fr))' }}>
+                    <div data-reveal className="grid border-l-2 border-[#201e1d]/40" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(230px,1fr))' }}>
                         {products.map((p) => (
-                            <div key={p.id} className="flex flex-col gap-3.5 bg-[#f3f2f2] p-4 pb-5">
-                                <Placeholder label="Product photo" className="w-full aspect-[4/3] grayscale" />
+                            <div key={p.id} className="flex flex-col gap-3.5 border-r-2 border-b-2 border-[#201e1d]/40 bg-[#f3f2f2] p-4 pb-5">
+                                <img src={p.image} alt={p.name} loading="lazy" className="aspect-[4/3] w-full bg-white object-contain" />
                                 <div>
                                     <p className="m-0 text-[16px] leading-tight font-semibold">{p.name}</p>
-                                    <p className="mt-1.5 text-[13px] leading-snug" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>{p.spec}</p>
+                                    {p.spec && <p className="mt-1.5 text-[13px] leading-snug" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>{p.spec}</p>}
                                 </div>
                                 <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-auto text-[13px] font-semibold tracking-[0.08em] uppercase no-underline" style={{ color: ACCENT_700 }}>
                                     {t.enquire} &#8594;

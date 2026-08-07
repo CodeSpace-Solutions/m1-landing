@@ -38,7 +38,7 @@ const T = {
         heroL1: 'The best value.', heroL2: 'In Malaysia.',
         heroSub: 'M1 supplies the materials your printing shop runs on — copier paper, photo media, banner rolls, sticker stock and finishing — at wholesale prices, delivered nationwide.',
         heroBrowse: 'Browse products', heroWa: 'WhatsApp us', heroChip: 'Quality checked before delivery',
-        stat1: 'Printing shops supplied', stat2: 'Materials in stock', stat3: 'Delivery in Klang Valley',
+        stat1: 'Printing shops supplied', stat2: 'Products listed', stat3: 'Delivery in Klang Valley',
         prodKicker: 'Products', prodTitle: 'Everything your shop runs on', enquire: 'Enquire',
         aboutKicker: 'About us', aboutTitle: 'Built for printing shops',
         aboutCopy1: 'M1 is a materials supplier, not a middleman. We stock the paper, media and finishing your presses and large-format printers actually run — tested on the machines our customers use, warehoused in Malaysia, and delivered on a schedule you can plan a job around.',
@@ -65,7 +65,7 @@ const T = {
         heroL1: 'Nilai terbaik.', heroL2: 'Di Malaysia.',
         heroSub: 'M1 membekalkan bahan yang kedai cetak anda perlukan — kertas fotostat, media foto, gulungan banner, stok pelekat dan kemasan — pada harga borong, dihantar ke seluruh negara.',
         heroBrowse: 'Lihat produk', heroWa: 'WhatsApp kami', heroChip: 'Kualiti diperiksa sebelum penghantaran',
-        stat1: 'Kedai cetak dibekalkan', stat2: 'Bahan sedia dalam stok', stat3: 'Penghantaran Lembah Klang',
+        stat1: 'Kedai cetak dibekalkan', stat2: 'Produk disenaraikan', stat3: 'Penghantaran Lembah Klang',
         prodKicker: 'Produk', prodTitle: 'Semua yang kedai anda perlukan', enquire: 'Tanya',
         aboutKicker: 'Tentang kami', aboutTitle: 'Dibina untuk kedai cetak',
         aboutCopy1: 'M1 ialah pembekal bahan, bukan orang tengah. Kami menyimpan kertas, media dan kemasan yang benar-benar digunakan oleh mesin cetak anda — diuji, disimpan di Malaysia, dan dihantar mengikut jadual yang boleh anda rancang.',
@@ -97,7 +97,15 @@ export default function V2() {
 
     const t = T[lang];
     const products = useMemo(
-        () => CATEGORIES[cat].items.map(([name, spec], i) => ({ name, spec, id: `v2-p-${cat}-${i}` })),
+        () => {
+            const category = CATEGORIES[cat];
+            return category.items.map(([name, spec], i) => ({
+                name,
+                spec,
+                image: `/images/products/${category.imageFolder}/${String(i + 1).padStart(2, '0')}.png?v=logo-fixed-v2-4x3`,
+                id: `v2-p-${cat}-${i}`,
+            }));
+        },
         [cat],
     );
     const heroDelays = useMemo(() => typeDelays([t.heroL1, t.heroL2], 42, 180, 120), [t.heroL1, t.heroL2]);
@@ -107,9 +115,7 @@ export default function V2() {
         <div ref={scopeRef}>
             <nav className="sticky top-0 z-50 border-b border-[#e8edf6] bg-white/92 backdrop-blur-md">
                 <div className="mx-auto flex max-w-[1200px] items-center gap-4 px-5 py-3.5 md:gap-8 md:px-12">
-                    <span className="inline-flex items-center gap-2 text-[22px] font-extrabold tracking-tight">
-                        M1<span className="inline-block h-2 w-2 rounded-full" style={{ background: BLUE }} />
-                    </span>
+                    <img src="/images/m-one-logo.png" alt="M One Material" className="h-10 w-auto" />
                     <div className="ml-auto flex flex-wrap items-center gap-4 md:gap-7">
                         <a href="#products" className="hidden text-[14.5px] font-semibold text-[#3d4d68] no-underline hover:text-[#1d4ed8] sm:inline">{t.navProducts}</a>
                         <a href="#about" className="hidden text-[14.5px] font-semibold text-[#3d4d68] no-underline hover:text-[#1d4ed8] sm:inline">{t.navAbout}</a>
@@ -141,7 +147,7 @@ export default function V2() {
                             <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="whitespace-nowrap rounded-full border-[1.5px] border-[#dbe3f0] px-7 py-3.5 text-[15.5px] font-bold text-[#12203a] no-underline hover:border-[#1d4ed8] hover:text-[#1d4ed8]">{t.heroWa}</a>
                         </div>
                         <div className="m2-rise mt-11 flex flex-wrap gap-6 sm:gap-11" style={{ animationDelay: `${heroDoneSec + 0.16}s` }}>
-                            {[[500, '+', t.stat1], [60, '+', t.stat2], [24, 'h', t.stat3]].map(([target, suffix, l]) => (
+                            {[[500, '+', t.stat1], [49, '', t.stat2], [24, 'h', t.stat3]].map(([target, suffix, l]) => (
                                 <div key={l}>
                                     <p className="m-0 text-[26px] font-extrabold">
                                         <CountNumber target={target} suffix={suffix} from={BLUE} to="#12203a" delay={heroDoneSec + 0.16} />
@@ -191,10 +197,10 @@ export default function V2() {
                 <div data-reveal className="grid gap-5.5" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(240px,1fr))' }}>
                     {products.map((p) => (
                         <div key={p.id} className="flex flex-col overflow-hidden rounded-[18px] border border-[#e8edf6] bg-white transition-all hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(16,42,90,.12)]">
-                            <Placeholder label="Product photo" className="w-full" style={{ aspectRatio: '4/3' }} />
+                            <img src={p.image} alt={p.name} loading="lazy" className="aspect-[4/3] w-full bg-white object-contain" />
                             <div className="flex flex-1 flex-col gap-1.5 px-5 pt-4.5 pb-5">
                                 <p className="m-0 text-[15.5px] leading-tight font-bold">{p.name}</p>
-                                <p className="m-0 text-[13px] text-[#64748f]">{p.spec}</p>
+                                {p.spec && <p className="m-0 text-[13px] text-[#64748f]">{p.spec}</p>}
                                 <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-auto pt-2.5 text-[13.5px] font-bold no-underline hover:text-[#1741ad]" style={{ color: BLUE }}>{t.enquire} &#8594;</a>
                             </div>
                         </div>

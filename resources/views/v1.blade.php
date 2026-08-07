@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>M1 Supplies — Wholesale Printing Materials in Malaysia</title>
+    @viteReactRefresh
     @vite(['resources/js/v1.jsx'])
 </head>
 <body>
