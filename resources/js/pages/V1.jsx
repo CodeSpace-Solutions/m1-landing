@@ -84,7 +84,7 @@ export default function V1() {
             return category.items.map(([name, spec], i) => ({
                 name,
                 spec,
-                image: `/images/products/${category.imageFolder}/${String(i + 1).padStart(2, '0')}.png?v=logo-fixed-v2-4x3`,
+                image: `/images/products/${category.imageFolder}/${String(i + 1).padStart(2, '0')}.png?v=roadtax-update`,
                 id: `p-${cat}-${i}`,
             }));
         },
