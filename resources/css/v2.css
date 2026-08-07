@@ -41,5 +41,5 @@ h1, h2, h3, h4, h5, h6 {
     animation: m2float 5s ease-in-out infinite;
 }
 ::selection {
-    background: #dbe7ff;
+    background: color-mix(in srgb, #ec3013 30%, transparent);
 }
