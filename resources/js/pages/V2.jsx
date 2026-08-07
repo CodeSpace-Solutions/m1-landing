@@ -255,7 +255,7 @@ export default function V2() {
                         <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.chatKicker}</Kicker>
                         <h2 className="m-0 mt-3 text-[28px] font-extrabold tracking-tight sm:text-[42px]">{t.chatTitle}</h2>
                     </div>
-                    <div data-reveal className="mx-auto max-w-[920px]">
+                    <div data-reveal className="mx-auto max-w-[1280px]">
                         <HeroChat
                             key={lang}
                             src="/images/hero/hero2.png"
