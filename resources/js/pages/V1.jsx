@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
 import { CATEGORIES } from '../data/paperCatalog';
-import Placeholder from '../components/Placeholder';
 import TypeText from '../components/TypeText';
 import TypeAccentLine from '../components/TypeAccentLine';
 import Kicker from '../components/Kicker';
@@ -296,7 +295,7 @@ export default function V1() {
             </section>
 
             <div className="mx-auto max-w-[1600px] px-6 md:px-12">
-                <section id="contact" className="grid gap-14 py-16 md:py-24 lg:grid-cols-2" style={{ columnGap: 'clamp(32px,6vw,110px)' }}>
+                <section id="contact" className="grid items-end gap-14 py-16 md:py-24 lg:grid-cols-2" style={{ columnGap: 'clamp(32px,6vw,110px)' }}>
                     <div data-reveal>
                         <Kicker gradient={KICKER_GRADIENT} className="mb-3 block text-[13px] font-semibold tracking-[0.08em] uppercase">{t.contactKicker}</Kicker>
                         <h2 className="m-0 text-[28px] font-extrabold tracking-tight sm:text-[40px]">{t.contactTitle}</h2>
@@ -318,22 +317,32 @@ export default function V1() {
                         <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-8 inline-block whitespace-nowrap px-5 py-3 text-sm font-extrabold text-[#f3f2f2] no-underline" style={{ background: ACCENT }}>
                             {t.heroWa}
                         </a>
-                        <Placeholder label="Map screenshot" className="mt-9" style={{ aspectRatio: '16/7' }} />
+                        <div className="mt-9 overflow-hidden" style={{ aspectRatio: '16/7' }}>
+                            <video
+                                src="/video/HappyHorse-20260807-0001-1786071399113.mp4"
+                                className="h-full w-full object-cover"
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                aria-label="Warehouse location"
+                            />
+                        </div>
                     </div>
                     <form
                         data-reveal
                         onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-                        className="grid content-start gap-5"
+                        className="grid content-start gap-7 lg:self-end"
                     >
                         <Field label={t.fName} id="f-name" required />
                         <Field label={t.fShop} id="f-shop" />
                         <Field label={t.fPhoneEmail} id="f-mail" required />
                         <div>
-                            <label htmlFor="f-msg" className="mb-1.5 block text-xs" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>{t.fMsg}</label>
-                            <textarea id="f-msg" rows={6} className="w-full border border-[#201e1d]/40 bg-[#eae9e9] px-2.5 py-1.5 text-sm outline-none focus:border-[#ec3013]" />
+                            <label htmlFor="f-msg" className="mb-2.5 block text-xs" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>{t.fMsg}</label>
+                            <textarea id="f-msg" rows={7} className="w-full border border-[#201e1d]/40 bg-[#eae9e9] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
                         </div>
                         <div>
-                            <button type="submit" className="whitespace-nowrap px-5 py-3 text-sm font-extrabold text-[#f3f2f2]" style={{ background: ACCENT }}>
+                            <button type="submit" className="whitespace-nowrap px-6 py-3.5 text-sm font-extrabold text-[#f3f2f2]" style={{ background: ACCENT }}>
                                 {sent ? t.fSent : t.fSend}
                             </button>
                         </div>
@@ -353,8 +362,8 @@ export default function V1() {
 function Field({ label, id, required }) {
     return (
         <div>
-            <label htmlFor={id} className="mb-1.5 block text-xs" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>{label}</label>
-            <input id={id} type="text" required={required} className="w-full border border-[#201e1d]/40 bg-[#eae9e9] px-2.5 py-1.5 text-sm outline-none focus:border-[#ec3013]" />
+            <label htmlFor={id} className="mb-2.5 block text-xs" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>{label}</label>
+            <input id={id} type="text" required={required} className="w-full border border-[#201e1d]/40 bg-[#eae9e9] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
         </div>
     );
 }

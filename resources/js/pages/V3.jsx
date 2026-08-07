@@ -345,47 +345,66 @@ export default function V3() {
             </section>
 
             <section id="contact" className="border-t border-[#ececee] bg-white">
-                <div className="mx-auto grid max-w-[1600px] gap-11 px-5 py-18 pb-21 md:px-12 lg:grid-cols-2 lg:gap-18">
-                    <div data-reveal>
+                <div className="mx-auto max-w-[1600px] px-5 py-18 pb-21 md:px-12">
+                    <div data-reveal className="max-w-[640px]">
                         <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.contactKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.contactTitle}</h2>
-                        <p className="mt-4 mb-7 max-w-[44ch] text-[15px] leading-[1.8] text-[#52525b]">{t.contactCopy}</p>
-                        <div className="grid gap-4">
-                            <div className="flex items-center gap-3">
-                                <span className="inline-flex" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span>
-                                <span className="text-[14.5px] font-semibold">+60 12-345 6789</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <span className="inline-flex" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span>
-                                <span className="text-[14.5px] font-semibold">sales@m1.com.my</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <span className="inline-flex" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></span>
-                                <span className="text-[14.5px] font-semibold">{t.hours}</span>
-                            </div>
-                        </div>
-                        <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-6.5 py-3 text-xs font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
-                            {t.waBtn}
-                        </a>
+                        <p className="mt-4 max-w-[44ch] text-[15px] leading-[1.8] text-[#52525b]">{t.contactCopy}</p>
                     </div>
-                    <form
-                        data-reveal
-                        onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-                        className="grid content-start gap-3.5"
-                        style={{ gridTemplateColumns: '1fr 1fr' }}
-                    >
-                        <input type="text" placeholder={t.fCompany} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                        <input type="text" placeholder={t.fName} required className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                        <input type="text" placeholder={t.fPhone} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                        <input type="email" placeholder={t.fEmail} required className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                        <textarea placeholder={t.fMsg} rows={5} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" style={{ gridColumn: '1 / -1' }} />
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <button type="submit" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md px-7 py-3.5 text-xs font-extrabold tracking-[0.1em] text-white uppercase hover:opacity-90" style={{ background: ACCENT }}>
-                                {sent ? t.fSent : t.fSend}
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                            </button>
+
+                    <div data-reveal className="mt-10 grid items-stretch gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-12">
+                        <div className="min-h-[280px] overflow-hidden rounded-md border border-[#ececee] lg:min-h-full">
+                            <video
+                                src="/video/HappyHorse-20260807-0001-1786071399113.mp4"
+                                className="h-full w-full object-cover"
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                aria-label="Warehouse location"
+                            />
                         </div>
-                    </form>
+
+                        <div className="flex flex-col gap-7 rounded-md border border-[#ececee] bg-[#fafafa] p-6 md:p-8">
+                            <div className="grid gap-5 sm:grid-cols-3 sm:gap-4">
+                                <div className="flex items-start gap-3">
+                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span>
+                                    <span className="text-[14px] leading-snug font-semibold">+60 12-345 6789</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span>
+                                    <span className="text-[14px] leading-snug font-semibold break-all">sales@m1.com.my</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></span>
+                                    <span className="text-[14px] leading-snug font-semibold">{t.hours}</span>
+                                </div>
+                            </div>
+
+                            <div className="h-px w-full bg-[#e4e4e7]" />
+
+                            <form
+                                onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+                                className="grid flex-1 content-start gap-4"
+                                style={{ gridTemplateColumns: '1fr 1fr' }}
+                            >
+                                <input type="text" placeholder={t.fCompany} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
+                                <input type="text" placeholder={t.fName} required className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
+                                <input type="text" placeholder={t.fPhone} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
+                                <input type="email" placeholder={t.fEmail} required className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
+                                <textarea placeholder={t.fMsg} rows={5} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" style={{ gridColumn: '1 / -1' }} />
+                                <div className="flex flex-wrap items-center gap-3" style={{ gridColumn: '1 / -1' }}>
+                                    <button type="submit" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md px-7 py-3.5 text-xs font-extrabold tracking-[0.1em] text-white uppercase hover:opacity-90" style={{ background: ACCENT }}>
+                                        {sent ? t.fSent : t.fSend}
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                    </button>
+                                    <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-6 py-3 text-xs font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
+                                        {t.waBtn}
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </section>
 

@@ -1,12 +1,12 @@
 import { useMemo, useRef, useState } from 'react';
 import { CATEGORIES } from '../data/paperCatalog';
-import Placeholder from '../components/Placeholder';
 import TypeText from '../components/TypeText';
 import TypeAccentLine from '../components/TypeAccentLine';
 import Kicker from '../components/Kicker';
 import WordRoller from '../components/WordRoller';
 import MorphBadge from '../components/MorphBadge';
 import CountNumber from '../components/CountNumber';
+import HeroChat from '../components/HeroChat';
 import { typeDelays } from '../lib/typeDelays';
 import { useScrollReveal } from '../lib/useScrollReveal';
 
@@ -36,7 +36,16 @@ const T = {
         heroBadge: 'Wholesale printing materials · Malaysia',
         heroL1: 'The best value.', heroL2: 'In Malaysia.',
         heroSub: 'M1 supplies the materials your printing shop runs on — copier paper, photo media, banner rolls, sticker stock and finishing — at wholesale prices, delivered nationwide.',
-        heroBrowse: 'Browse products', heroWa: 'WhatsApp us', heroChip: 'Quality checked before delivery',
+        heroBrowse: 'Browse products', heroWa: 'WhatsApp us',
+        chatCustomer: 'Customer', chatSeller: 'M1 Supplies',
+        chatStatus: 'Online · usually replies in minutes',
+        chatKicker: 'Real enquiries', chatTitle: 'How shops talk to M1',
+        chat: [
+            { q: 'Got A4 80gsm for 50 reams?', a: 'Yes — RM 8.90/ream wholesale. Can deliver tomorrow.' },
+            { q: 'Do you stock 440gsm banner rolls?', a: '320gsm & 440gsm in stock. Same-day pickup in Puchong.' },
+            { q: 'Can you match this quote?', a: 'Send it over — we match or beat it. Standing offer.' },
+            { q: "What's the MOQ for sticker vinyl?", a: '1 roll. Bulk tiers kick in from 10 rolls.' },
+        ],
         stat1: 'Printing shops supplied', stat2: 'Products listed', stat3: 'Delivery in Klang Valley',
         prodKicker: 'Products', prodTitle: 'Everything your shop runs on', enquire: 'Enquire',
         aboutKicker: 'About us', aboutTitle: 'Built for printing shops',
@@ -63,7 +72,16 @@ const T = {
         heroBadge: 'Bahan cetakan borong · Malaysia',
         heroL1: 'Nilai terbaik.', heroL2: 'Di Malaysia.',
         heroSub: 'M1 membekalkan bahan yang kedai cetak anda perlukan — kertas fotostat, media foto, gulungan banner, stok pelekat dan kemasan — pada harga borong, dihantar ke seluruh negara.',
-        heroBrowse: 'Lihat produk', heroWa: 'WhatsApp kami', heroChip: 'Kualiti diperiksa sebelum penghantaran',
+        heroBrowse: 'Lihat produk', heroWa: 'WhatsApp kami',
+        chatCustomer: 'Pelanggan', chatSeller: 'M1 Supplies',
+        chatStatus: 'Dalam talian · biasanya balas dalam beberapa minit',
+        chatKicker: 'Pertanyaan sebenar', chatTitle: 'Cara kedai berhubung dengan M1',
+        chat: [
+            { q: 'Ada A4 80gsm untuk 50 rim?', a: 'Ada — RM 8.90/rim borong. Boleh hantar esok.' },
+            { q: 'Ada gulungan banner 440gsm?', a: '320gsm & 440gsm ada stok. Ambil hari sama di Puchong.' },
+            { q: 'Boleh padankan sebut harga ini?', a: 'Hantar — kami padan atau lebih rendah. Tawaran tetap.' },
+            { q: 'MOQ untuk vinyl pelekat?', a: '1 gulung. Harga pukal bermula dari 10 gulung.' },
+        ],
         stat1: 'Kedai cetak dibekalkan', stat2: 'Produk disenaraikan', stat3: 'Penghantaran Lembah Klang',
         prodKicker: 'Produk', prodTitle: 'Semua yang kedai anda perlukan', enquire: 'Tanya',
         aboutKicker: 'Tentang kami', aboutTitle: 'Dibina untuk kedai cetak',
@@ -163,12 +181,6 @@ export default function V2() {
                             className="h-auto w-full rounded-3xl object-cover object-center shadow-[0_24px_60px_rgba(174,24,0,.16)]"
                             style={{ aspectRatio: '16/10', maxHeight: 'min(72vh, 720px)' }}
                         />
-                        <div className="m2-float absolute -left-4.5 bottom-6 flex items-center gap-3 rounded-2xl bg-white px-4.5 py-3.5 shadow-[0_12px_32px_rgba(174,24,0,.14)]">
-                            <span className="inline-flex h-9.5 w-9.5 items-center justify-center rounded-[10px] bg-[#fde8e4]" style={{ color: ACCENT }}>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>
-                            </span>
-                            <span className="text-sm font-bold text-[#12203a]">{t.heroChip}</span>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -237,6 +249,28 @@ export default function V2() {
                 </p>
             </section>
 
+            <section className="bg-[#fff8f6]">
+                <div className="mx-auto max-w-[1600px] px-5 py-16 md:px-12 md:py-20">
+                    <div data-reveal className="mx-auto mb-10 max-w-[640px] text-center">
+                        <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.chatKicker}</Kicker>
+                        <h2 className="m-0 mt-3 text-[28px] font-extrabold tracking-tight sm:text-[42px]">{t.chatTitle}</h2>
+                    </div>
+                    <div data-reveal className="mx-auto max-w-[920px]">
+                        <HeroChat
+                            key={lang}
+                            src="/images/hero/hero2.png"
+                            alt="M One Material warehouse and printing equipment"
+                            pairs={t.chat}
+                            customerLabel={t.chatCustomer}
+                            sellerLabel={t.chatSeller}
+                            statusLabel={t.chatStatus}
+                            className="w-full"
+                            style={{ aspectRatio: '16/10', minHeight: '420px', maxHeight: 'min(70vh, 640px)' }}
+                        />
+                    </div>
+                </div>
+            </section>
+
             <section id="why" className="mx-auto max-w-[1600px] px-5 py-21 md:px-12">
                 <div data-reveal className="mx-auto mb-11 max-w-[640px] text-center">
                     <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.whyKicker}</Kicker>
@@ -272,7 +306,7 @@ export default function V2() {
                 </div>
             </section>
 
-            <section id="contact" className="mx-auto grid max-w-[1600px] gap-12 px-5 py-21 pb-18 md:px-12 lg:grid-cols-2 lg:gap-22">
+            <section id="contact" className="mx-auto grid max-w-[1600px] items-end gap-12 px-5 py-21 pb-18 md:px-12 lg:grid-cols-2 lg:gap-22">
                 <div data-reveal>
                     <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.contactKicker}</Kicker>
                     <h2 className="m-0 mt-3 text-[26px] font-extrabold tracking-tight sm:text-[38px]">{t.contactTitle}</h2>
@@ -285,22 +319,32 @@ export default function V2() {
                     <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-7 inline-block whitespace-nowrap rounded-full bg-[#22c05c] px-6.5 py-3.5 text-[15px] font-bold text-white no-underline shadow-[0_8px_22px_rgba(34,192,92,.3)] hover:bg-[#1ba550]">
                         {t.heroWa}
                     </a>
-                    <Placeholder label="Map screenshot" className="mt-8 rounded-[18px] border border-[#efe8e6]" style={{ aspectRatio: '16/7' }} />
+                    <div className="mt-8 overflow-hidden rounded-[18px] border border-[#efe8e6]" style={{ aspectRatio: '16/7' }}>
+                        <video
+                            src="/video/HappyHorse-20260807-0001-1786071399113.mp4"
+                            className="h-full w-full object-cover"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            aria-label="Warehouse location"
+                        />
+                    </div>
                 </div>
                 <form
                     data-reveal
                     onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-                    className="grid h-fit content-start gap-4.5 rounded-3xl border border-[#efe8e6] bg-white p-7 shadow-[0_18px_48px_rgba(174,24,0,.08)] md:p-10"
+                    className="grid h-fit content-start gap-3.5 self-end rounded-3xl border border-[#efe8e6] bg-white p-6 shadow-[0_18px_48px_rgba(174,24,0,.08)] md:gap-4 md:p-8"
                 >
-                    <h3 className="m-0 mb-1 text-xl font-bold">{t.formTitle}</h3>
+                    <h3 className="m-0 text-lg font-bold">{t.formTitle}</h3>
                     <V2Field label={t.fName} id="v2-name" required />
                     <V2Field label={t.fShop} id="v2-shop" />
                     <V2Field label={t.fPhoneEmail} id="v2-mail" required />
                     <div className="grid gap-1.5">
-                        <label htmlFor="v2-msg" className="text-[13.5px] font-bold text-[#3d4d68]">{t.fMsg}</label>
-                        <textarea id="v2-msg" rows={5} className="rounded-xl border-[1.5px] border-[#eadedb] bg-[#fbfcfe] px-4 py-3 text-[15px] outline-none focus:border-[#ec3013] focus:bg-white" />
+                        <label htmlFor="v2-msg" className="text-[13px] font-bold text-[#3d4d68]">{t.fMsg}</label>
+                        <textarea id="v2-msg" rows={3} className="rounded-xl border-[1.5px] border-[#eadedb] bg-[#fbfcfe] px-4 py-2.5 text-[15px] outline-none focus:border-[#ec3013] focus:bg-white" />
                     </div>
-                    <button type="submit" className="whitespace-nowrap rounded-full px-7 py-3.5 text-[15.5px] font-bold text-white shadow-[0_8px_24px_rgba(236,48,19,.28)] hover:bg-[#ae1800]" style={{ background: ACCENT }}>
+                    <button type="submit" className="whitespace-nowrap rounded-full px-7 py-3 text-[15px] font-bold text-white shadow-[0_8px_24px_rgba(236,48,19,.28)] hover:bg-[#ae1800]" style={{ background: ACCENT }}>
                         {sent ? t.fSent : t.fSend}
                     </button>
                 </form>
@@ -333,8 +377,8 @@ function ContactRow({ label, value, paths }) {
 function V2Field({ label, id, required }) {
     return (
         <div className="grid gap-1.5">
-            <label htmlFor={id} className="text-[13.5px] font-bold text-[#3d4d68]">{label}</label>
-            <input id={id} type="text" required={required} className="rounded-xl border-[1.5px] border-[#eadedb] bg-[#fbfcfe] px-4 py-3 text-[15px] outline-none focus:border-[#ec3013] focus:bg-white" />
+            <label htmlFor={id} className="text-[13px] font-bold text-[#3d4d68]">{label}</label>
+            <input id={id} type="text" required={required} className="rounded-xl border-[1.5px] border-[#eadedb] bg-[#fbfcfe] px-4 py-2.5 text-[15px] outline-none focus:border-[#ec3013] focus:bg-white" />
         </div>
     );
 }
