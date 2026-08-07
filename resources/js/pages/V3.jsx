@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CATEGORIES } from '../data/paperCatalog';
-import Placeholder from '../components/Placeholder';
 import TypeText from '../components/TypeText';
 import TypeAccentLine from '../components/TypeAccentLine';
 import Kicker from '../components/Kicker';
@@ -13,7 +12,8 @@ import { useScrollReveal } from '../lib/useScrollReveal';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const KICKER_GRADIENT = 'linear-gradient(90deg, #71717a 0%, #71717a 42%, #161616 50%, #71717a 58%, #71717a 100%)';
+const ACCENT = '#ec3013';
+const KICKER_GRADIENT = 'linear-gradient(90deg, #ec3013 0%, #ec3013 42%, #ff8a70 50%, #ec3013 58%, #ec3013 100%)';
 
 const WHATSAPP = '+60 12-345 6789';
 const WA_HREF = 'https://wa.me/' + WHATSAPP.replace(/[^0-9]/g, '');
@@ -179,29 +179,41 @@ export default function V3() {
     return (
         <div ref={scopeRef}>
             <section style={{ background: '#0b0b0c', color: '#fff' }}>
-                <nav className="mx-auto flex max-w-[1240px] items-center gap-6 px-5 py-5.5 md:gap-10 md:px-14">
+                <nav className="mx-auto flex max-w-[1600px] items-center gap-6 px-5 py-5.5 md:gap-10 md:px-12">
                     <span className="inline-flex rounded bg-white px-2 py-1">
                         <img src="/images/m-one-logo.png" alt="M One Material" className="h-9 w-auto" />
                     </span>
                     <div className="ml-auto flex flex-wrap items-center gap-4 md:gap-8">
-                        <a href="#products" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navProducts}</a>
-                        <a href="#about" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navAbout}</a>
-                        <a href="#why" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navWhy}</a>
-                        <a href="#contact" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-white sm:inline">{t.navContact}</a>
+                        <a href="#products" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navProducts}</a>
+                        <a href="#about" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navAbout}</a>
+                        <a href="#why" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navWhy}</a>
+                        <a href="#contact" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navContact}</a>
                         <span className="inline-flex items-center gap-0.5">
-                            <button type="button" onClick={() => setLang('en')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'en' ? '#fff' : '#71717a' }}>EN</button>
+                            <button type="button" onClick={() => setLang('en')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'en' ? ACCENT : '#71717a' }}>EN</button>
                             <span className="text-xs text-[#52525b]">/</span>
-                            <button type="button" onClick={() => setLang('bm')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'bm' ? '#fff' : '#71717a' }}>BM</button>
+                            <button type="button" onClick={() => setLang('bm')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'bm' ? ACCENT : '#71717a' }}>BM</button>
                         </span>
-                        <a href="#contact" className="whitespace-nowrap rounded-full bg-white px-6 py-3 text-[12.5px] font-extrabold tracking-[0.08em] text-[#0b0b0c] uppercase no-underline hover:bg-[#d4d4d8]">{t.navCta}</a>
+                        <a href="#contact" className="whitespace-nowrap rounded-full px-6 py-3 text-[12.5px] font-extrabold tracking-[0.08em] text-white uppercase no-underline hover:opacity-90" style={{ background: ACCENT }}>{t.navCta}</a>
                     </div>
                 </nav>
 
-                <div className="mx-auto grid max-w-[1240px] items-center gap-10 px-5 pt-10 md:gap-16 md:px-14 md:pt-22 lg:grid-cols-2">
-                    <div key={lang} className="pb-8 md:pb-16">
-                        <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[58px]">
-                            <span className="block"><TypeText text={t.heroL1} delay={heroDelays[0]} speed={40} /></span>
-                            <span className="block"><TypeText text={t.heroL2} delay={heroDelays[1]} speed={40} /></span>
+                <div className="mx-auto grid max-w-[1600px] items-stretch gap-8 px-5 pt-8 md:gap-12 md:px-12 md:pt-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.3fr)]">
+                    <div key={lang} className="flex flex-col justify-center pb-8 md:pb-14">
+                        <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[54px]">
+                            <span className="block" style={lang === 'en' ? { color: ACCENT } : undefined}>
+                                {lang === 'en' ? (
+                                    <TypeAccentLine text={t.heroL1} delay={heroDelays[0]} speed={40} accent={ACCENT} from="#9b9b9f" />
+                                ) : (
+                                    <TypeText text={t.heroL1} delay={heroDelays[0]} speed={40} />
+                                )}
+                            </span>
+                            <span className="block" style={lang === 'bm' ? { color: ACCENT } : undefined}>
+                                {lang === 'bm' ? (
+                                    <TypeAccentLine text={t.heroL2} delay={heroDelays[1]} speed={40} accent={ACCENT} from="#9b9b9f" />
+                                ) : (
+                                    <TypeText text={t.heroL2} delay={heroDelays[1]} speed={40} />
+                                )}
+                            </span>
                             <span className="block">
                                 <TypeAccentLine
                                     text={t.heroL3}
@@ -215,29 +227,27 @@ export default function V3() {
                         </h1>
                         <p className="m3-rise mt-6.5 max-w-[46ch] text-[16px] leading-[1.75] text-[#b9b9bf]" style={{ animationDelay: `${heroDoneSec}s` }}>{t.heroSub1}<br />{t.heroSub2}</p>
                         <div className="m3-rise mt-8" style={{ animationDelay: `${heroDoneSec + 0.1}s` }}>
-                            <a href="#products" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md bg-white px-7.5 py-3.5 text-[12.5px] font-extrabold tracking-[0.1em] text-[#0b0b0c] uppercase no-underline hover:bg-[#d4d4d8]">
+                            <a href="#products" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md bg-[#ec3013] px-7.5 py-3.5 text-[12.5px] font-extrabold tracking-[0.1em] text-white uppercase no-underline hover:bg-[#ae1800]">
                                 {t.heroCta}
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </a>
                         </div>
                     </div>
-                    <div className="m3-rise relative min-h-[320px] self-stretch" style={{ animationDelay: '.2s' }}>
-                        <div className="absolute inset-0 grayscale">
-                            <img src="/images/v3/hero.webp" alt="Paper rolls" className="h-full w-full object-cover" />
-                        </div>
-                        <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 45%),linear-gradient(0deg,rgba(11,11,12,.55) 0%,rgba(11,11,12,0) 35%)' }} />
+                    <div className="m3-rise relative min-h-[420px] overflow-hidden md:min-h-[560px] lg:min-h-[min(72vh,720px)]" style={{ animationDelay: '.2s' }}>
+                        <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-center" />
+                        <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 28%),linear-gradient(0deg,rgba(11,11,12,.4) 0%,rgba(11,11,12,0) 28%)' }} />
                     </div>
                 </div>
 
                 <div className="border-t border-[#232326]">
-                    <div className="mx-auto grid max-w-[1240px] gap-6 px-5 py-7 md:px-14" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))' }}>
+                    <div className="mx-auto grid max-w-[1600px] gap-6 px-5 py-7 md:px-12" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))' }}>
                         {stats.map((s) => <CountStat key={s.label} {...s} />)}
                     </div>
                 </div>
             </section>
 
             <section id="products" style={{ background: '#fafafa' }}>
-                <div className="mx-auto max-w-[1240px] px-5 py-18 pb-21 md:px-14">
+                <div className="mx-auto max-w-[1600px] px-5 py-18 pb-21 md:px-12">
                     <div data-reveal>
                         <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.prodKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.prodTitle}</h2>
@@ -249,10 +259,10 @@ export default function V3() {
                                 type="button"
                                 role="tab"
                                 onClick={() => { setCat(i); setTick((n) => n + 1); }}
-                                className="cursor-pointer rounded whitespace-nowrap px-5 py-2.5 text-[13.5px] font-bold transition-colors hover:border-[#161616] hover:text-[#161616]"
+                                className="cursor-pointer rounded whitespace-nowrap px-5 py-2.5 text-[13.5px] font-bold transition-colors"
                                 style={{
-                                    border: i === cat ? '1px solid #161616' : '1px solid #d4d4d8',
-                                    background: i === cat ? '#161616' : '#fff',
+                                    border: i === cat ? `1px solid ${ACCENT}` : '1px solid #d4d4d8',
+                                    background: i === cat ? ACCENT : '#fff',
                                     color: i === cat ? '#fff' : '#52525b',
                                 }}
                             >
@@ -268,7 +278,7 @@ export default function V3() {
                                     <div className="flex flex-1 flex-col gap-1 border-t border-[#f0f0f1] px-5 pt-4.5 pb-5">
                                         <p className="m-0 text-[16px] leading-tight font-extrabold">{p.name}</p>
                                         {p.spec && <p className="m-0 text-[13.5px] text-[#71717a]">{p.spec}</p>}
-                                        <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-3.5 inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.08em] text-[#161616] uppercase no-underline">
+                                        <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-3.5 inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.08em] uppercase no-underline hover:opacity-80" style={{ color: ACCENT }}>
                                             {t.viewDetails}
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                                         </a>
@@ -282,19 +292,19 @@ export default function V3() {
 
             <section id="about" className="bg-white">
                 <div className="grid items-stretch" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))' }}>
-                    <div data-reveal className="ml-auto max-w-[600px] self-center px-5 py-14 md:px-14 md:py-22">
+                    <div data-reveal className="ml-auto max-w-[600px] self-center px-5 py-14 md:px-12 md:py-22">
                         <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.aboutKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] leading-tight font-black tracking-tight sm:text-[38px]">{t.aboutTitle}</h2>
                         <p className="mt-4.5 max-w-[48ch] text-[15px] leading-[1.8] text-[#52525b]">{t.aboutCopy1}</p>
                         <div className="mt-6.5">
-                            <a href="#why" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#161616] px-6.5 py-3 text-xs font-extrabold tracking-[0.1em] text-[#161616] uppercase no-underline hover:bg-[#161616] hover:text-white">
+                            <a href="#why" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-6.5 py-3 text-xs font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
                                 {t.learnMore}
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </a>
                         </div>
                     </div>
                     <div className="relative min-h-[340px]">
-                        <Placeholder label="Warehouse photograph" className="absolute inset-0 h-full w-full grayscale" />
+                        <img src="/images/about-us/aboutUs.png" alt="M One Material warehouse" className="absolute inset-0 h-full w-full object-cover" />
                         <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 40%)' }} />
                     </div>
                 </div>
@@ -303,12 +313,12 @@ export default function V3() {
             <section className="border-t border-[#ececee] bg-white py-12 text-center md:py-16">
                 <p className="m-0 text-[22px] leading-snug font-black tracking-tight uppercase sm:text-[30px]">
                     {t.deliverPrefix}{' '}
-                    <WordRoller words={t.deliverWords} className="min-w-[7ch]" itemClassName="text-left" />
+                    <WordRoller words={t.deliverWords} className="min-w-[7ch] text-[#ec3013]" itemClassName="text-left text-[#ec3013]" style={{ color: ACCENT }} />
                 </p>
             </section>
 
             <section id="why" className="border-t border-[#ececee]" style={{ background: '#fafafa' }}>
-                <div className="mx-auto max-w-[1240px] px-5 py-18 pb-21 md:px-14">
+                <div className="mx-auto max-w-[1600px] px-5 py-18 pb-21 md:px-12">
                     <div data-reveal>
                         <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.whyKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.whyTitle}</h2>
@@ -316,7 +326,7 @@ export default function V3() {
                     <div className="mt-11 grid gap-8 sm:gap-11" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))' }}>
                         {t.why.map((w, i) => (
                             <div key={w.title} data-reveal className="flex items-start gap-4">
-                                <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border-[1.5px] border-[#d4d4d8] bg-white text-[#161616]">
+                                <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border-[1.5px] border-[#f5c4bb] bg-[#fde8e4]" style={{ color: ACCENT }}>
                                     <Icon paths={whyIcons[i]} />
                                 </span>
                                 <div>
@@ -324,7 +334,7 @@ export default function V3() {
                                     <p className="mt-2 text-sm leading-[1.7] text-[#52525b]">{w.copy}</p>
                                     {i === 3 && (
                                         <p className="mt-2 text-sm font-bold">
-                                            <MorphBadge question={t.morphQ} answer={t.morphA} />
+                                            <MorphBadge question={t.morphQ} answer={t.morphA} gold={ACCENT} />
                                         </p>
                                     )}
                                 </div>
@@ -335,52 +345,71 @@ export default function V3() {
             </section>
 
             <section id="contact" className="border-t border-[#ececee] bg-white">
-                <div className="mx-auto grid max-w-[1240px] gap-11 px-5 py-18 pb-21 md:px-14 lg:grid-cols-2 lg:gap-18">
-                    <div data-reveal>
+                <div className="mx-auto max-w-[1600px] px-5 py-18 pb-21 md:px-12">
+                    <div data-reveal className="max-w-[640px]">
                         <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.contactKicker}</Kicker>
                         <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.contactTitle}</h2>
-                        <p className="mt-4 mb-7 max-w-[44ch] text-[15px] leading-[1.8] text-[#52525b]">{t.contactCopy}</p>
-                        <div className="grid gap-4">
-                            <div className="flex items-center gap-3">
-                                <span className="inline-flex text-[#161616]"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span>
-                                <span className="text-[14.5px] font-semibold">+60 12-345 6789</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <span className="inline-flex text-[#161616]"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span>
-                                <span className="text-[14.5px] font-semibold">sales@m1.com.my</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <span className="inline-flex text-[#161616]"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></span>
-                                <span className="text-[14.5px] font-semibold">{t.hours}</span>
-                            </div>
-                        </div>
-                        <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#161616] px-6.5 py-3 text-xs font-extrabold tracking-[0.1em] text-[#161616] uppercase no-underline hover:bg-[#161616] hover:text-white">
-                            {t.waBtn}
-                        </a>
+                        <p className="mt-4 max-w-[44ch] text-[15px] leading-[1.8] text-[#52525b]">{t.contactCopy}</p>
                     </div>
-                    <form
-                        data-reveal
-                        onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-                        className="grid content-start gap-3.5"
-                        style={{ gridTemplateColumns: '1fr 1fr' }}
-                    >
-                        <input type="text" placeholder={t.fCompany} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" />
-                        <input type="text" placeholder={t.fName} required className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" />
-                        <input type="text" placeholder={t.fPhone} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" />
-                        <input type="email" placeholder={t.fEmail} required className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" />
-                        <textarea placeholder={t.fMsg} rows={5} className="rounded-md border border-[#d4d4d8] px-4 py-3.5 text-sm outline-none focus:border-[#161616]" style={{ gridColumn: '1 / -1' }} />
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <button type="submit" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md bg-[#161616] px-7 py-3.5 text-xs font-extrabold tracking-[0.1em] text-white uppercase hover:bg-[#3f3f46]">
-                                {sent ? t.fSent : t.fSend}
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                            </button>
+
+                    <div data-reveal className="mt-10 grid items-stretch gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-12">
+                        <div className="min-h-[280px] overflow-hidden rounded-md border border-[#ececee] lg:min-h-full">
+                            <video
+                                src="/video/HappyHorse-20260807-0001-1786071399113.mp4"
+                                className="h-full w-full object-cover"
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                aria-label="Warehouse location"
+                            />
                         </div>
-                    </form>
+
+                        <div className="flex flex-col gap-7 rounded-md border border-[#ececee] bg-[#fafafa] p-6 md:p-8">
+                            <div className="grid gap-5 sm:grid-cols-3 sm:gap-4">
+                                <div className="flex items-start gap-3">
+                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span>
+                                    <span className="text-[14px] leading-snug font-semibold">+60 12-345 6789</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span>
+                                    <span className="text-[14px] leading-snug font-semibold break-all">sales@m1.com.my</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></span>
+                                    <span className="text-[14px] leading-snug font-semibold">{t.hours}</span>
+                                </div>
+                            </div>
+
+                            <div className="h-px w-full bg-[#e4e4e7]" />
+
+                            <form
+                                onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+                                className="grid flex-1 content-start gap-4"
+                                style={{ gridTemplateColumns: '1fr 1fr' }}
+                            >
+                                <input type="text" placeholder={t.fCompany} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
+                                <input type="text" placeholder={t.fName} required className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
+                                <input type="text" placeholder={t.fPhone} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
+                                <input type="email" placeholder={t.fEmail} required className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
+                                <textarea placeholder={t.fMsg} rows={5} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" style={{ gridColumn: '1 / -1' }} />
+                                <div className="flex flex-wrap items-center gap-3" style={{ gridColumn: '1 / -1' }}>
+                                    <button type="submit" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md px-7 py-3.5 text-xs font-extrabold tracking-[0.1em] text-white uppercase hover:opacity-90" style={{ background: ACCENT }}>
+                                        {sent ? t.fSent : t.fSend}
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                    </button>
+                                    <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-6 py-3 text-xs font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
+                                        {t.waBtn}
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <footer style={{ background: '#0b0b0c', color: '#9b9b9f' }}>
-                <div className="mx-auto grid max-w-[1240px] gap-9 px-5 pt-13 pb-10 md:px-14" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))' }}>
+                <div className="mx-auto grid max-w-[1600px] gap-9 px-5 pt-13 pb-10 md:px-12" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))' }}>
                     <div>
                         <span className="inline-flex rounded bg-white px-2 py-1">
                             <img src="/images/m-one-logo.png" alt="M One Material" className="h-11 w-auto" />
