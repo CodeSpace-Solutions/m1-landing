@@ -23,7 +23,7 @@ const PRODUCTS = CATEGORIES.flatMap((category) =>
         cat: category.en,
         name,
         spec,
-        image: `/images/products/${category.imageFolder}/${String(index + 1).padStart(2, '0')}.png?v=roadtax-update`,
+        image: `/images/products/${category.imageFolder}/${String(index + 1).padStart(2, '0')}.png?v=cross-base-update`,
     })),
 );
 
