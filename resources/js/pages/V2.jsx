@@ -131,7 +131,7 @@ export default function V2() {
         <div ref={scopeRef}>
             <nav className="sticky top-0 z-50 border-b border-[#efe8e6] bg-white/92 backdrop-blur-md">
                 <div className="mx-auto flex max-w-[1600px] items-center gap-4 px-5 py-3.5 md:gap-8 md:px-12">
-                    <img src="/images/m-one-logo.png" alt="M One Material" className="h-10 w-auto" />
+                    <img src="/images/m-one-logo.png" alt="M One Material" className="h-12 w-auto md:h-14" />
                     <div className="ml-auto flex flex-wrap items-center gap-4 md:gap-7">
                         <a href="#products" className="hidden text-[14.5px] font-semibold text-[#3d4d68] no-underline hover:text-[#ec3013] sm:inline">{t.navProducts}</a>
                         <a href="#about" className="hidden text-[14.5px] font-semibold text-[#3d4d68] no-underline hover:text-[#ec3013] sm:inline">{t.navAbout}</a>

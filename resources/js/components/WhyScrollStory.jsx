@@ -235,8 +235,16 @@ export default function WhyScrollStory({
     );
     const giantFrom = Math.max(2, Math.min(99, Math.round(countFrom)));
     const giantDigits = String(giantFrom).length;
-    const giantFont = giantDigits >= 2 ? 'clamp(42px, 11.5vw, 160px)' : 'clamp(48px, 15vw, 200px)';
-    const giantStrokeH = giantDigits >= 2 ? 'clamp(42px, 11.5vw, 160px)' : '15vw';
+    // Bigger + wider finale type (mid, up, and bottom clones share these)
+    const giantFont = giantDigits >= 2
+        ? 'clamp(56px, 16vw, 220px)'
+        : 'clamp(64px, 20vw, 280px)';
+    const giantStrokeH = giantDigits >= 2
+        ? 'clamp(56px, 16vw, 220px)'
+        : 'clamp(64px, 20vw, 280px)';
+    const giantTracking = giantDigits >= 2 ? '0.04em' : '0.06em';
+    const giantSubFont = 'clamp(16px, 3.4vw, 48px)';
+    const giantSubTracking = '0.55em';
 
     const rollerBlock = (
         <div style={{ position: 'relative' }}>
@@ -514,14 +522,15 @@ export default function WhyScrollStory({
                             placeItems: 'center',
                             fontFamily: "'Anton', sans-serif",
                             fontSize: giantFont,
+                            letterSpacing: giantTracking,
                             lineHeight: 1,
                             color: 'transparent',
-                            WebkitTextStroke: '2px rgba(247,242,238,0.85)',
+                            WebkitTextStroke: '2.5px rgba(247,242,238,0.85)',
                             whiteSpace: 'nowrap',
                             willChange: 'transform',
                         }}
                     >
-                        <span style={{ whiteSpace: 'nowrap' }}>
+                        <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
                             NO. <span data-no-digit>{giantFrom}</span>
                         </span>
                     </div>
@@ -537,30 +546,41 @@ export default function WhyScrollStory({
                             placeItems: 'center',
                             fontFamily: "'Anton', sans-serif",
                             fontSize: giantFont,
+                            letterSpacing: giantTracking,
                             lineHeight: 1,
                             color: 'transparent',
-                            WebkitTextStroke: '2px rgba(236,48,19,0.9)',
+                            WebkitTextStroke: '2.5px rgba(236,48,19,0.9)',
                             whiteSpace: 'nowrap',
                             willChange: 'transform',
                         }}
                     >
-                        <span style={{ whiteSpace: 'nowrap' }}>
+                        <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
                             NO. <span data-no-digit>{giantFrom}</span>
                         </span>
                     </div>
                     <div data-giant-mid style={{ position: 'relative', textAlign: 'center', willChange: 'transform' }}>
-                        <div style={{ fontFamily: "'Anton', sans-serif", fontSize: giantFont, lineHeight: 1, color: '#ec3013', whiteSpace: 'nowrap' }}>
+                        <div
+                            style={{
+                                fontFamily: "'Anton', sans-serif",
+                                fontSize: giantFont,
+                                letterSpacing: giantTracking,
+                                lineHeight: 1,
+                                color: '#ec3013',
+                                whiteSpace: 'nowrap',
+                            }}
+                        >
                             NO. <span data-no-digit>{giantFrom}</span>
                         </div>
                         <div
                             style={{
                                 fontFamily: "'Space Grotesk', sans-serif",
-                                fontSize: 'clamp(12px, 2.6vw, 36px)',
+                                fontSize: giantSubFont,
                                 fontWeight: 700,
-                                letterSpacing: '0.42em',
+                                letterSpacing: giantSubTracking,
                                 color: '#f7f2ee',
                                 whiteSpace: 'nowrap',
-                                marginTop: '1.2vw',
+                                marginTop: '1.4vw',
+                                paddingLeft: giantSubTracking,
                             }}
                         >
                             {copy.inMalaysia}

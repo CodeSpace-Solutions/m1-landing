@@ -123,7 +123,7 @@ export default function V1() {
             <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0b0b0c]">
                 <div className="mx-auto flex max-w-[1600px] items-center gap-4 px-6 py-3 md:px-12">
                     <span className="mr-auto inline-flex rounded bg-white px-2 py-1">
-                        <img src="/images/m-one-logo.png" alt="M One Material" className="h-9 w-auto" />
+                        <img src="/images/m-one-logo.png" alt="M One Material" className="h-12 w-auto md:h-14" />
                     </span>
                     <a href="#products" className="hidden text-sm text-[#d4d4d8] hover:text-[#ec3013] sm:inline">{t.navProducts}</a>
                     <a href="#about" className="hidden text-sm text-[#d4d4d8] hover:text-[#ec3013] sm:inline">{t.navAbout}</a>

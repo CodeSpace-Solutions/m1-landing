@@ -239,7 +239,7 @@ export default function V3() {
             <nav className="border-b border-[#ececee] bg-white">
                 <div className="mx-auto flex max-w-[1600px] items-center gap-6 px-5 py-5.5 md:gap-10 md:px-12">
                     <span className="inline-flex">
-                        <img src="/images/m-one-logo.png" alt="M One Material" className="h-9 w-auto" />
+                        <img src="/images/m-one-logo.png" alt="M One Material" className="h-12 w-auto md:h-14" />
                     </span>
                     <div className="ml-auto flex flex-wrap items-center gap-4 md:gap-8">
                         <a href="#products" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navProducts}</a>
@@ -277,15 +277,8 @@ export default function V3() {
                                     <TypeText text={t.heroL2} delay={heroDelays[1]} speed={40} />
                                 )}
                             </span>
-                            <span className="block">
-                                <TypeAccentLine
-                                    text={t.heroL3}
-                                    delay={heroDelays[2]}
-                                    speed={40}
-                                    from="transparent"
-                                    accent="#ffffff"
-                                    style={{ WebkitTextStroke: '1.5px #9b9b9f' }}
-                                />
+                            <span className="mt-1 block text-[44px] leading-[1.08] sm:text-[56px] lg:text-[68px]">
+                                <TypeText text={t.heroL3} delay={heroDelays[2]} speed={40} />
                             </span>
                         </h1>
                         <p className="m3-rise mt-6.5 max-w-[46ch] text-[16px] leading-[1.75] text-[#b9b9bf]" style={{ animationDelay: `${heroDoneSec}s` }}>{t.heroSub1}<br />{t.heroSub2}</p>
@@ -418,35 +411,35 @@ export default function V3() {
                 </div>
 
                 <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] items-center gap-12 px-5 py-16 md:px-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-10">
-                    <div data-reveal className="max-w-[640px] text-white">
+                    <div data-reveal className="max-w-[640px] text-white lg:pl-4 xl:pl-6">
                         <Kicker gradient={KICKER_GRADIENT} className="text-[14px] font-extrabold tracking-[0.14em] uppercase">{t.contactKicker}</Kicker>
                         <h2 className="m-0 mt-4 text-[42px] font-black tracking-tight sm:text-[56px]">{t.contactTitle}</h2>
                         <p className="mt-5 max-w-[42ch] text-[18px] leading-[1.75] text-white/85">{t.contactCopy}</p>
 
-                        <div className="mt-12 grid gap-8">
+                        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10">
                             {CONTACTS.map((contact) => (
-                                <div key={contact.email} className="flex items-start gap-5">
-                                    <span className="inline-flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white" style={{ color: ACCENT }}>
+                                <div key={contact.email} className="flex items-start gap-4 sm:gap-5">
+                                    <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white sm:h-14 sm:w-14" style={{ color: ACCENT }}>
                                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                                     </span>
-                                    <div>
-                                        <p className="m-0 text-[20px] font-extrabold">{contact.name}</p>
+                                    <div className="min-w-0">
+                                        <p className="m-0 text-[18px] font-extrabold sm:text-[20px]">{contact.name}</p>
                                         <p className="m-0 mt-1 text-[12px] font-bold tracking-[0.14em] text-white/60 uppercase">{contact.role}</p>
-                                        <div className="mt-3 grid gap-1.5 text-[16px] leading-[1.55]">
+                                        <div className="mt-3 grid gap-1.5 text-[15px] leading-[1.55] sm:text-[16px]">
                                             <a href={toWhatsAppHref(contact.phone)} target="_blank" rel="noopener noreferrer" className="text-white no-underline hover:text-white/80">{formatPhoneDisplay(contact.phone)}</a>
                                             <a href={`mailto:${contact.email}`} className="break-all text-white/80 no-underline hover:text-white">{contact.email}</a>
                                         </div>
                                     </div>
                                 </div>
                             ))}
-                            <div className="flex items-start gap-5">
-                                <span className="inline-flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white" style={{ color: ACCENT }}>
+                            <div className="flex items-start gap-4 sm:gap-5">
+                                <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white sm:h-14 sm:w-14" style={{ color: ACCENT }}>
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /><circle cx="12" cy="10" r="3" /></svg>
                                 </span>
-                                <div>
-                                    <p className="m-0 max-w-[40ch] text-[17px] leading-[1.55] font-semibold">{t.address}</p>
-                                    <p className="m-0 mt-2 text-[15px] text-white/75">{t.hours}</p>
-                                    <p className="m-0 mt-1 text-[15px] text-white/75">{t.emailReply}</p>
+                                <div className="min-w-0">
+                                    <p className="m-0 text-[16px] leading-[1.55] font-semibold sm:text-[17px]">{t.address}</p>
+                                    <p className="m-0 mt-2 text-[14px] text-white/75 sm:text-[15px]">{t.hours}</p>
+                                    <p className="m-0 mt-1 text-[14px] text-white/75 sm:text-[15px]">{t.emailReply}</p>
                                 </div>
                             </div>
                         </div>
@@ -477,18 +470,16 @@ export default function V3() {
                 </div>
             </section>
 
-            <footer style={{ background: '#0b0b0c', color: '#9b9b9f' }}>
-                <div className="mx-auto grid max-w-[1600px] gap-9 px-5 pt-13 pb-10 md:px-12" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))' }}>
-                    <div>
-                        <span className="inline-flex rounded bg-white px-2 py-1">
-                            <img src="/images/m-one-logo.png" alt="M One Material" className="h-11 w-auto" />
-                        </span>
-                        <p className="mt-3.5 text-[13px] leading-[1.7]">
+            <footer className="bg-black text-[#9b9b9f]">
+                <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 px-5 pt-13 pb-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)] md:gap-12 md:px-12">
+                    <div className="min-w-0 sm:col-span-2 lg:col-span-1">
+                        <img src="/images/m-one-logo-black.png" alt="M One Material" className="h-16 w-auto md:h-[4.5rem]" />
+                        <p className="mt-4 text-[14px] leading-[1.75]">
                             {t.footerBrand}<br />
                             {t.footerSsm}<br />
                             {t.rights}
                         </p>
-                        <p className="mt-2 max-w-[28ch] text-[13px] leading-[1.6]">{t.footerNote}</p>
+                        <p className="mt-3 max-w-[36ch] text-[14px] leading-[1.65]">{t.footerNote}</p>
                     </div>
                     <div>
                         <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.navProducts}</p>
@@ -506,32 +497,22 @@ export default function V3() {
                             <a href="#contact" className="text-[13.5px] text-[#9b9b9f] no-underline hover:text-white">{t.navContact}</a>
                         </div>
                     </div>
-                    <div>
+                    <div className="min-w-0 sm:col-span-2 lg:col-span-1">
                         <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.fSupport}</p>
-                        <div className="grid gap-2.5 text-[13.5px] leading-snug">
+                        <div className="grid grid-cols-1 gap-x-6 gap-y-3.5 text-[13.5px] leading-snug min-[420px]:grid-cols-2">
                             {CONTACTS.map((contact) => (
-                                <div key={contact.email} className="grid gap-0.5">
+                                <div key={contact.email} className="grid gap-0.5 min-w-0">
                                     <p className="m-0 font-semibold text-white">{contact.name}</p>
                                     <p className="m-0 text-[12px] uppercase tracking-[0.08em] text-[#9b9b9f]">{contact.role}</p>
                                     <a href={toWhatsAppHref(contact.phone)} target="_blank" rel="noopener noreferrer" className="text-[#9b9b9f] no-underline hover:text-white">{formatPhoneDisplay(contact.phone)}</a>
-                                    <a href={`mailto:${contact.email}`} className="text-[#9b9b9f] no-underline hover:text-white break-all">{contact.email}</a>
+                                    <a href={`mailto:${contact.email}`} className="break-all text-[#9b9b9f] no-underline hover:text-white">{contact.email}</a>
                                 </div>
                             ))}
-                            <span>{t.hours}</span>
-                            <p className="m-0 max-w-[28ch] text-[13px] leading-[1.55]">{t.address}</p>
+                            <div className="grid gap-1.5 self-start min-w-0">
+                                <span>{t.hours}</span>
+                                <p className="m-0 text-[13px] leading-[1.55]">{t.address}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.follow}</p>
-                        <a
-                            href={WA_HREF}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2.5 text-[13.5px] text-[#9b9b9f] no-underline hover:text-white"
-                        >
-                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" /></svg>
-                            {t.waBtn}
-                        </a>
                     </div>
                 </div>
             </footer>
