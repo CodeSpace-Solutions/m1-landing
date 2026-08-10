@@ -37,7 +37,29 @@ const CONTACTS = [
 ];
 
 const PRIMARY_CONTACT = CONTACTS[0];
-const toWhatsAppHref = (phone) => 'https://wa.me/' + phone.replace(/^0/, '60').replace(/[^0-9]/g, '');
+const toWhatsAppHref = (phone, message) => {
+    const num = phone.replace(/^0/, '60').replace(/[^0-9]/g, '');
+    const base = `https://wa.me/${num}`;
+    return message ? `${base}?text=${encodeURIComponent(message)}` : base;
+};
+const productWhatsAppHref = (product, lang) => {
+    const name = lang === 'bm' ? product.nameBm : product.nameEn;
+    const category = lang === 'bm' ? (product.catBm || product.cat) : product.cat;
+    const lines = lang === 'bm'
+        ? [
+            'Hi, saya ingin tanya butiran produk ini:',
+            `Produk: ${name}`,
+            product.spec ? `Spec: ${product.spec}` : null,
+            category ? `Kategori: ${category}` : null,
+        ]
+        : [
+            'Hi, I would like to ask details about this product:',
+            `Product: ${name}`,
+            product.spec ? `Spec: ${product.spec}` : null,
+            category ? `Category: ${category}` : null,
+        ];
+    return toWhatsAppHref(PRIMARY_CONTACT.phone, lines.filter(Boolean).join('\n'));
+};
 const formatPhoneDisplay = (phone) => {
     const normalized = phone.replace(/[^0-9]/g, '');
     const local = normalized.startsWith('0') ? normalized.slice(1) : normalized;
@@ -53,6 +75,7 @@ const WA_HREF = toWhatsAppHref(PRIMARY_CONTACT.phone);
 const PRODUCTS = CATEGORIES.flatMap((category) =>
     category.items.map(([nameEn, nameBm, spec], index) => ({
         cat: category.en,
+        catBm: category.bm,
         nameEn,
         nameBm,
         spec,
@@ -91,7 +114,7 @@ const T = {
         heroSub1: 'Trusted wholesale supplier for printing shops.', heroSub2: 'Quality materials. Consistent supply. Competitive pricing.',
         heroCta: 'Explore products',
         s1: 'Years Experience', s2: 'Printing Shops', s3: 'Products', s4: 'Delivery', s4v: 'Nationwide',
-        prodKicker: 'Our products', prodTitle: 'Quality Materials for Every Need', viewDetails: 'View details',
+        prodKicker: 'Our products', prodTitle: 'Quality Materials for Every Need', viewDetails: 'Ask details',
         aboutKicker: 'About M1', aboutTitle: 'Your Trusted Partner in Printing Business',
         aboutCopy1: 'M1 is a wholesale supplier of premium printing materials in Malaysia. We are committed to providing consistent quality, stable supply and the best value to support your business growth.',
         learnMore: 'Learn more',
@@ -131,7 +154,7 @@ const T = {
         heroSub1: 'Pembekal borong dipercayai untuk kedai cetak.', heroSub2: 'Bahan berkualiti. Bekalan konsisten. Harga kompetitif.',
         heroCta: 'Terokai produk',
         s1: 'Tahun Pengalaman', s2: 'Kedai Cetak', s3: 'Produk', s4: 'Penghantaran', s4v: 'Seluruh Negara',
-        prodKicker: 'Produk kami', prodTitle: 'Bahan Berkualiti untuk Setiap Keperluan', viewDetails: 'Lihat butiran',
+        prodKicker: 'Produk kami', prodTitle: 'Bahan Berkualiti untuk Setiap Keperluan', viewDetails: 'Tanya butiran',
         aboutKicker: 'Tentang M1', aboutTitle: 'Rakan Dipercayai dalam Perniagaan Percetakan',
         aboutCopy1: 'M1 ialah pembekal borong bahan cetakan premium di Malaysia. Kami komited menyediakan kualiti konsisten, bekalan stabil dan nilai terbaik untuk menyokong pertumbuhan perniagaan anda.',
         learnMore: 'Ketahui lanjut',
@@ -338,7 +361,7 @@ export default function V3() {
                                     <div className="flex flex-1 flex-col gap-1 border-t border-[#f0f0f1] px-5 pt-4.5 pb-5">
                                         <p className="m-0 text-[16px] leading-tight font-extrabold">{name}</p>
                                         {p.spec && <p className="m-0 text-[13.5px] text-[#71717a]">{p.spec}</p>}
-                                        <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-3.5 inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.08em] uppercase no-underline hover:opacity-80" style={{ color: ACCENT }}>
+                                        <a href={productWhatsAppHref(p, lang)} target="_blank" rel="noopener noreferrer" className="mt-3.5 inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.08em] uppercase no-underline hover:opacity-80" style={{ color: ACCENT }}>
                                             {t.viewDetails}
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                                         </a>
