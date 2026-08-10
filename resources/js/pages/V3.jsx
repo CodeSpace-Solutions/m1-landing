@@ -82,7 +82,11 @@ const T = {
         waCardTitle: 'Chat with us on WhatsApp',
         waCardCopy: 'Get quick support and fast responses from our team.',
         waBtn: 'WhatsApp us',
-        fCompanyCol: 'Company', fSupport: 'Support', follow: 'Follow us', rights: 'All rights reserved.',
+        fCompanyCol: 'Company', fSupport: 'Support', follow: 'Follow us',
+        rights: 'All rights reserved.',
+        footerBrand: '© 2026 M ONE ADVERTISING SDN. BHD.',
+        footerSsm: '202501034310 (1635720-T)',
+        footerNote: 'Wholesale printing materials, delivered nationwide.',
         deliverPrefix: 'We deliver on your', deliverWords: ['schedule.', 'terms.', 'budget.', 'timeline.', 'schedule.'],
     },
     bm: {
@@ -115,7 +119,11 @@ const T = {
         waCardTitle: 'Sembang dengan kami di WhatsApp',
         waCardCopy: 'Dapatkan sokongan pantas dan respons cepat daripada pasukan kami.',
         waBtn: 'WhatsApp kami',
-        fCompanyCol: 'Syarikat', fSupport: 'Sokongan', follow: 'Ikuti kami', rights: 'Hak cipta terpelihara.',
+        fCompanyCol: 'Syarikat', fSupport: 'Sokongan', follow: 'Ikuti kami',
+        rights: 'Hak cipta terpelihara.',
+        footerBrand: '© 2026 M ONE ADVERTISING SDN. BHD.',
+        footerSsm: '202501034310 (1635720-T)',
+        footerNote: 'Bahan cetakan borong, dihantar ke seluruh negara.',
         deliverPrefix: 'Kami hantar mengikut', deliverWords: ['jadual.', 'terma.', 'bajet.', 'garis masa.', 'jadual.'],
     },
 };
@@ -423,12 +431,17 @@ export default function V3() {
             </section>
 
             <footer style={{ background: '#0b0b0c', color: '#9b9b9f' }}>
-                <div className="mx-auto grid max-w-[1600px] gap-9 px-5 pt-13 pb-10 md:px-12" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))' }}>
+                <div className="mx-auto grid max-w-[1600px] gap-9 px-5 pt-13 pb-10 md:px-12" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))' }}>
                     <div>
                         <span className="inline-flex rounded bg-white px-2 py-1">
                             <img src="/images/m-one-logo.png" alt="M One Material" className="h-11 w-auto" />
                         </span>
-                        <p className="mt-3.5 text-[13px] leading-[1.7]">© 2026 M1 Printing Materials.<br />{t.rights}</p>
+                        <p className="mt-3.5 text-[13px] leading-[1.7]">
+                            {t.footerBrand}<br />
+                            {t.footerSsm}<br />
+                            {t.rights}
+                        </p>
+                        <p className="mt-2 max-w-[28ch] text-[13px] leading-[1.6]">{t.footerNote}</p>
                     </div>
                     <div>
                         <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.navProducts}</p>
@@ -443,20 +456,29 @@ export default function V3() {
                         <div className="grid gap-2">
                             <a href="#about" className="text-[13.5px] text-[#9b9b9f] no-underline hover:text-white">{t.navAbout}</a>
                             <a href="#why" className="text-[13.5px] text-[#9b9b9f] no-underline hover:text-white">{t.navWhy}</a>
-                        </div>
-                    </div>
-                    <div>
-                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.fSupport}</p>
-                        <div className="grid gap-2">
                             <a href="#contact" className="text-[13.5px] text-[#9b9b9f] no-underline hover:text-white">{t.navContact}</a>
                         </div>
                     </div>
                     <div>
-                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.follow}</p>
-                        <div className="flex gap-3">
-                            <a href="#contact" aria-label="Facebook" className="inline-flex text-[#9b9b9f] hover:text-white"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg></a>
-                            <a href={WA_HREF} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="inline-flex text-[#9b9b9f] hover:text-white"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" /></svg></a>
+                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.fSupport}</p>
+                        <div className="grid gap-2.5 text-[13.5px] leading-snug">
+                            <a href="tel:+60123456789" className="text-[#9b9b9f] no-underline hover:text-white">+60 12-345 6789</a>
+                            <a href="mailto:sales@m1.com.my" className="text-[#9b9b9f] no-underline hover:text-white break-all">sales@m1.com.my</a>
+                            <span>{t.hours}</span>
+                            <p className="m-0 max-w-[28ch] text-[13px] leading-[1.55]">{t.address}</p>
                         </div>
+                    </div>
+                    <div>
+                        <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.follow}</p>
+                        <a
+                            href={WA_HREF}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2.5 text-[13.5px] text-[#9b9b9f] no-underline hover:text-white"
+                        >
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" /></svg>
+                            {t.waBtn}
+                        </a>
                     </div>
                 </div>
             </footer>

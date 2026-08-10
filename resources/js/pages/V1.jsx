@@ -40,6 +40,8 @@ const T = {
         contactCopy: 'Call, WhatsApp or send an enquiry — we reply within the working day.',
         lPhone: 'Phone', lEmail: 'Email', lAddr: 'Address',
         footerNote: 'Wholesale printing materials, delivered nationwide.',
+        footerBrand: '© 2026 M ONE ADVERTISING SDN. BHD.',
+        footerSsm: '202501034310 (1635720-T)',
     },
     bm: {
         navProducts: 'Produk', navAbout: 'Tentang', navWhy: 'Kenapa M1', navContact: 'Hubungi', navCta: 'Minta sebut harga',
@@ -69,6 +71,8 @@ const T = {
         contactCopy: 'Telefon, WhatsApp atau hantar pertanyaan — kami balas dalam hari bekerja yang sama.',
         lPhone: 'Telefon', lEmail: 'E-mel', lAddr: 'Alamat',
         footerNote: 'Bahan cetakan borong, dihantar ke seluruh negara.',
+        footerBrand: '© 2026 M ONE ADVERTISING SDN. BHD.',
+        footerSsm: '202501034310 (1635720-T)',
     },
 };
 
@@ -328,7 +332,10 @@ export default function V1() {
 
                 <hr className="m-0 h-0.5 border-0 bg-[#201e1d]/40" />
                 <footer className="flex flex-wrap justify-between gap-4 py-7 pb-14 text-[13px] leading-relaxed" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>
-                    <span>© 2026 M1 Supplies Sdn Bhd</span>
+                    <span className="grid gap-0.5">
+                        <span>{t.footerBrand}</span>
+                        <span>{t.footerSsm}</span>
+                    </span>
                     <span>{t.footerNote}</span>
                 </footer>
             </div>
