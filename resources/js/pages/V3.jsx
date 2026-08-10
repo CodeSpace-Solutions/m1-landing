@@ -42,7 +42,8 @@ const toWhatsAppHref = (phone, message) => {
     const base = `https://wa.me/${num}`;
     return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 };
-const productWhatsAppHref = (product, lang) => {
+const productWhatsAppMessage = (product, lang) => {
+    if (!product) return undefined;
     const name = lang === 'bm' ? product.nameBm : product.nameEn;
     const category = lang === 'bm' ? (product.catBm || product.cat) : product.cat;
     const lines = lang === 'bm'
@@ -58,7 +59,7 @@ const productWhatsAppHref = (product, lang) => {
             product.spec ? `Spec: ${product.spec}` : null,
             category ? `Category: ${category}` : null,
         ];
-    return toWhatsAppHref(PRIMARY_CONTACT.phone, lines.filter(Boolean).join('\n'));
+    return lines.filter(Boolean).join('\n');
 };
 const formatPhoneDisplay = (phone) => {
     const normalized = phone.replace(/[^0-9]/g, '');
@@ -238,6 +239,16 @@ export default function V3() {
     const [cat, setCat] = useState(0);
     const [tick, setTick] = useState(0);
     const [isWaPickerOpen, setIsWaPickerOpen] = useState(false);
+    const [waPickerProduct, setWaPickerProduct] = useState(null);
+    const closeWaPicker = () => {
+        setIsWaPickerOpen(false);
+        setWaPickerProduct(null);
+    };
+    const openWaPicker = (product = null) => {
+        setWaPickerProduct(product);
+        setIsWaPickerOpen(true);
+    };
+    const waPickerMessage = productWhatsAppMessage(waPickerProduct, lang);
     const scopeRef = useRef(null);
     useScrollReveal(scopeRef);
 
@@ -361,10 +372,15 @@ export default function V3() {
                                     <div className="flex flex-1 flex-col gap-1 border-t border-[#f0f0f1] px-5 pt-4.5 pb-5">
                                         <p className="m-0 text-[16px] leading-tight font-extrabold">{name}</p>
                                         {p.spec && <p className="m-0 text-[13.5px] text-[#71717a]">{p.spec}</p>}
-                                        <a href={productWhatsAppHref(p, lang)} target="_blank" rel="noopener noreferrer" className="mt-3.5 inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.08em] uppercase no-underline hover:opacity-80" style={{ color: ACCENT }}>
+                                        <button
+                                            type="button"
+                                            onClick={() => openWaPicker(p)}
+                                            className="mt-3.5 inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-xs font-extrabold tracking-[0.08em] uppercase hover:opacity-80"
+                                            style={{ color: ACCENT }}
+                                        >
                                             {t.viewDetails}
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                                 );
@@ -479,7 +495,7 @@ export default function V3() {
                             <p className="mt-3 text-[16px] leading-[1.65] text-[#71717a]">{t.waCardCopy}</p>
                             <button
                                 type="button"
-                                onClick={() => setIsWaPickerOpen((open) => !open)}
+                                onClick={() => openWaPicker()}
                                 className="mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-lg px-6 py-4 text-[15px] font-extrabold tracking-[0.08em] text-white uppercase no-underline hover:opacity-90"
                                 style={{ background: ACCENT }}
                             >
@@ -542,7 +558,7 @@ export default function V3() {
             {isWaPickerOpen && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(11,11,12,0.58)] px-5 py-8"
-                    onClick={() => setIsWaPickerOpen(false)}
+                    onClick={closeWaPicker}
                 >
                     <div
                         className="relative w-full max-w-[460px] rounded-[28px] bg-white p-6 shadow-[0_30px_90px_rgba(0,0,0,.28)] md:p-7"
@@ -550,7 +566,7 @@ export default function V3() {
                     >
                         <button
                             type="button"
-                            onClick={() => setIsWaPickerOpen(false)}
+                            onClick={closeWaPicker}
                             aria-label={t.waChooseClose}
                             className="absolute top-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#ececee] bg-white text-[#71717a] hover:border-[#ec3013] hover:text-[#ec3013]"
                         >
@@ -562,13 +578,20 @@ export default function V3() {
                         <p className="m-0 text-[12px] font-extrabold tracking-[0.14em] text-[#ec3013] uppercase">{t.waChoosePrompt}</p>
                         <h3 className="m-0 mt-3 pr-12 text-[24px] leading-tight font-black tracking-tight text-[#161616] sm:text-[28px] whitespace-nowrap">{t.waCardTitle}</h3>
                         <p className="m-0 mt-3 max-w-[34ch] text-[15px] leading-[1.7] text-[#71717a]">{t.waChooseCopy}</p>
+                        {waPickerProduct && (
+                            <p className="m-0 mt-3 rounded-xl bg-[#fafafa] px-3.5 py-2.5 text-[13.5px] leading-[1.5] text-[#52525b]">
+                                <span className="font-extrabold text-[#161616]">{lang === 'bm' ? waPickerProduct.nameBm : waPickerProduct.nameEn}</span>
+                                {waPickerProduct.spec ? ` · ${waPickerProduct.spec}` : ''}
+                            </p>
+                        )}
                         <div className="mt-5 grid gap-3">
                             {CONTACTS.map((contact) => (
                                 <a
                                     key={contact.email}
-                                    href={toWhatsAppHref(contact.phone)}
+                                    href={toWhatsAppHref(contact.phone, waPickerMessage)}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    onClick={closeWaPicker}
                                     className="rounded-2xl border border-[#e4e4e7] bg-[#fafafa] px-4 py-3.5 no-underline transition-transform hover:-translate-y-0.5 hover:border-[#ec3013] hover:bg-white"
                                 >
                                     <p className="m-0 text-[15px] font-extrabold text-[#161616]">{contact.name}</p>
