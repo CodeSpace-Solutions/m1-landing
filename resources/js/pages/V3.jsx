@@ -258,11 +258,13 @@ export default function V3() {
                     </div>
                 </div>
 
+                {/* Hero stats — Years Experience / Printing Shops / Products / Delivery
                 <div className="border-t border-[#232326]">
                     <div className="mx-auto grid max-w-[1600px] gap-6 px-5 py-7 md:px-12" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))' }}>
                         {stats.map((s) => <CountStat key={s.label} {...s} />)}
                     </div>
                 </div>
+                */}
             </section>
 
             <section id="products" style={{ background: '#fafafa' }}>
