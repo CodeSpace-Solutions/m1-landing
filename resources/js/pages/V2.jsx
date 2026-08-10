@@ -115,14 +115,14 @@ export default function V2() {
     const products = useMemo(
         () => {
             const category = CATEGORIES[cat];
-            return category.items.map(([name, spec], i) => ({
-                name,
+            return category.items.map(([nameEn, nameBm, spec], i) => ({
+                name: lang === 'bm' ? nameBm : nameEn,
                 spec,
                 image: `/images/products/${category.imageFolder}/${String(i + 1).padStart(2, '0')}.png?v=cross-base-update`,
                 id: `v2-p-${cat}-${i}`,
             }));
         },
-        [cat],
+        [cat, lang],
     );
     const heroDelays = useMemo(() => typeDelays([t.heroL1, t.heroL2], 42, 180, 120), [t.heroL1, t.heroL2]);
     const heroDoneSec = (heroDelays[1] + t.heroL2.length * 42 + 200) / 1000;
@@ -320,7 +320,7 @@ export default function V2() {
                     </a>
                     <div className="mt-8 overflow-hidden rounded-[18px] border border-[#efe8e6]" style={{ aspectRatio: '16/7' }}>
                         <video
-                            src="/video/HappyHorse-20260807-0001-1786071399113.mp4"
+                            src="/video/contact-us.mp4"
                             className="h-full w-full object-cover"
                             autoPlay
                             muted

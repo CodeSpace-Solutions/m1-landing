@@ -4,8 +4,18 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const VIDEO_SRC = '/Scroll%20Animation%20with%20Layered%20Text/uploads/HappyHorse-20260807-0001-1786102579752.mp4';
+const VIDEO_SRC = '/video/why-choose-us.mp4';
 const LOGO_SRC = '/images/m-one-logo.png';
+
+/** Scale Anton headlines so longer BM phrases match EN visual width. */
+function headlineSize(text, { baseVw = 11.5, baseMax = 200, baseMin = 42, refLen = 14 } = {}) {
+    const len = Math.max(String(text || '').length, 1);
+    const scale = Math.min(1, refLen / len);
+    const vw = +(baseVw * scale).toFixed(2);
+    const max = Math.round(baseMax * scale);
+    const min = Math.max(28, Math.round(baseMin * scale));
+    return `clamp(${min}px, ${vw}vw, ${max}px)`;
+}
 
 function splitLetters(el) {
     if (!el || el.dataset.split === '1') return el?.querySelectorAll('span') ?? [];
@@ -25,7 +35,7 @@ function splitLetters(el) {
 export default function WhyScrollStory({
     copy,
     pinLength = 11200,
-    countFrom = 9,
+    countFrom = 10,
     showGhost = true,
 }) {
     const uid = useId().replace(/:/g, '');
@@ -34,7 +44,7 @@ export default function WhyScrollStory({
 
     const copyKey = [
         copy.hud, copy.panel, copy.scrollHint, copy.w1, copy.w2, copy.w3,
-        copy.pricingSuffix, copy.inMalaysia, copy.logoTag, ...(copy.roller || []),
+        copy.pricingSuffix, copy.pricingFirst ? '1' : '0', copy.inMalaysia, copy.logoTag, ...(copy.roller || []),
     ].join('|');
 
     useLayoutEffect(() => {
@@ -60,7 +70,7 @@ export default function WhyScrollStory({
         teardown();
 
         const pin = pinLength;
-        const from = Math.max(2, Math.round(countFrom));
+        const from = Math.max(2, Math.min(99, Math.round(countFrom)));
         const digits = qa('[data-no-digit]');
         digits.forEach((d) => {
             d.textContent = String(from);
@@ -155,29 +165,35 @@ export default function WhyScrollStory({
             .addLabel('fin', 18.4)
             .to(q('[data-hud]'), { opacity: 0, duration: 1 }, 'fin+=0.6')
             .to([ghostTop, ghostBot], { opacity: 0, duration: 1.2 }, 'fin+=0.6')
+            // Hold starting number fully visible before counting so NO.10 isn't skipped during fade-in
             .fromTo(q('[data-giant]'), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.4 }, 'fin+=0.6')
             .to(
                 cnt,
                 {
                     n: 1,
                     ease: 'none',
-                    duration: 3.4,
+                    duration: 3.8,
                     onUpdate: () => {
-                        const v = Math.max(1, Math.ceil(cnt.n));
+                        const v = Math.max(1, Math.round(cnt.n));
                         digits.forEach((d) => {
                             if (d.textContent !== String(v)) d.textContent = String(v);
                         });
                     },
+                    onComplete: () => {
+                        digits.forEach((d) => {
+                            d.textContent = '1';
+                        });
+                    },
                 },
-                'fin+=1.0',
+                'fin+=2.2',
             )
-            .to(q('[data-giant-up]'), { yPercent: -104, duration: 1.3 }, 'fin+=2.2')
-            .to(q('[data-giant-down]'), { yPercent: 104, duration: 1.3 }, 'fin+=2.2')
-            .to(q('[data-giant-up]'), { x: '-120vw', skewX: 8, rotate: -3, duration: 1.7 }, 'fin+=3.7')
-            .to(q('[data-giant-down]'), { x: '120vw', skewX: -8, rotate: 3, duration: 1.7 }, 'fin+=3.7')
-            .to(q('[data-giant-mid]'), { scale: 8.5, duration: 3, ease: 'power2.in' }, 'fin+=5.2')
-            .to(q('[data-flood]'), { opacity: 1, duration: 1.2 }, 'fin+=6.8')
-            .addLabel('logo', 'fin+=8.2')
+            .to(q('[data-giant-up]'), { yPercent: -104, duration: 1.3 }, 'fin+=6.2')
+            .to(q('[data-giant-down]'), { yPercent: 104, duration: 1.3 }, 'fin+=6.2')
+            .to(q('[data-giant-up]'), { x: '-120vw', skewX: 8, rotate: -3, duration: 1.7 }, 'fin+=7.7')
+            .to(q('[data-giant-down]'), { x: '120vw', skewX: -8, rotate: 3, duration: 1.7 }, 'fin+=7.7')
+            .to(q('[data-giant-mid]'), { scale: 8.5, duration: 3, ease: 'power2.in' }, 'fin+=9.2')
+            .to(q('[data-flood]'), { opacity: 1, duration: 1.2 }, 'fin+=10.8')
+            .addLabel('logo', 'fin+=12.2')
             .to(q('[data-giant-mid]'), { opacity: 0, duration: 0.6 }, 'logo')
             .set(q('[data-logo-scene]'), { autoAlpha: 1 }, 'logo')
             .fromTo(
@@ -201,9 +217,50 @@ export default function WhyScrollStory({
         return teardown;
     }, [copyKey, copy.w1, pinLength, countFrom, showGhost]);
 
-    const ghostLine = `${copy.w1} — ${copy.w2} — ${copy.w3} — ${copy.pricingSuffix.toUpperCase()} — `;
+    const pricingPhrase = copy.pricingFirst
+        ? `${copy.pricingSuffix} ${copy.roller?.[copy.roller.length - 1] || ''}`.trim()
+        : `${copy.roller?.[copy.roller.length - 1] || ''} ${copy.pricingSuffix}`.trim();
+    const ghostLine = `${copy.w1} — ${copy.w2} — ${copy.w3} — ${pricingPhrase} — `;
     const ghostTopText = `${ghostLine}${copy.w1} — ${copy.w2} — `;
-    const ghostBotText = `${copy.w3} — ${copy.pricingSuffix.toUpperCase()} — ${copy.w1} — ${copy.w2} — ${copy.w3} — `;
+    const ghostBotText = `${copy.w3} — ${pricingPhrase} — ${copy.w1} — ${copy.w2} — ${copy.w3} — `;
+
+    const sizeW1 = headlineSize(copy.w1);
+    const sizeW2 = headlineSize(copy.w2);
+    const sizeW3 = headlineSize(copy.w3);
+    const sizeW4 = headlineSize(
+        copy.pricingFirst
+            ? `${copy.pricingSuffix} ${copy.roller?.[copy.roller.length - 1] || ''}`
+            : `${copy.roller?.[copy.roller.length - 1] || ''} ${copy.pricingSuffix}`,
+        { baseVw: 10.5, baseMax: 185, baseMin: 40, refLen: 16 },
+    );
+    const giantFrom = Math.max(2, Math.min(99, Math.round(countFrom)));
+    const giantDigits = String(giantFrom).length;
+    const giantFont = giantDigits >= 2 ? 'clamp(42px, 11.5vw, 160px)' : 'clamp(48px, 15vw, 200px)';
+    const giantStrokeH = giantDigits >= 2 ? 'clamp(42px, 11.5vw, 160px)' : '15vw';
+
+    const rollerBlock = (
+        <div style={{ position: 'relative' }}>
+            <div data-w4roller style={{ overflow: 'hidden', height: '1em' }}>
+                <div data-w4col style={{ textAlign: 'center', color: '#ec3013' }}>
+                    {copy.roller.map((word) => (
+                        <div key={word}>{word}</div>
+                    ))}
+                </div>
+            </div>
+            <div
+                data-w4bar
+                style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    bottom: '-0.09em',
+                    height: '0.07em',
+                    background: '#ec3013',
+                    transform: 'scaleX(0)',
+                }}
+            />
+        </div>
+    );
 
     return (
         // Outer wrapper stays under #why so ScrollTrigger pin-spacer never breaks React's tree
@@ -295,7 +352,7 @@ export default function WhyScrollStory({
                             style={{
                                 overflow: 'hidden',
                                 fontFamily: "'Anton', sans-serif",
-                                fontSize: 'clamp(54px, 11.5vw, 200px)',
+                                fontSize: sizeW1,
                                 lineHeight: 1.04,
                                 color: '#f7f2ee',
                                 whiteSpace: 'nowrap',
@@ -308,7 +365,7 @@ export default function WhyScrollStory({
                                 position: 'absolute',
                                 inset: 0,
                                 fontFamily: "'Anton', sans-serif",
-                                fontSize: 'clamp(54px, 11.5vw, 200px)',
+                                fontSize: sizeW1,
                                 lineHeight: 1.04,
                                 color: 'transparent',
                                 backgroundImage:
@@ -331,7 +388,7 @@ export default function WhyScrollStory({
                         <div
                             style={{
                                 fontFamily: "'Anton', sans-serif",
-                                fontSize: 'clamp(54px, 11.5vw, 200px)',
+                                fontSize: sizeW2,
                                 lineHeight: 1.02,
                                 color: 'transparent',
                                 WebkitTextStroke: '2px rgba(247,242,238,0.65)',
@@ -346,7 +403,7 @@ export default function WhyScrollStory({
                                 position: 'absolute',
                                 inset: 0,
                                 fontFamily: "'Anton', sans-serif",
-                                fontSize: 'clamp(54px, 11.5vw, 200px)',
+                                fontSize: sizeW2,
                                 lineHeight: 1.02,
                                 color: '#ec3013',
                                 whiteSpace: 'nowrap',
@@ -379,7 +436,7 @@ export default function WhyScrollStory({
                             data-w3word
                             style={{
                                 fontFamily: "'Anton', sans-serif",
-                                fontSize: 'clamp(54px, 11.5vw, 200px)',
+                                fontSize: sizeW3,
                                 lineHeight: 1,
                                 color: '#f7f2ee',
                                 whiteSpace: 'nowrap',
@@ -398,34 +455,23 @@ export default function WhyScrollStory({
                                 alignItems: 'flex-start',
                                 gap: '0.25em',
                                 fontFamily: "'Anton', sans-serif",
-                                fontSize: 'clamp(48px, 10.5vw, 185px)',
+                                fontSize: sizeW4,
                                 lineHeight: 1,
                                 color: '#f7f2ee',
                                 whiteSpace: 'nowrap',
                             }}
                         >
-                            <div style={{ position: 'relative' }}>
-                                <div data-w4roller style={{ overflow: 'hidden', height: '1em' }}>
-                                    <div data-w4col style={{ textAlign: 'center', color: '#ec3013' }}>
-                                        {copy.roller.map((word) => (
-                                            <div key={word}>{word}</div>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div
-                                    data-w4bar
-                                    style={{
-                                        position: 'absolute',
-                                        left: 0,
-                                        right: 0,
-                                        bottom: '-0.09em',
-                                        height: '0.07em',
-                                        background: '#ec3013',
-                                        transform: 'scaleX(0)',
-                                    }}
-                                />
-                            </div>
-                            <div>{copy.pricingSuffix}</div>
+                            {copy.pricingFirst ? (
+                                <>
+                                    <div>{copy.pricingSuffix}</div>
+                                    {rollerBlock}
+                                </>
+                            ) : (
+                                <>
+                                    {rollerBlock}
+                                    <div>{copy.pricingSuffix}</div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -463,11 +509,11 @@ export default function WhyScrollStory({
                             top: 0,
                             left: 0,
                             right: 0,
-                            height: '15vw',
+                            height: giantStrokeH,
                             display: 'grid',
                             placeItems: 'center',
                             fontFamily: "'Anton', sans-serif",
-                            fontSize: '15vw',
+                            fontSize: giantFont,
                             lineHeight: 1,
                             color: 'transparent',
                             WebkitTextStroke: '2px rgba(247,242,238,0.85)',
@@ -476,7 +522,7 @@ export default function WhyScrollStory({
                         }}
                     >
                         <span style={{ whiteSpace: 'nowrap' }}>
-                            NO. <span data-no-digit>{countFrom}</span>
+                            NO. <span data-no-digit>{giantFrom}</span>
                         </span>
                     </div>
                     <div
@@ -486,11 +532,11 @@ export default function WhyScrollStory({
                             top: 0,
                             left: 0,
                             right: 0,
-                            height: '15vw',
+                            height: giantStrokeH,
                             display: 'grid',
                             placeItems: 'center',
                             fontFamily: "'Anton', sans-serif",
-                            fontSize: '15vw',
+                            fontSize: giantFont,
                             lineHeight: 1,
                             color: 'transparent',
                             WebkitTextStroke: '2px rgba(236,48,19,0.9)',
@@ -499,17 +545,17 @@ export default function WhyScrollStory({
                         }}
                     >
                         <span style={{ whiteSpace: 'nowrap' }}>
-                            NO. <span data-no-digit>{countFrom}</span>
+                            NO. <span data-no-digit>{giantFrom}</span>
                         </span>
                     </div>
                     <div data-giant-mid style={{ position: 'relative', textAlign: 'center', willChange: 'transform' }}>
-                        <div style={{ fontFamily: "'Anton', sans-serif", fontSize: '15vw', lineHeight: 1, color: '#ec3013', whiteSpace: 'nowrap' }}>
-                            NO. <span data-no-digit>{countFrom}</span>
+                        <div style={{ fontFamily: "'Anton', sans-serif", fontSize: giantFont, lineHeight: 1, color: '#ec3013', whiteSpace: 'nowrap' }}>
+                            NO. <span data-no-digit>{giantFrom}</span>
                         </div>
                         <div
                             style={{
                                 fontFamily: "'Space Grotesk', sans-serif",
-                                fontSize: '2.6vw',
+                                fontSize: 'clamp(12px, 2.6vw, 36px)',
                                 fontWeight: 700,
                                 letterSpacing: '0.42em',
                                 color: '#f7f2ee',

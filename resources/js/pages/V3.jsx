@@ -19,9 +19,10 @@ const WHATSAPP = '+60 12-345 6789';
 const WA_HREF = 'https://wa.me/' + WHATSAPP.replace(/[^0-9]/g, '');
 
 const PRODUCTS = CATEGORIES.flatMap((category) =>
-    category.items.map(([name, spec], index) => ({
+    category.items.map(([nameEn, nameBm, spec], index) => ({
         cat: category.en,
-        name,
+        nameEn,
+        nameBm,
         spec,
         image: `/images/products/${category.imageFolder}/${String(index + 1).padStart(2, '0')}.png?v=cross-base-update`,
     })),
@@ -108,6 +109,7 @@ const T = {
             w3: 'PENGHANTARAN PANTAS',
             roller: ['KOMPETITIF', 'BERBALOI', 'TERBAIK', 'TERENDAH', 'TERMURAH'],
             pricingSuffix: 'HARGA',
+            pricingFirst: true,
             inMalaysia: 'DI MALAYSIA',
             logoTag: 'NO. 1 DI MALAYSIA',
         },
@@ -296,11 +298,13 @@ export default function V3() {
                     </div>
                     <div data-reveal key={tick} className="m3-fade">
                         <div className="mt-8 grid gap-5.5" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(230px,1fr))' }}>
-                            {products.map((p) => (
-                                <div key={p.name} className="flex flex-col overflow-hidden rounded-md bg-white transition-all hover:-translate-y-1 hover:shadow-[0_14px_34px_rgba(0,0,0,.1)]">
-                                    <img src={p.image} alt={p.name} loading="lazy" className="aspect-[4/3] w-full bg-white object-contain" />
+                            {products.map((p) => {
+                                const name = lang === 'bm' ? p.nameBm : p.nameEn;
+                                return (
+                                <div key={p.nameEn} className="flex flex-col overflow-hidden rounded-md bg-white transition-all hover:-translate-y-1 hover:shadow-[0_14px_34px_rgba(0,0,0,.1)]">
+                                    <img src={p.image} alt={name} loading="lazy" className="aspect-[4/3] w-full bg-white object-contain" />
                                     <div className="flex flex-1 flex-col gap-1 border-t border-[#f0f0f1] px-5 pt-4.5 pb-5">
-                                        <p className="m-0 text-[16px] leading-tight font-extrabold">{p.name}</p>
+                                        <p className="m-0 text-[16px] leading-tight font-extrabold">{name}</p>
                                         {p.spec && <p className="m-0 text-[13.5px] text-[#71717a]">{p.spec}</p>}
                                         <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="mt-3.5 inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.08em] uppercase no-underline hover:opacity-80" style={{ color: ACCENT }}>
                                             {t.viewDetails}
@@ -308,7 +312,8 @@ export default function V3() {
                                         </a>
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
@@ -342,7 +347,7 @@ export default function V3() {
             </section>
 
             <section id="why">
-                <WhyScrollStory copy={t.whyStory} />
+                <WhyScrollStory copy={t.whyStory} countFrom={10} />
             </section>
 
             <section id="contact" className="relative min-h-screen overflow-hidden bg-white">
@@ -359,7 +364,7 @@ export default function V3() {
                     className="absolute inset-0 z-0 max-lg:[clip-path:none] lg:[clip-path:url(#m3-contact-curve)]"
                 >
                     <video
-                        src="/video/HappyHorse-20260807-0001-1786071399113.mp4"
+                        src="/video/contact-us.mp4"
                         className="absolute inset-0 h-full w-full object-cover"
                         autoPlay
                         muted
