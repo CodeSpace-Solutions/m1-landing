@@ -215,9 +215,12 @@ export default function V3() {
                 </div>
             </nav>
 
-            <section style={{ background: '#0b0b0c', color: '#fff' }}>
-                <div className="mx-auto grid max-w-[1600px] items-stretch gap-8 px-5 pt-8 md:gap-12 md:px-12 md:pt-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.3fr)]">
-                    <div key={lang} className="flex flex-col justify-center pb-8 md:pb-14">
+            <section
+                className="flex min-h-[calc(100dvh-5.75rem)] flex-col"
+                style={{ background: '#0b0b0c', color: '#fff' }}
+            >
+                <div className="mx-auto grid min-h-0 w-full max-w-[1600px] flex-1 items-stretch gap-8 px-5 py-10 md:gap-12 md:px-12 md:py-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.3fr)]">
+                    <div key={lang} className="flex flex-col justify-center py-4 md:py-8">
                         <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[54px]">
                             <span className="block" style={lang === 'en' ? { color: ACCENT } : undefined}>
                                 {lang === 'en' ? (
@@ -252,7 +255,7 @@ export default function V3() {
                             </a>
                         </div>
                     </div>
-                    <div className="m3-rise relative min-h-[420px] overflow-hidden md:min-h-[560px] lg:min-h-[min(72vh,720px)]" style={{ animationDelay: '.2s' }}>
+                    <div className="m3-rise relative min-h-[50vh] overflow-hidden lg:min-h-full" style={{ animationDelay: '.2s' }}>
                         <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-center" />
                         <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 28%),linear-gradient(0deg,rgba(11,11,12,.4) 0%,rgba(11,11,12,0) 28%)' }} />
                     </div>
@@ -339,7 +342,7 @@ export default function V3() {
             </section>
 
             <section id="why">
-                <WhyScrollStory key={lang} copy={t.whyStory} />
+                <WhyScrollStory copy={t.whyStory} />
             </section>
 
             <section id="contact" className="relative min-h-screen overflow-hidden bg-white">

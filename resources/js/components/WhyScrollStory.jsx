@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from 'react';
+import { useLayoutEffect, useId, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -32,7 +32,12 @@ export default function WhyScrollStory({
     const stageRef = useRef(null);
     const tlRef = useRef(null);
 
-    useEffect(() => {
+    const copyKey = [
+        copy.hud, copy.panel, copy.scrollHint, copy.w1, copy.w2, copy.w3,
+        copy.pricingSuffix, copy.inMalaysia, copy.logoTag, ...(copy.roller || []),
+    ].join('|');
+
+    useLayoutEffect(() => {
         const stage = stageRef.current;
         if (!stage) return undefined;
 
@@ -41,9 +46,11 @@ export default function WhyScrollStory({
 
         const teardown = () => {
             if (tlRef.current) {
-                if (tlRef.current.scrollTrigger) tlRef.current.scrollTrigger.kill(true);
+                const st = tlRef.current.scrollTrigger;
                 tlRef.current.kill();
                 tlRef.current = null;
+                // Revert pin spacer after killing the timeline so React keeps a stable outer wrapper
+                if (st) st.kill(true);
             }
             ScrollTrigger.getAll().forEach((t) => {
                 if (t.trigger === stage) t.kill(true);
@@ -66,7 +73,6 @@ export default function WhyScrollStory({
         if (ghostBot) ghostBot.style.display = showGhost ? '' : 'none';
 
         const w1word = q('[data-w1word]');
-        // Reset letter split when copy changes
         if (w1word) {
             delete w1word.dataset.split;
             w1word.textContent = copy.w1;
@@ -193,25 +199,27 @@ export default function WhyScrollStory({
         ScrollTrigger.refresh();
 
         return teardown;
-    }, [copy, pinLength, countFrom, showGhost]);
+    }, [copyKey, copy.w1, pinLength, countFrom, showGhost]);
 
     const ghostLine = `${copy.w1} — ${copy.w2} — ${copy.w3} — ${copy.pricingSuffix.toUpperCase()} — `;
     const ghostTopText = `${ghostLine}${copy.w1} — ${copy.w2} — `;
     const ghostBotText = `${copy.w3} — ${copy.pricingSuffix.toUpperCase()} — ${copy.w1} — ${copy.w2} — ${copy.w3} — `;
 
     return (
-        <div
-            ref={stageRef}
-            id={`why-stage-${uid}`}
-            className="m3-why-story"
-            style={{
-                position: 'relative',
-                height: '100vh',
-                overflow: 'hidden',
-                background: 'radial-gradient(120% 90% at 50% 42%, #191009 0%, #0d0705 62%)',
-                fontFamily: "'Space Grotesk', sans-serif",
-            }}
-        >
+        // Outer wrapper stays under #why so ScrollTrigger pin-spacer never breaks React's tree
+        <div className="m3-why-scroll-root">
+            <div
+                ref={stageRef}
+                id={`why-stage-${uid}`}
+                className="m3-why-story"
+                style={{
+                    position: 'relative',
+                    height: '100vh',
+                    overflow: 'hidden',
+                    background: 'radial-gradient(120% 90% at 50% 42%, #191009 0%, #0d0705 62%)',
+                    fontFamily: "'Space Grotesk', sans-serif",
+                }}
+            >
             <video
                 autoPlay
                 muted
@@ -741,6 +749,7 @@ export default function WhyScrollStory({
                         transformOrigin: 'left center',
                     }}
                 />
+            </div>
             </div>
         </div>
     );

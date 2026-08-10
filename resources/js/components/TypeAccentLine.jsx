@@ -19,7 +19,7 @@ export default function TypeAccentLine({
 
     useEffect(() => {
         const el = ref.current;
-        if (!el) return;
+        if (!el) return undefined;
         const timer = setTimeout(() => {
             gsap.fromTo(
                 el,
@@ -27,7 +27,10 @@ export default function TypeAccentLine({
                 { scale: 1, color: accent, duration: 0.55, ease: 'back.out(2.6)' },
             );
         }, delay + dur + 40);
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(timer);
+            gsap.killTweensOf(el);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
