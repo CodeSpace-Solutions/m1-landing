@@ -39,8 +39,6 @@ const T = {
         contactKicker: 'Contact', contactTitle: 'Talk to us.',
         contactCopy: 'Call, WhatsApp or send an enquiry — we reply within the working day.',
         lPhone: 'Phone', lEmail: 'Email', lAddr: 'Address',
-        fName: 'Name', fShop: 'Shop / company', fPhoneEmail: 'Phone or email', fMsg: 'What do you need?',
-        fSend: 'Send enquiry', fSent: 'Sent — we will be in touch',
         footerNote: 'Wholesale printing materials, delivered nationwide.',
     },
     bm: {
@@ -70,8 +68,6 @@ const T = {
         contactKicker: 'Hubungi', contactTitle: 'Hubungi kami.',
         contactCopy: 'Telefon, WhatsApp atau hantar pertanyaan — kami balas dalam hari bekerja yang sama.',
         lPhone: 'Telefon', lEmail: 'E-mel', lAddr: 'Alamat',
-        fName: 'Nama', fShop: 'Kedai / syarikat', fPhoneEmail: 'Telefon atau e-mel', fMsg: 'Apa yang anda perlukan?',
-        fSend: 'Hantar pertanyaan', fSent: 'Dihantar — kami akan hubungi anda',
         footerNote: 'Bahan cetakan borong, dihantar ke seluruh negara.',
     },
 };
@@ -99,7 +95,6 @@ function FeatureIcon({ paths }) {
 export default function V1() {
     const [lang, setLang] = useState('en');
     const [cat, setCat] = useState(0);
-    const [sent, setSent] = useState(false);
     const scopeRef = useRef(null);
     useScrollReveal(scopeRef);
 
@@ -295,7 +290,7 @@ export default function V1() {
             </section>
 
             <div className="mx-auto max-w-[1600px] px-6 md:px-12">
-                <section id="contact" className="grid items-end gap-14 py-16 md:py-24 lg:grid-cols-2" style={{ columnGap: 'clamp(32px,6vw,110px)' }}>
+                <section id="contact" className="grid gap-14 py-16 md:py-24" style={{ columnGap: 'clamp(32px,6vw,110px)' }}>
                     <div data-reveal>
                         <Kicker gradient={KICKER_GRADIENT} className="mb-3 block text-[13px] font-semibold tracking-[0.08em] uppercase">{t.contactKicker}</Kicker>
                         <h2 className="m-0 text-[28px] font-extrabold tracking-tight sm:text-[40px]">{t.contactTitle}</h2>
@@ -329,24 +324,6 @@ export default function V1() {
                             />
                         </div>
                     </div>
-                    <form
-                        data-reveal
-                        onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-                        className="grid content-start gap-7 lg:self-end"
-                    >
-                        <Field label={t.fName} id="f-name" required />
-                        <Field label={t.fShop} id="f-shop" />
-                        <Field label={t.fPhoneEmail} id="f-mail" required />
-                        <div>
-                            <label htmlFor="f-msg" className="mb-2.5 block text-xs" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>{t.fMsg}</label>
-                            <textarea id="f-msg" rows={7} className="w-full border border-[#201e1d]/40 bg-[#eae9e9] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                        </div>
-                        <div>
-                            <button type="submit" className="whitespace-nowrap px-6 py-3.5 text-sm font-extrabold text-[#f3f2f2]" style={{ background: ACCENT }}>
-                                {sent ? t.fSent : t.fSend}
-                            </button>
-                        </div>
-                    </form>
                 </section>
 
                 <hr className="m-0 h-0.5 border-0 bg-[#201e1d]/40" />
@@ -355,15 +332,6 @@ export default function V1() {
                     <span>{t.footerNote}</span>
                 </footer>
             </div>
-        </div>
-    );
-}
-
-function Field({ label, id, required }) {
-    return (
-        <div>
-            <label htmlFor={id} className="mb-2.5 block text-xs" style={{ color: 'color-mix(in srgb, #201e1d 70%, transparent)' }}>{label}</label>
-            <input id={id} type="text" required={required} className="w-full border border-[#201e1d]/40 bg-[#eae9e9] px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
         </div>
     );
 }

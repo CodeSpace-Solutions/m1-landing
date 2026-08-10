@@ -6,7 +6,7 @@ import TypeText from '../components/TypeText';
 import TypeAccentLine from '../components/TypeAccentLine';
 import Kicker from '../components/Kicker';
 import WordRoller from '../components/WordRoller';
-import MorphBadge from '../components/MorphBadge';
+import WhyScrollStory from '../components/WhyScrollStory';
 import { typeDelays } from '../lib/typeDelays';
 import { useScrollReveal } from '../lib/useScrollReveal';
 
@@ -41,9 +41,6 @@ const ICONS = {
     store: ['M2 7 4.41 2.59A1 1 0 0 1 5.3 2h13.4a1 1 0 0 1 .89.59L22 7', 'M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7', 'M2 7h20', 'M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6'],
     box: ['M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z', 'm3.3 7 8.7 5 8.7-5', 'M12 22V12'],
     truck: ['M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2', 'M15 18H9', 'M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14', 'M17 18a2 2 0 1 0 4 0 2 2 0 0 0-4 0', 'M5 18a2 2 0 1 0 4 0 2 2 0 0 0-4 0'],
-    quality: ['M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z', 'm9 12 2 2 4-4'],
-    layers: ['m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z', 'm22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65', 'm22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65'],
-    tag: ['M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z', 'M7.5 8.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2'],
 };
 
 function Icon({ paths, size = 20 }) {
@@ -65,21 +62,28 @@ const T = {
         aboutKicker: 'About M1', aboutTitle: 'Your Trusted Partner in Printing Business',
         aboutCopy1: 'M1 is a wholesale supplier of premium printing materials in Malaysia. We are committed to providing consistent quality, stable supply and the best value to support your business growth.',
         learnMore: 'Learn more',
-        whyKicker: 'Why choose M1', whyTitle: 'The M1 Advantage',
-        why: [
-            { title: 'Premium Quality', copy: 'Carefully selected materials from reliable manufacturers.' },
-            { title: 'Stable Supply', copy: 'Large inventory and strong supply chain.' },
-            { title: 'Fast Delivery', copy: 'Nationwide delivery to keep your business running.' },
-            { title: 'Cheapest in Malaysia', copy: 'Best wholesale pricing for printing professionals.' },
-        ],
+        whyStory: {
+            hud: 'WHY CHOOSE US',
+            panel: 'WHY CHOOSE US',
+            scrollHint: 'SCROLL ↓',
+            w1: 'PREMIUM QUALITY',
+            w2: 'STABLE SUPPLY',
+            w3: 'FAST DELIVERY',
+            roller: ['COMPETITIVE', 'AFFORDABLE', 'UNBEATABLE', 'LOWEST', 'CHEAPEST'],
+            pricingSuffix: 'PRICING',
+            inMalaysia: 'IN MALAYSIA',
+            logoTag: 'NO. 1 IN MALAYSIA',
+        },
         contactKicker: "Let's grow together", contactTitle: 'Contact Us',
         contactCopy: 'Have questions or need a quotation? Our team is ready to help.',
-        hours: 'Mon - Sat: 9:00 AM - 6:00 PM', waBtn: 'WhatsApp us',
-        fCompany: 'Company Name', fName: 'Your Name', fPhone: 'Phone Number', fEmail: 'Email Address', fMsg: 'Message',
-        fSend: 'Send message', fSent: 'Sent — we will be in touch',
+        hours: 'Mon - Sat: 9:00 AM - 6:00 PM',
+        emailReply: "We'll reply within 24 hours",
+        address: 'No. 12, Jalan Industri 1/3, Bandar Teknologi, 47600 Subang Jaya, Selangor, Malaysia',
+        waCardTitle: 'Chat with us on WhatsApp',
+        waCardCopy: 'Get quick support and fast responses from our team.',
+        waBtn: 'WhatsApp us',
         fCompanyCol: 'Company', fSupport: 'Support', follow: 'Follow us', rights: 'All rights reserved.',
         deliverPrefix: 'We deliver on your', deliverWords: ['schedule.', 'terms.', 'budget.', 'timeline.', 'schedule.'],
-        morphQ: 'No markup?', morphA: 'fair!',
     },
     bm: {
         navProducts: 'Produk', navAbout: 'Tentang kami', navWhy: 'Kenapa pilih kami', navContact: 'Hubungi', navCta: 'Hubungi kami',
@@ -91,21 +95,28 @@ const T = {
         aboutKicker: 'Tentang M1', aboutTitle: 'Rakan Dipercayai dalam Perniagaan Percetakan',
         aboutCopy1: 'M1 ialah pembekal borong bahan cetakan premium di Malaysia. Kami komited menyediakan kualiti konsisten, bekalan stabil dan nilai terbaik untuk menyokong pertumbuhan perniagaan anda.',
         learnMore: 'Ketahui lanjut',
-        whyKicker: 'Kenapa pilih M1', whyTitle: 'Kelebihan M1',
-        why: [
-            { title: 'Kualiti Premium', copy: 'Bahan dipilih teliti daripada pengeluar yang dipercayai.' },
-            { title: 'Bekalan Stabil', copy: 'Inventori besar dan rantaian bekalan yang kukuh.' },
-            { title: 'Penghantaran Pantas', copy: 'Penghantaran seluruh negara untuk memastikan perniagaan anda berjalan.' },
-            { title: 'Termurah di Malaysia', copy: 'Harga borong terbaik untuk profesional percetakan.' },
-        ],
+        whyStory: {
+            hud: 'KENAPA PILIH KAMI',
+            panel: 'KENAPA PILIH KAMI',
+            scrollHint: 'SKROL ↓',
+            w1: 'KUALITI PREMIUM',
+            w2: 'BEKALAN STABIL',
+            w3: 'PENGHANTARAN PANTAS',
+            roller: ['KOMPETITIF', 'BERBALOI', 'TERBAIK', 'TERENDAH', 'TERMURAH'],
+            pricingSuffix: 'HARGA',
+            inMalaysia: 'DI MALAYSIA',
+            logoTag: 'NO. 1 DI MALAYSIA',
+        },
         contactKicker: 'Mari berkembang bersama', contactTitle: 'Hubungi Kami',
         contactCopy: 'Ada soalan atau perlukan sebut harga? Pasukan kami sedia membantu.',
-        hours: 'Isn - Sab: 9:00 AM - 6:00 PM', waBtn: 'WhatsApp kami',
-        fCompany: 'Nama Syarikat', fName: 'Nama Anda', fPhone: 'Nombor Telefon', fEmail: 'Alamat E-mel', fMsg: 'Mesej',
-        fSend: 'Hantar mesej', fSent: 'Dihantar — kami akan hubungi anda',
+        hours: 'Isn - Sab: 9:00 AM - 6:00 PM',
+        emailReply: 'Kami balas dalam 24 jam',
+        address: 'No. 12, Jalan Industri 1/3, Bandar Teknologi, 47600 Subang Jaya, Selangor, Malaysia',
+        waCardTitle: 'Sembang dengan kami di WhatsApp',
+        waCardCopy: 'Dapatkan sokongan pantas dan respons cepat daripada pasukan kami.',
+        waBtn: 'WhatsApp kami',
         fCompanyCol: 'Syarikat', fSupport: 'Sokongan', follow: 'Ikuti kami', rights: 'Hak cipta terpelihara.',
         deliverPrefix: 'Kami hantar mengikut', deliverWords: ['jadual.', 'terma.', 'bajet.', 'garis masa.', 'jadual.'],
-        morphQ: 'Tiada markup?', morphA: 'adil!',
     },
 };
 
@@ -155,7 +166,6 @@ export default function V3() {
     const [lang, setLang] = useState('en');
     const [cat, setCat] = useState(0);
     const [tick, setTick] = useState(0);
-    const [sent, setSent] = useState(false);
     const scopeRef = useRef(null);
     useScrollReveal(scopeRef);
 
@@ -172,31 +182,32 @@ export default function V3() {
         { icon: <Icon paths={ICONS.box} />, target: PRODUCTS.length, suffix: '', label: t.s3 },
         { icon: <Icon paths={ICONS.truck} />, target: 0, suffix: '', value: t.s4v, label: t.s4 },
     ];
-    const whyIcons = [ICONS.quality, ICONS.layers, ICONS.truck, ICONS.tag];
     const heroDelays = useMemo(() => typeDelays([t.heroL1, t.heroL2, t.heroL3], 40, 150, 120), [t.heroL1, t.heroL2, t.heroL3]);
     const heroDoneSec = (heroDelays[2] + t.heroL3.length * 40 + 300) / 1000;
 
     return (
         <div ref={scopeRef}>
-            <section style={{ background: '#0b0b0c', color: '#fff' }}>
-                <nav className="mx-auto flex max-w-[1600px] items-center gap-6 px-5 py-5.5 md:gap-10 md:px-12">
-                    <span className="inline-flex rounded bg-white px-2 py-1">
+            <nav className="border-b border-[#ececee] bg-white">
+                <div className="mx-auto flex max-w-[1600px] items-center gap-6 px-5 py-5.5 md:gap-10 md:px-12">
+                    <span className="inline-flex">
                         <img src="/images/m-one-logo.png" alt="M One Material" className="h-9 w-auto" />
                     </span>
                     <div className="ml-auto flex flex-wrap items-center gap-4 md:gap-8">
-                        <a href="#products" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navProducts}</a>
-                        <a href="#about" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navAbout}</a>
-                        <a href="#why" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navWhy}</a>
-                        <a href="#contact" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#d4d4d8] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navContact}</a>
+                        <a href="#products" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navProducts}</a>
+                        <a href="#about" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navAbout}</a>
+                        <a href="#why" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navWhy}</a>
+                        <a href="#contact" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navContact}</a>
                         <span className="inline-flex items-center gap-0.5">
-                            <button type="button" onClick={() => setLang('en')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'en' ? ACCENT : '#71717a' }}>EN</button>
-                            <span className="text-xs text-[#52525b]">/</span>
-                            <button type="button" onClick={() => setLang('bm')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'bm' ? ACCENT : '#71717a' }}>BM</button>
+                            <button type="button" onClick={() => setLang('en')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'en' ? ACCENT : '#a1a1aa' }}>EN</button>
+                            <span className="text-xs text-[#d4d4d8]">/</span>
+                            <button type="button" onClick={() => setLang('bm')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'bm' ? ACCENT : '#a1a1aa' }}>BM</button>
                         </span>
                         <a href="#contact" className="whitespace-nowrap rounded-full px-6 py-3 text-[12.5px] font-extrabold tracking-[0.08em] text-white uppercase no-underline hover:opacity-90" style={{ background: ACCENT }}>{t.navCta}</a>
                     </div>
-                </nav>
+                </div>
+            </nav>
 
+            <section style={{ background: '#0b0b0c', color: '#fff' }}>
                 <div className="mx-auto grid max-w-[1600px] items-stretch gap-8 px-5 pt-8 md:gap-12 md:px-12 md:pt-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.3fr)]">
                     <div key={lang} className="flex flex-col justify-center pb-8 md:pb-14">
                         <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[54px]">
@@ -290,20 +301,20 @@ export default function V3() {
                 </div>
             </section>
 
-            <section id="about" className="bg-white">
-                <div className="grid items-stretch" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))' }}>
-                    <div data-reveal className="ml-auto max-w-[600px] self-center px-5 py-14 md:px-12 md:py-22">
-                        <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.aboutKicker}</Kicker>
-                        <h2 className="m-0 mt-2.5 text-[26px] leading-tight font-black tracking-tight sm:text-[38px]">{t.aboutTitle}</h2>
-                        <p className="mt-4.5 max-w-[48ch] text-[15px] leading-[1.8] text-[#52525b]">{t.aboutCopy1}</p>
-                        <div className="mt-6.5">
-                            <a href="#why" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-6.5 py-3 text-xs font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
+            <section id="about" className="min-h-screen bg-white">
+                <div className="grid min-h-screen items-stretch lg:grid-cols-2">
+                    <div data-reveal className="ml-auto flex w-full max-w-[680px] flex-col justify-center self-center px-5 py-14 md:px-12 md:py-22">
+                        <Kicker gradient={KICKER_GRADIENT} className="text-[14px] font-extrabold tracking-[0.14em] uppercase">{t.aboutKicker}</Kicker>
+                        <h2 className="m-0 mt-4 text-[36px] leading-tight font-black tracking-tight sm:text-[48px] lg:text-[54px]">{t.aboutTitle}</h2>
+                        <p className="mt-6 max-w-[48ch] text-[18px] leading-[1.8] text-[#52525b]">{t.aboutCopy1}</p>
+                        <div className="mt-8">
+                            <a href="#why" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-8 py-3.5 text-[13.5px] font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
                                 {t.learnMore}
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </a>
                         </div>
                     </div>
-                    <div className="relative min-h-[340px]">
+                    <div className="relative min-h-[50vh] lg:min-h-full">
                         <img src="/images/about-us/aboutUs.png" alt="M One Material warehouse" className="absolute inset-0 h-full w-full object-cover" />
                         <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 40%)' }} />
                     </div>
@@ -317,92 +328,95 @@ export default function V3() {
                 </p>
             </section>
 
-            <section id="why" className="border-t border-[#ececee]" style={{ background: '#fafafa' }}>
-                <div className="mx-auto max-w-[1600px] px-5 py-18 pb-21 md:px-12">
-                    <div data-reveal>
-                        <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.whyKicker}</Kicker>
-                        <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.whyTitle}</h2>
-                    </div>
-                    <div className="mt-11 grid gap-8 sm:gap-11" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))' }}>
-                        {t.why.map((w, i) => (
-                            <div key={w.title} data-reveal className="flex items-start gap-4">
-                                <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border-[1.5px] border-[#f5c4bb] bg-[#fde8e4]" style={{ color: ACCENT }}>
-                                    <Icon paths={whyIcons[i]} />
-                                </span>
-                                <div>
-                                    <h3 className="m-0 text-[16.5px] font-extrabold">{w.title}</h3>
-                                    <p className="mt-2 text-sm leading-[1.7] text-[#52525b]">{w.copy}</p>
-                                    {i === 3 && (
-                                        <p className="mt-2 text-sm font-bold">
-                                            <MorphBadge question={t.morphQ} answer={t.morphA} gold={ACCENT} />
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            <section id="why">
+                <WhyScrollStory key={lang} copy={t.whyStory} />
             </section>
 
-            <section id="contact" className="border-t border-[#ececee] bg-white">
-                <div className="mx-auto max-w-[1600px] px-5 py-18 pb-21 md:px-12">
-                    <div data-reveal className="max-w-[640px]">
-                        <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.contactKicker}</Kicker>
-                        <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.contactTitle}</h2>
-                        <p className="mt-4 max-w-[44ch] text-[15px] leading-[1.8] text-[#52525b]">{t.contactCopy}</p>
-                    </div>
+            <section id="contact" className="relative min-h-screen overflow-hidden bg-white">
+                <svg width="0" height="0" className="absolute" aria-hidden>
+                    <defs>
+                        <clipPath id="m3-contact-curve" clipPathUnits="objectBoundingBox">
+                            {/* "/" curve: wider at top, soft S-curve into the white side */}
+                            <path d="M0,0 H0.70 C0.62,0.28 0.68,0.72 0.54,1 H0 Z" />
+                        </clipPath>
+                    </defs>
+                </svg>
 
-                    <div data-reveal className="mt-10 grid items-stretch gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-12">
-                        <div className="min-h-[280px] overflow-hidden rounded-md border border-[#ececee] lg:min-h-full">
-                            <video
-                                src="/video/HappyHorse-20260807-0001-1786071399113.mp4"
-                                className="h-full w-full object-cover"
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                                aria-label="Warehouse location"
-                            />
-                        </div>
+                <div
+                    className="absolute inset-0 z-0 max-lg:[clip-path:none] lg:[clip-path:url(#m3-contact-curve)]"
+                >
+                    <video
+                        src="/video/HappyHorse-20260807-0001-1786071399113.mp4"
+                        className="absolute inset-0 h-full w-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        aria-label="Warehouse location"
+                    />
+                    <div
+                        className="absolute inset-0"
+                        style={{ background: 'linear-gradient(115deg, rgba(11,11,12,.82) 0%, rgba(11,11,12,.55) 55%, rgba(11,11,12,.4) 100%)' }}
+                    />
+                </div>
 
-                        <div className="flex flex-col gap-7 rounded-md border border-[#ececee] bg-[#fafafa] p-6 md:p-8">
-                            <div className="grid gap-5 sm:grid-cols-3 sm:gap-4">
-                                <div className="flex items-start gap-3">
-                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span>
-                                    <span className="text-[14px] leading-snug font-semibold">+60 12-345 6789</span>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span>
-                                    <span className="text-[14px] leading-snug font-semibold break-all">sales@m1.com.my</span>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <span className="mt-0.5 inline-flex flex-shrink-0" style={{ color: ACCENT }}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></span>
-                                    <span className="text-[14px] leading-snug font-semibold">{t.hours}</span>
+                <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] items-center gap-12 px-5 py-16 md:px-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-10">
+                    <div data-reveal className="max-w-[640px] text-white">
+                        <Kicker gradient={KICKER_GRADIENT} className="text-[14px] font-extrabold tracking-[0.14em] uppercase">{t.contactKicker}</Kicker>
+                        <h2 className="m-0 mt-4 text-[42px] font-black tracking-tight sm:text-[56px]">{t.contactTitle}</h2>
+                        <p className="mt-5 max-w-[42ch] text-[18px] leading-[1.75] text-white/85">{t.contactCopy}</p>
+
+                        <div className="mt-12 grid gap-8">
+                            <div className="flex items-start gap-5">
+                                <span className="inline-flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white" style={{ color: ACCENT }}>
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
+                                </span>
+                                <div>
+                                    <p className="m-0 text-[20px] font-extrabold">+60 12-345 6789</p>
+                                    <p className="m-0 mt-1.5 text-[16px] text-white/75">{t.hours}</p>
                                 </div>
                             </div>
-
-                            <div className="h-px w-full bg-[#e4e4e7]" />
-
-                            <form
-                                onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-                                className="grid flex-1 content-start gap-4"
-                                style={{ gridTemplateColumns: '1fr 1fr' }}
-                            >
-                                <input type="text" placeholder={t.fCompany} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                                <input type="text" placeholder={t.fName} required className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                                <input type="text" placeholder={t.fPhone} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                                <input type="email" placeholder={t.fEmail} required className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" />
-                                <textarea placeholder={t.fMsg} rows={5} className="rounded-md border border-[#d4d4d8] bg-white px-4 py-3.5 text-sm outline-none focus:border-[#ec3013]" style={{ gridColumn: '1 / -1' }} />
-                                <div className="flex flex-wrap items-center gap-3" style={{ gridColumn: '1 / -1' }}>
-                                    <button type="submit" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md px-7 py-3.5 text-xs font-extrabold tracking-[0.1em] text-white uppercase hover:opacity-90" style={{ background: ACCENT }}>
-                                        {sent ? t.fSent : t.fSend}
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                                    </button>
-                                    <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-6 py-3 text-xs font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
-                                        {t.waBtn}
-                                    </a>
+                            <div className="flex items-start gap-5">
+                                <span className="inline-flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white" style={{ color: ACCENT }}>
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+                                </span>
+                                <div>
+                                    <p className="m-0 text-[20px] font-extrabold break-all">sales@m1.com.my</p>
+                                    <p className="m-0 mt-1.5 text-[16px] text-white/75">{t.emailReply}</p>
                                 </div>
-                            </form>
+                            </div>
+                            <div className="flex items-start gap-5">
+                                <span className="inline-flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white" style={{ color: ACCENT }}>
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /><circle cx="12" cy="10" r="3" /></svg>
+                                </span>
+                                <div>
+                                    <p className="m-0 max-w-[40ch] text-[17px] leading-[1.55] font-semibold">{t.address}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-reveal className="flex justify-center lg:justify-end">
+                        <div className="w-full max-w-[440px] rounded-2xl bg-white p-10 text-center shadow-[0_24px_60px_rgba(0,0,0,.14)] md:p-12">
+                            <span className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full text-white" style={{ background: ACCENT }}>
+                                <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                </svg>
+                            </span>
+                            <h3 className="m-0 mt-6 text-[26px] font-extrabold tracking-tight text-[#161616]">{t.waCardTitle}</h3>
+                            <p className="mt-3 text-[16px] leading-[1.65] text-[#71717a]">{t.waCardCopy}</p>
+                            <a
+                                href={WA_HREF}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-lg px-6 py-4 text-[15px] font-extrabold tracking-[0.08em] text-white uppercase no-underline hover:opacity-90"
+                                style={{ background: ACCENT }}
+                            >
+                                {t.waBtn}
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                </svg>
+                            </a>
                         </div>
                     </div>
                 </div>

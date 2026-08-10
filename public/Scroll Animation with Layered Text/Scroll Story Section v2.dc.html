@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#0d0705}
+body{overflow-x:hidden}
+a{color:#ec3013;text-decoration:none}
+a:hover{color:#ff8a70}
+::selection{background:#ec3013;color:#fff}
+@keyframes kickerShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+</helmet>
+<div id="stage" data-screen-label="Scroll hero v2" style="position:relative;height:100vh;overflow:hidden;background:radial-gradient(120% 90% at 50% 42%, #191009 0%, #0d0705 62%);font-family:'Space Grotesk',sans-serif;">
+  <div id="ghostTop" style="position:absolute;z-index:1;top:1vh;left:0;white-space:nowrap;font-family:'Anton',sans-serif;font-size:24vh;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(247,242,238,0.07);letter-spacing:0.02em;">PREMIUM QUALITY — STABLE SUPPLY — FAST DELIVERY — COMPETITIVE PRICING — PREMIUM QUALITY — STABLE SUPPLY —</div>
+  <div id="ghostBot" style="position:absolute;z-index:1;bottom:1vh;left:-40vw;white-space:nowrap;font-family:'Anton',sans-serif;font-size:24vh;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(236,48,19,0.10);letter-spacing:0.02em;">FAST DELIVERY — COMPETITIVE PRICING — PREMIUM QUALITY — STABLE SUPPLY — FAST DELIVERY —</div>
+  <div id="crossWrap" style="position:absolute;inset:0;z-index:2;pointer-events:none;">
+    <div id="cross1" style="position:absolute;left:50%;top:50%;width:270vmax;height:270vmax;margin:-135vmax 0 0 -135vmax;background:repeating-linear-gradient(90deg, rgba(236,48,19,0.30) 0px, rgba(236,48,19,0.30) 2px, transparent 2px, transparent 96px);opacity:0;transform:rotate(14deg) translate3d(-10%,8%,0);"></div>
+    <div id="cross2" style="position:absolute;left:50%;top:50%;width:270vmax;height:270vmax;margin:-135vmax 0 0 -135vmax;background:repeating-linear-gradient(90deg, rgba(174,24,0,0.38) 0px, rgba(174,24,0,0.38) 2px, transparent 2px, transparent 128px);opacity:0;transform:rotate(-14deg) translate3d(10%,-8%,0);"></div>
+  </div>
+  <div style="position:absolute;inset:0;z-index:3;display:grid;place-items:center;">
+    <div id="pairA" style="text-align:center;">
+      <div id="rowA1" style="font-family:'Anton',sans-serif;font-size:clamp(48px, 9.5vw, 165px);line-height:0.98;color:#f7f2ee;white-space:nowrap;transform:translate3d(-110vw,0,0) skewX(8deg);">PREMIUM QUALITY</div>
+      <div id="rowA2" style="font-family:'Anton',sans-serif;font-size:clamp(48px, 9.5vw, 165px);line-height:0.98;color:transparent;-webkit-text-stroke:2px #ec3013;white-space:nowrap;transform:translate3d(110vw,0,0) skewX(-8deg);">STABLE SUPPLY</div>
+    </div>
+    <div id="pairB" style="position:absolute;inset:0;display:grid;place-items:center;">
+      <div style="text-align:center;">
+        <div id="rowB1" style="font-family:'Anton',sans-serif;font-size:clamp(44px, 8.6vw, 150px);line-height:0.98;color:#ec3013;white-space:nowrap;transform:translate3d(112vw,0,0) skewX(-8deg);">FAST DELIVERY</div>
+        <div id="rowB2" style="font-family:'Anton',sans-serif;font-size:clamp(44px, 8.6vw, 150px);line-height:0.98;color:transparent;-webkit-text-stroke:2px #f7f2ee;white-space:nowrap;transform:translate3d(-112vw,0,0) skewX(8deg);">COMPETITIVE PRICING</div>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;inset:0;z-index:4;display:grid;place-items:center;pointer-events:none;">
+    <div id="giantGroup" style="position:relative;opacity:0;transform:scale(0.6);">
+      <div id="giantUp" class="giant-clone" style="position:absolute;inset:0;display:grid;place-items:center;font-family:'Anton',sans-serif;font-size:14vw;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(247,242,238,0.85);white-space:nowrap;">SUPPLY</div>
+      <div id="giantDown" class="giant-clone" style="position:absolute;inset:0;display:grid;place-items:center;font-family:'Anton',sans-serif;font-size:14vw;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(236,48,19,0.9);white-space:nowrap;">SUPPLY</div>
+      <div id="giantMid" style="position:relative;font-family:'Anton',sans-serif;font-size:14vw;line-height:1;color:#ec3013;white-space:nowrap;will-change:transform;">SUPPLY</div>
+    </div>
+  </div>
+  <div id="flood" style="position:absolute;inset:0;z-index:5;background:linear-gradient(160deg, #dd2b0f 0%, #ae1800 100%);opacity:0;pointer-events:none;"></div>
+  <div id="hud" style="position:absolute;inset:0;z-index:6;pointer-events:none;">
+    <div style="position:absolute;top:28px;left:32px;font-size:12px;font-weight:700;letter-spacing:0.38em;background-image:linear-gradient(90deg, #ec3013 0%, #ec3013 42%, #ff8a70 50%, #ec3013 58%, #ec3013 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:kickerShimmer 3s linear infinite;">WHY CHOOSE US</div>
+    <div style="position:absolute;top:28px;right:32px;font-size:11px;letter-spacing:0.28em;color:rgba(247,242,238,0.55);">SCROLL TO EXPLORE ↓</div>
+    <div style="position:absolute;bottom:24px;left:32px;display:flex;gap:8px;align-items:baseline;font-size:12px;letter-spacing:0.2em;color:rgba(247,242,238,0.85);"><span id="phaseNum" style="color:#ec3013;font-weight:700;">01</span><span style="color:rgba(247,242,238,0.4);">/ 04</span></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:3px;z-index:7;background:rgba(247,242,238,0.08);">
+    <div id="prog" style="height:100%;background:linear-gradient(90deg, #ec3013, #ff8a70);transform:scaleX(0);transform-origin:left center;"></div>
+  </div>
+</div>
+<section id="next" data-screen-label="Next section (blank)" style="position:relative;z-index:8;min-height:110vh;background:#f6f1ec;display:grid;place-items:center;">
+  <div style="font-family:'Space Grotesk',monospace;font-size:13px;letter-spacing:0.3em;color:#ae1800;">// NEXT SECTION FLOWS IN HERE</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;giantWord&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;SUPPLY&quot;, &quot;options&quot;: [&quot;QUALITY&quot;, &quot;PREMIUM&quot;, &quot;SUPPLY&quot;, &quot;DELIVERY&quot;, &quot;PRICING&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Finale&quot;},
+  &quot;pinLength&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 6400, &quot;min&quot;: 3000, &quot;max&quot;: 10000, &quot;step&quot;: 100, &quot;unit&quot;: &quot;px&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Scroll feel&quot;},
+  &quot;showGhost&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Layers&quot;}
+}">
+class Component extends DCLogic {
+  componentDidMount() { this._tries = 0; this._boot(); this._watchId = setInterval(() => this._check(), 700); }
+  componentWillUnmount() { clearInterval(this._watchId); this._teardown(); }
+  _check() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+    const stage = document.getElementById('stage');
+    if (!stage) return;
+    const alive = this._tl && this._tl.scrollTrigger && ScrollTrigger.getAll().length > 0 && this._stage === stage && stage.isConnected;
+    if (!alive) { this._teardown(); this._setup(); return; }
+    const st = this._tl.scrollTrigger;
+    if (typeof st.end !== 'number' || isNaN(st.end) || st.end <= 0) ScrollTrigger.refresh();
+  }
+  componentDidUpdate(prev) {
+    if (prev.pinLength !== this.props.pinLength || prev.giantWord !== this.props.giantWord || prev.showGhost !== this.props.showGhost) {
+      this._teardown(); this._setup();
+    }
+  }
+  _boot() {
+    if (!window.gsap || !window.ScrollTrigger || !document.getElementById('stage')) {
+      if (this._tries++ < 200) setTimeout(() => this._boot(), 50);
+      return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+    this._setup();
+  }
+  _teardown() {
+    if (this._tl) {
+      if (this._tl.scrollTrigger) this._tl.scrollTrigger.kill(true);
+      this._tl.kill();
+      this._tl = null;
+    }
+  }
+  _setup() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const stage = document.getElementById('stage');
+    if (!stage) return;
+    ScrollTrigger.getAll().forEach(t => t.kill(true));
+    this._stage = stage;
+    const pin = this.props.pinLength ?? 6400;
+    if (this.props.giantWord) {
+      ['giantUp', 'giantMid', 'giantDown'].forEach(id => { document.getElementById(id).textContent = this.props.giantWord; });
+    }
+    const showGhost = this.props.showGhost ?? true;
+    document.getElementById('ghostTop').style.display = showGhost ? '' : 'none';
+    document.getElementById('ghostBot').style.display = showGhost ? '' : 'none';
+    const phaseEl = document.getElementById('phaseNum');
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.inOut' },
+      scrollTrigger: {
+        trigger: '#stage', start: 'top top', end: '+=' + pin,
+        scrub: 1, pin: true, anticipatePin: 1,
+        onUpdate: (st) => {
+          const p = st.progress;
+          phaseEl.textContent = p < 0.26 ? '01' : p < 0.5 ? '02' : p < 0.78 ? '03' : '04';
+        }
+      }
+    });
+    // Phase 1 — pair A converges from left/right, first diagonal line layer tilts in
+    tl.to('#ghostTop', { xPercent: -24, ease: 'none', duration: 14.5 }, 0)
+      .to('#ghostBot', { xPercent: 24, ease: 'none', duration: 14.5 }, 0)
+      .fromTo('#rowA1', { x: '-110vw', skewX: 8 }, { x: 0, skewX: 0, duration: 2 }, 0.2)
+      .fromTo('#rowA2', { x: '110vw', skewX: -8 }, { x: 0, skewX: 0, duration: 2 }, 0.2)
+      .fromTo('#cross1', { opacity: 0, rotate: 14, xPercent: -10, yPercent: 8 },
+        { opacity: 1, rotate: 45, xPercent: 0, yPercent: 0, duration: 2.8 }, 0.5)
+      .addLabel('p2', 3.4)
+      // Phase 2 — pair A exits opposite sides, pair B crosses in, second line layer completes the lattice
+      .to('#rowA1', { x: '112vw', skewX: -8, duration: 1.8 }, 'p2')
+      .to('#rowA2', { x: '-112vw', skewX: 8, duration: 1.8 }, 'p2')
+      .fromTo('#rowB1', { x: '112vw', skewX: -8 }, { x: 0, skewX: 0, duration: 2 }, 'p2+=0.5')
+      .fromTo('#rowB2', { x: '-112vw', skewX: 8 }, { x: 0, skewX: 0, duration: 2 }, 'p2+=0.5')
+      .fromTo('#cross2', { opacity: 0, rotate: -14, xPercent: 10, yPercent: -8 },
+        { opacity: 1, rotate: -45, xPercent: 0, yPercent: 0, duration: 2.8 }, 'p2')
+      .addLabel('p3', 7)
+      // Phase 3 — pair B clears, word lands at scale 1, splits into 3 (up + down clones)
+      .to('#pairB', { y: '-8vh', opacity: 0, scale: 0.92, duration: 1.6 }, 'p3+=0.4')
+      .to('#hud', { opacity: 0, duration: 1 }, 'p3+=0.6')
+      .to('#ghostTop, #ghostBot', { opacity: 0, duration: 1.2 }, 'p3+=0.6')
+      .fromTo('#giantGroup', { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.4 }, 'p3+=0.8')
+      .to('#giantUp', { yPercent: -104, duration: 1.3 }, 'p3+=2.4')
+      .to('#giantDown', { yPercent: 104, duration: 1.3 }, 'p3+=2.4')
+      .addLabel('p4', 'p3+=3.9')
+      // Phase 4 — top exits left, bottom exits right, center enlarges into the flood
+      .to('#giantUp', { x: '-120vw', skewX: 8, duration: 1.7 }, 'p4')
+      .to('#giantDown', { x: '120vw', skewX: -8, duration: 1.7 }, 'p4')
+      .to('#giantMid', { scale: 17, duration: 3, ease: 'power2.in' }, 'p4+=1.5')
+      .to('#crossWrap', { opacity: 0, duration: 1.4 }, 'p4+=2')
+      .to('#flood', { opacity: 1, duration: 1.2 }, 'p4+=3.1');
+    tl.to('#prog', { scaleX: 1, ease: 'none', duration: tl.duration() }, 0);
+    this._tl = tl;
+    ScrollTrigger.refresh();
+  }
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

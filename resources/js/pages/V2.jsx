@@ -62,9 +62,7 @@ const T = {
         morphQ: 'No markup?', morphA: 'fair!',
         contactKicker: 'Contact', contactTitle: 'Talk to us',
         contactCopy: 'Call, WhatsApp or send an enquiry — we reply within the working day.',
-        lPhone: 'Phone', lEmail: 'Email', lAddr: 'Address', formTitle: 'Send an enquiry',
-        fName: 'Name', fShop: 'Shop / company', fPhoneEmail: 'Phone or email', fMsg: 'What do you need?',
-        fSend: 'Send enquiry', fSent: 'Sent — we will be in touch',
+        lPhone: 'Phone', lEmail: 'Email', lAddr: 'Address',
         footerNote: 'Wholesale printing materials, delivered nationwide.',
     },
     bm: {
@@ -98,9 +96,7 @@ const T = {
         morphQ: 'Tiada markup?', morphA: 'adil!',
         contactKicker: 'Hubungi', contactTitle: 'Hubungi kami',
         contactCopy: 'Telefon, WhatsApp atau hantar pertanyaan — kami balas dalam hari bekerja yang sama.',
-        lPhone: 'Telefon', lEmail: 'E-mel', lAddr: 'Alamat', formTitle: 'Hantar pertanyaan',
-        fName: 'Nama', fShop: 'Kedai / syarikat', fPhoneEmail: 'Telefon atau e-mel', fMsg: 'Apa yang anda perlukan?',
-        fSend: 'Hantar pertanyaan', fSent: 'Dihantar — kami akan hubungi anda',
+        lPhone: 'Telefon', lEmail: 'E-mel', lAddr: 'Alamat',
         footerNote: 'Bahan cetakan borong, dihantar ke seluruh negara.',
     },
 };
@@ -108,7 +104,6 @@ const T = {
 export default function V2() {
     const [lang, setLang] = useState('en');
     const [cat, setCat] = useState(0);
-    const [sent, setSent] = useState(false);
     const scopeRef = useRef(null);
     useScrollReveal(scopeRef);
 
@@ -306,8 +301,8 @@ export default function V2() {
                 </div>
             </section>
 
-            <section id="contact" className="mx-auto grid max-w-[1600px] items-end gap-12 px-5 py-21 pb-18 md:px-12 lg:grid-cols-2 lg:gap-22">
-                <div data-reveal>
+            <section id="contact" className="mx-auto max-w-[1600px] px-5 py-21 pb-18 md:px-12">
+                <div data-reveal className="max-w-[720px]">
                     <Kicker gradient={KICKER_GRADIENT} className="text-[13.5px] font-bold tracking-[0.08em] uppercase">{t.contactKicker}</Kicker>
                     <h2 className="m-0 mt-3 text-[26px] font-extrabold tracking-tight sm:text-[38px]">{t.contactTitle}</h2>
                     <p className="mt-4.5 mb-7 max-w-[48ch] text-[15.5px] leading-[1.8] text-[#4c5d7a]">{t.contactCopy}</p>
@@ -331,23 +326,6 @@ export default function V2() {
                         />
                     </div>
                 </div>
-                <form
-                    data-reveal
-                    onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-                    className="grid h-fit content-start gap-3.5 self-end rounded-3xl border border-[#efe8e6] bg-white p-6 shadow-[0_18px_48px_rgba(174,24,0,.08)] md:gap-4 md:p-8"
-                >
-                    <h3 className="m-0 text-lg font-bold">{t.formTitle}</h3>
-                    <V2Field label={t.fName} id="v2-name" required />
-                    <V2Field label={t.fShop} id="v2-shop" />
-                    <V2Field label={t.fPhoneEmail} id="v2-mail" required />
-                    <div className="grid gap-1.5">
-                        <label htmlFor="v2-msg" className="text-[13px] font-bold text-[#3d4d68]">{t.fMsg}</label>
-                        <textarea id="v2-msg" rows={3} className="rounded-xl border-[1.5px] border-[#eadedb] bg-[#fbfcfe] px-4 py-2.5 text-[15px] outline-none focus:border-[#ec3013] focus:bg-white" />
-                    </div>
-                    <button type="submit" className="whitespace-nowrap rounded-full px-7 py-3 text-[15px] font-bold text-white shadow-[0_8px_24px_rgba(236,48,19,.28)] hover:bg-[#ae1800]" style={{ background: ACCENT }}>
-                        {sent ? t.fSent : t.fSend}
-                    </button>
-                </form>
             </section>
 
             <footer className="border-t border-[#efe8e6]">
@@ -370,15 +348,6 @@ function ContactRow({ label, value, paths }) {
                 <p className="m-0 text-xs font-bold tracking-[0.06em] text-[#8595ad] uppercase">{label}</p>
                 <p className="mt-0.5 text-[15.5px] leading-normal font-semibold">{value}</p>
             </div>
-        </div>
-    );
-}
-
-function V2Field({ label, id, required }) {
-    return (
-        <div className="grid gap-1.5">
-            <label htmlFor={id} className="text-[13px] font-bold text-[#3d4d68]">{label}</label>
-            <input id={id} type="text" required={required} className="rounded-xl border-[1.5px] border-[#eadedb] bg-[#fbfcfe] px-4 py-2.5 text-[15px] outline-none focus:border-[#ec3013] focus:bg-white" />
         </div>
     );
 }
