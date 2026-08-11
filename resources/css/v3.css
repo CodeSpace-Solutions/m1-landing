@@ -44,17 +44,16 @@ body {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
-.m3-why-kicker {
+.m3-why-kicker.is-active {
     animation: m3WhyKickerShimmer 3s linear infinite;
 }
 
 .m3-shine-phrase {
-    display: inline;
-}
-.m3-shine-char {
     display: inline-block;
     position: relative;
-    white-space: pre;
+}
+.m3-shine-text {
+    position: relative;
 }
 .m3-shine-ray {
     position: absolute;
@@ -73,16 +72,20 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     pointer-events: none;
-    animation: m3CharRay 5.6s ease-out infinite;
-    animation-delay: calc(var(--i) * 0.2s);
 }
-@keyframes m3CharRay {
-    0%, 3% { background-position: 140% 0; }
-    11% { background-position: -40% 0; }
+.m3-shine-phrase.is-active .m3-shine-ray {
+    animation: m3PhraseRay 6s ease-in-out infinite;
+}
+@keyframes m3PhraseRay {
+    0% { background-position: 140% 0; }
+    33.333% { background-position: -40% 0; }
     100% { background-position: -40% 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .m3-shine-ray {
+    .m3-why-kicker.is-active {
+        animation: none;
+    }
+    .m3-shine-phrase.is-active .m3-shine-ray {
         animation: none;
         opacity: 0;
     }

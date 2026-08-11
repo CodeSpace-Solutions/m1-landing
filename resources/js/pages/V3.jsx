@@ -10,6 +10,7 @@ import WhyScrollStory from '../components/WhyScrollStory';
 import ShineChars from '../components/ShineChars';
 import { typeDelays } from '../lib/typeDelays';
 import { useScrollReveal } from '../lib/useScrollReveal';
+import { useInViewVideo } from '../lib/useWhenVisible';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -241,6 +242,8 @@ export default function V3() {
     const [tick, setTick] = useState(0);
     const [isWaPickerOpen, setIsWaPickerOpen] = useState(false);
     const [waPickerProduct, setWaPickerProduct] = useState(null);
+    const contactVideoRef = useRef(null);
+    useInViewVideo(contactVideoRef);
     const closeWaPicker = () => {
         setIsWaPickerOpen(false);
         setWaPickerProduct(null);
@@ -299,7 +302,7 @@ export default function V3() {
                     className="m3-rise pointer-events-none absolute inset-y-0 right-0 hidden w-[60%] lg:block xl:w-[64%]"
                     style={{ animationDelay: '.2s' }}
                 >
-                    <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-[center_40%]" />
+                    <img src="/images/hero/hero3.png" alt="M One Material printing facility" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-[center_40%]" />
                     <div
                         className="absolute inset-0"
                         style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,.28) 18%,rgba(11,11,12,0) 38%),linear-gradient(180deg,rgba(11,11,12,.18) 0%,rgba(11,11,12,0) 18%)' }}
@@ -335,7 +338,7 @@ export default function V3() {
                         </div>
                     </div>
                     <div className="m3-rise relative min-h-[62vh] overflow-hidden lg:hidden" style={{ animationDelay: '.2s' }}>
-                        <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-center" />
+                        <img src="/images/hero/hero3.png" alt="M One Material printing facility" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-center" />
                         <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 28%),linear-gradient(0deg,rgba(11,11,12,.4) 0%,rgba(11,11,12,0) 28%)' }} />
                     </div>
                 </div>
@@ -379,7 +382,7 @@ export default function V3() {
                                 const name = lang === 'bm' ? p.nameBm : p.nameEn;
                                 return (
                                 <div key={p.nameEn} className="flex flex-col overflow-hidden rounded-md bg-white transition-all hover:-translate-y-1 hover:shadow-[0_14px_34px_rgba(0,0,0,.1)]">
-                                    <img src={p.image} alt={name} loading="lazy" className="aspect-[4/3] w-full bg-white object-contain" />
+                                    <img src={p.image} alt={name} loading="lazy" decoding="async" className="aspect-[4/3] w-full bg-white object-contain" />
                                     <div className="flex flex-1 flex-col gap-1 border-t border-[#f0f0f1] px-5 pt-4.5 pb-5">
                                         <p className="m-0 text-[16px] leading-tight font-extrabold">{name}</p>
                                         {p.spec && <p className="m-0 text-[13.5px] text-[#71717a]">{p.spec}</p>}
@@ -432,7 +435,7 @@ export default function V3() {
                         </div>
                     </div>
                     <div className="relative min-h-[50vh] lg:min-h-full">
-                        <img src="/images/about-us/aboutUs.png" alt="M One Material warehouse" className="absolute inset-0 h-full w-full object-cover" />
+                        <img src="/images/about-us/aboutUs.png" alt="M One Material warehouse" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
                         <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 40%)' }} />
                     </div>
                 </div>
@@ -463,12 +466,13 @@ export default function V3() {
                     className="absolute inset-0 z-0 max-lg:[clip-path:none] lg:[clip-path:url(#m3-contact-curve)]"
                 >
                     <video
+                        ref={contactVideoRef}
                         src="/video/contact-us.mp4"
                         className="absolute inset-0 h-full w-full object-cover"
-                        autoPlay
                         muted
                         loop
                         playsInline
+                        preload="none"
                         aria-label="Warehouse location"
                     />
                     <div
@@ -540,7 +544,7 @@ export default function V3() {
             <footer className="bg-black text-[#9b9b9f]">
                 <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 px-5 pt-13 pb-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)] md:gap-12 md:px-12">
                     <div className="min-w-0 sm:col-span-2 lg:col-span-1">
-                        <img src="/images/m-one-logo-black.png" alt="M One Material" className="h-16 w-auto md:h-[4.5rem]" />
+                        <img src="/images/m-one-logo-black.png" alt="M One Material" loading="lazy" decoding="async" className="h-16 w-auto md:h-[4.5rem]" />
                         <p className="mt-4 text-[14px] leading-[1.75]">
                             {t.footerBrand}<br />
                             {t.footerSsm}<br />

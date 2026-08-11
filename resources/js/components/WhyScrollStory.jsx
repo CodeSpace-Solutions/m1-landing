@@ -1,6 +1,7 @@
 import { useLayoutEffect, useId, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useInViewVideo, useWhenVisible } from '../lib/useWhenVisible';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,6 +42,10 @@ export default function WhyScrollStory({
     const uid = useId().replace(/:/g, '');
     const stageRef = useRef(null);
     const tlRef = useRef(null);
+    const videoRef = useRef(null);
+    const kickerRef = useRef(null);
+    useInViewVideo(videoRef);
+    useWhenVisible(kickerRef);
 
     const copyKey = [
         copy.hud, copy.panel, copy.scrollHint, copy.w1, copy.w2, copy.w3,
@@ -286,10 +291,11 @@ export default function WhyScrollStory({
                 }}
             >
             <video
-                autoPlay
+                ref={videoRef}
                 muted
                 loop
                 playsInline
+                preload="none"
                 src={VIDEO_SRC}
                 style={{
                     position: 'absolute',
@@ -652,7 +658,7 @@ export default function WhyScrollStory({
                                     padding: '2vmin 4vmin',
                                 }}
                             >
-                                <img src={LOGO_SRC} alt="M One Material" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                                <img src={LOGO_SRC} alt="M One Material" loading="lazy" decoding="async" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                                 <div
                                     data-logo-shine
                                     style={{
@@ -687,6 +693,7 @@ export default function WhyScrollStory({
 
             <div data-hud style={{ position: 'absolute', inset: 0, zIndex: 6, pointerEvents: 'none' }}>
                 <div
+                    ref={kickerRef}
                     className="m3-why-kicker"
                     style={{
                         position: 'absolute',
