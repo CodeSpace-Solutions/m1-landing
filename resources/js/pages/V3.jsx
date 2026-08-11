@@ -296,13 +296,13 @@ export default function V3() {
                 style={{ background: '#0b0b0c', color: '#fff' }}
             >
                 <div
-                    className="m3-rise pointer-events-none absolute inset-y-0 right-0 hidden w-[68%] lg:block xl:w-[72%]"
+                    className="m3-rise pointer-events-none absolute inset-y-0 right-0 hidden w-[60%] lg:block xl:w-[64%]"
                     style={{ animationDelay: '.2s' }}
                 >
                     <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-[center_40%]" />
                     <div
                         className="absolute inset-0"
-                        style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,.18) 22%,rgba(11,11,12,0) 42%),linear-gradient(180deg,rgba(11,11,12,.18) 0%,rgba(11,11,12,0) 18%)' }}
+                        style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,.28) 18%,rgba(11,11,12,0) 38%),linear-gradient(180deg,rgba(11,11,12,.18) 0%,rgba(11,11,12,0) 18%)' }}
                     />
                 </div>
                 <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-5.75rem)] w-full max-w-[1600px] flex-1 flex-col gap-8 px-5 py-10 md:px-12 lg:flex-row lg:items-center lg:py-0">
