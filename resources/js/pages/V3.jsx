@@ -291,10 +291,27 @@ export default function V3() {
             </nav>
 
             <section
-                className="flex min-h-[calc(100dvh-5.75rem)] flex-col"
+                className="relative flex min-h-[calc(100dvh-5.75rem)] flex-col overflow-hidden"
                 style={{ background: '#0b0b0c', color: '#fff' }}
             >
-                <div className="mx-auto grid min-h-0 w-full max-w-[1600px] flex-1 items-stretch gap-8 px-5 py-10 md:gap-12 md:px-12 md:py-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.3fr)]">
+                {/* Desktop: bleed photo to section top / right / bottom */}
+                <div
+                    className="m3-rise pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-[min(62vw,58%)] lg:block"
+                    style={{ animationDelay: '.2s' }}
+                    aria-hidden="true"
+                >
+                    <img
+                        src="/images/hero/hero3.png"
+                        alt=""
+                        className="h-full w-full object-cover object-center"
+                    />
+                    <div
+                        className="absolute inset-0"
+                        style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,.55) 18%,rgba(11,11,12,0) 42%)' }}
+                    />
+                </div>
+
+                <div className="relative z-10 mx-auto grid min-h-0 w-full max-w-[1600px] flex-1 items-center gap-8 px-5 py-10 md:gap-12 md:px-12 md:py-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.2fr)]">
                     <div key={lang} className="flex flex-col justify-center py-4 md:py-8">
                         <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[54px]">
                             <span className="block" style={lang === 'en' ? { color: ACCENT } : undefined}>
@@ -323,9 +340,14 @@ export default function V3() {
                             </a>
                         </div>
                     </div>
-                    <div className="m3-rise relative min-h-[50vh] overflow-hidden lg:min-h-full" style={{ animationDelay: '.2s' }}>
-                        <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-center" />
-                        <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 28%),linear-gradient(0deg,rgba(11,11,12,.4) 0%,rgba(11,11,12,0) 28%)' }} />
+
+                    {/* Mobile / tablet: in-flow photo */}
+                    <div className="m3-rise relative min-h-[50vh] overflow-hidden lg:invisible lg:min-h-0" style={{ animationDelay: '.2s' }}>
+                        <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-center lg:hidden" />
+                        <div
+                            className="pointer-events-none absolute inset-0 lg:hidden"
+                            style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 28%),linear-gradient(0deg,rgba(11,11,12,.4) 0%,rgba(11,11,12,0) 28%)' }}
+                        />
                     </div>
                 </div>
 
@@ -375,7 +397,7 @@ export default function V3() {
                                         <button
                                             type="button"
                                             onClick={() => openWaPicker(p)}
-                                            className="mt-3.5 inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-xs font-extrabold tracking-[0.08em] uppercase hover:opacity-80"
+                                            className="mt-auto inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 pt-3.5 text-xs font-extrabold tracking-[0.08em] uppercase hover:opacity-80"
                                             style={{ color: ACCENT }}
                                         >
                                             {t.viewDetails}
