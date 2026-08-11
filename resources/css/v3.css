@@ -47,3 +47,43 @@ body {
 .m3-why-kicker {
     animation: m3WhyKickerShimmer 3s linear infinite;
 }
+
+.m3-shine-phrase {
+    display: inline;
+}
+.m3-shine-char {
+    display: inline-block;
+    position: relative;
+    white-space: pre;
+}
+.m3-shine-ray {
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    background-image: linear-gradient(
+        105deg,
+        rgba(255, 255, 255, 0) 36%,
+        #ffffff 47%,
+        #ff8a70 51%,
+        #ec3013 54%,
+        rgba(255, 255, 255, 0) 64%
+    );
+    background-size: 240% 100%;
+    background-position: 140% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    pointer-events: none;
+    animation: m3CharRay 5.6s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.2s);
+}
+@keyframes m3CharRay {
+    0%, 3% { background-position: 140% 0; }
+    11% { background-position: -40% 0; }
+    100% { background-position: -40% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .m3-shine-ray {
+        animation: none;
+        opacity: 0;
+    }
+}

@@ -7,6 +7,7 @@ import TypeAccentLine from '../components/TypeAccentLine';
 import Kicker from '../components/Kicker';
 import WordRoller from '../components/WordRoller';
 import WhyScrollStory from '../components/WhyScrollStory';
+import ShineChars from '../components/ShineChars';
 import { typeDelays } from '../lib/typeDelays';
 import { useScrollReveal } from '../lib/useScrollReveal';
 
@@ -116,7 +117,7 @@ const T = {
         heroCta: 'Explore products',
         s1: 'Years Experience', s2: 'Printing Shops', s3: 'Products', s4: 'Delivery', s4v: 'Nationwide',
         prodKicker: 'Our products', prodTitle: 'Quality Materials for Every Need', viewDetails: 'Ask details',
-        aboutKicker: 'About M1', aboutTitle: 'Your Trusted Partner in Printing Business',
+        aboutKicker: 'About M1', aboutTitle: 'Your Trusted Partner in Printing Business', aboutShine: 'Trusted Partner', aboutAccent: 'Printing Business',
         aboutCopy1: 'M1 is a wholesale supplier of premium printing materials in Malaysia. We are committed to providing consistent quality, stable supply and the best value to support your business growth.',
         learnMore: 'Learn more',
         whyStory: {
@@ -156,7 +157,7 @@ const T = {
         heroCta: 'Terokai produk',
         s1: 'Tahun Pengalaman', s2: 'Kedai Cetak', s3: 'Produk', s4: 'Penghantaran', s4v: 'Seluruh Negara',
         prodKicker: 'Produk kami', prodTitle: 'Bahan Berkualiti untuk Setiap Keperluan', viewDetails: 'Tanya butiran',
-        aboutKicker: 'Tentang M1', aboutTitle: 'Rakan Dipercayai dalam Perniagaan Percetakan',
+        aboutKicker: 'Tentang M1', aboutTitle: 'Rakan Dipercayai dalam Perniagaan Percetakan', aboutShine: 'Rakan Dipercayai', aboutAccent: 'Perniagaan Percetakan',
         aboutCopy1: 'M1 ialah pembekal borong bahan cetakan premium di Malaysia. Kami komited menyediakan kualiti konsisten, bekalan stabil dan nilai terbaik untuk menyokong pertumbuhan perniagaan anda.',
         learnMore: 'Ketahui lanjut',
         whyStory: {
@@ -294,25 +295,18 @@ export default function V3() {
                 className="relative flex min-h-[calc(100dvh-5.75rem)] flex-col overflow-hidden"
                 style={{ background: '#0b0b0c', color: '#fff' }}
             >
-                {/* Desktop: bleed photo to section top / right / bottom */}
                 <div
-                    className="m3-rise pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-[min(62vw,58%)] lg:block"
+                    className="m3-rise pointer-events-none absolute inset-y-0 right-0 hidden w-[68%] lg:block xl:w-[72%]"
                     style={{ animationDelay: '.2s' }}
-                    aria-hidden="true"
                 >
-                    <img
-                        src="/images/hero/hero3.png"
-                        alt=""
-                        className="h-full w-full object-cover object-center"
-                    />
+                    <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-[center_40%]" />
                     <div
                         className="absolute inset-0"
-                        style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,.55) 18%,rgba(11,11,12,0) 42%)' }}
+                        style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,.18) 22%,rgba(11,11,12,0) 42%),linear-gradient(180deg,rgba(11,11,12,.18) 0%,rgba(11,11,12,0) 18%)' }}
                     />
                 </div>
-
-                <div className="relative z-10 mx-auto grid min-h-0 w-full max-w-[1600px] flex-1 items-center gap-8 px-5 py-10 md:gap-12 md:px-12 md:py-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.2fr)]">
-                    <div key={lang} className="flex flex-col justify-center py-4 md:py-8">
+                <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-5.75rem)] w-full max-w-[1600px] flex-1 flex-col gap-8 px-5 py-10 md:px-12 lg:flex-row lg:items-center lg:py-0">
+                    <div key={lang} className="flex max-w-[640px] flex-col justify-center py-4 md:py-10 lg:w-[38%] lg:max-w-none lg:pr-6">
                         <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[54px]">
                             <span className="block" style={lang === 'en' ? { color: ACCENT } : undefined}>
                                 {lang === 'en' ? (
@@ -340,14 +334,9 @@ export default function V3() {
                             </a>
                         </div>
                     </div>
-
-                    {/* Mobile / tablet: in-flow photo */}
-                    <div className="m3-rise relative min-h-[50vh] overflow-hidden lg:invisible lg:min-h-0" style={{ animationDelay: '.2s' }}>
-                        <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-center lg:hidden" />
-                        <div
-                            className="pointer-events-none absolute inset-0 lg:hidden"
-                            style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 28%),linear-gradient(0deg,rgba(11,11,12,.4) 0%,rgba(11,11,12,0) 28%)' }}
-                        />
+                    <div className="m3-rise relative min-h-[62vh] overflow-hidden lg:hidden" style={{ animationDelay: '.2s' }}>
+                        <img src="/images/hero/hero3.png" alt="M One Material printing facility" className="absolute inset-0 h-full w-full object-cover object-center" />
+                        <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 28%),linear-gradient(0deg,rgba(11,11,12,.4) 0%,rgba(11,11,12,0) 28%)' }} />
                     </div>
                 </div>
 
@@ -416,7 +405,24 @@ export default function V3() {
                 <div className="grid min-h-screen items-stretch lg:grid-cols-2">
                     <div data-reveal className="ml-auto flex w-full max-w-[680px] flex-col justify-center self-center px-5 py-14 md:px-12 md:py-22">
                         <Kicker gradient={KICKER_GRADIENT} className="text-[14px] font-extrabold tracking-[0.14em] uppercase">{t.aboutKicker}</Kicker>
-                        <h2 className="m-0 mt-4 text-[36px] leading-tight font-black tracking-tight sm:text-[48px] lg:text-[54px]">{t.aboutTitle}</h2>
+                        <h2 className="m-0 mt-4 text-[36px] leading-tight font-black tracking-tight sm:text-[48px] lg:text-[54px]">
+                            {t.aboutTitle.split(t.aboutShine).map((part, i, parts) => {
+                                const accented = t.aboutAccent && part.includes(t.aboutAccent)
+                                    ? part.split(t.aboutAccent).map((chunk, j, chunks) => (
+                                        <span key={`${chunk}-${j}`}>
+                                            {chunk}
+                                            {j < chunks.length - 1 ? <span style={{ color: ACCENT }}>{t.aboutAccent}</span> : null}
+                                        </span>
+                                    ))
+                                    : part;
+                                return (
+                                    <span key={`${part}-${i}`}>
+                                        {accented}
+                                        {i < parts.length - 1 ? <ShineChars text={t.aboutShine} /> : null}
+                                    </span>
+                                );
+                            })}
+                        </h2>
                         <p className="mt-6 max-w-[48ch] text-[18px] leading-[1.8] text-[#52525b]">{t.aboutCopy1}</p>
                         <div className="mt-8">
                             <a href="#why" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-8 py-3.5 text-[13.5px] font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
