@@ -8,6 +8,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: clip;
 }
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -20,6 +21,7 @@ body {
     color: #161616;
     text-wrap: pretty;
     font-family: 'Nunito Sans', sans-serif;
+    overflow-x: clip;
 }
 
 @keyframes m3rise {
@@ -88,5 +90,21 @@ body {
     .m3-shine-phrase.is-active .m3-shine-ray {
         animation: none;
         opacity: 0;
+    }
+}
+
+/* Why scroll story: quieter ghosts + safer type on small screens */
+@media (max-width: 767px) {
+    .m3-why-story [data-ghost-top],
+    .m3-why-story [data-ghost-bot] {
+        font-size: 14vh !important;
+        opacity: 0.55;
+    }
+    .m3-why-story [data-hud] > div:first-child {
+        left: 16px !important;
+        top: 18px !important;
+        letter-spacing: 0.22em !important;
+        font-size: 10px !important;
+        max-width: calc(100% - 96px);
     }
 }

@@ -5,7 +5,6 @@ import { CATEGORIES } from '../data/paperCatalog';
 import TypeText from '../components/TypeText';
 import TypeAccentLine from '../components/TypeAccentLine';
 import Kicker from '../components/Kicker';
-import WordRoller from '../components/WordRoller';
 import WhyScrollStory from '../components/WhyScrollStory';
 import ShineChars from '../components/ShineChars';
 import { typeDelays } from '../lib/typeDelays';
@@ -149,7 +148,6 @@ const T = {
         footerBrand: '© 2026 M ONE ADVERTISING SDN. BHD.',
         footerSsm: '202501034310 (1635720-T)',
         footerNote: 'Wholesale printing materials, delivered nationwide.',
-        deliverPrefix: 'We deliver on your', deliverWords: ['schedule.', 'terms.', 'budget.', 'timeline.', 'schedule.'],
     },
     bm: {
         navProducts: 'Produk', navAbout: 'Tentang kami', navWhy: 'Kenapa pilih kami', navContact: 'Hubungi', navCta: 'Hubungi kami',
@@ -190,7 +188,6 @@ const T = {
         footerBrand: '© 2026 M ONE ADVERTISING SDN. BHD.',
         footerSsm: '202501034310 (1635720-T)',
         footerNote: 'Bahan cetakan borong, dihantar ke seluruh negara.',
-        deliverPrefix: 'Kami hantar mengikut', deliverWords: ['jadual.', 'terma.', 'bajet.', 'garis masa.', 'jadual.'],
     },
 };
 
@@ -242,6 +239,7 @@ export default function V3() {
     const [tick, setTick] = useState(0);
     const [isWaPickerOpen, setIsWaPickerOpen] = useState(false);
     const [waPickerProduct, setWaPickerProduct] = useState(null);
+    const [isNavOpen, setIsNavOpen] = useState(false);
     const contactVideoRef = useRef(null);
     useInViewVideo(contactVideoRef);
     const closeWaPicker = () => {
@@ -252,9 +250,19 @@ export default function V3() {
         setWaPickerProduct(product);
         setIsWaPickerOpen(true);
     };
+    const closeNav = () => setIsNavOpen(false);
     const waPickerMessage = productWhatsAppMessage(waPickerProduct, lang);
     const scopeRef = useRef(null);
     useScrollReveal(scopeRef);
+
+    useEffect(() => {
+        if (!isWaPickerOpen && !isNavOpen) return undefined;
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = prev;
+        };
+    }, [isWaPickerOpen, isNavOpen]);
 
     const t = T[lang];
     const tab = TABS[cat];
@@ -273,17 +281,17 @@ export default function V3() {
     const heroDoneSec = (heroDelays[2] + t.heroL3.length * 40 + 300) / 1000;
 
     return (
-        <div ref={scopeRef}>
-            <nav className="border-b border-[#ececee] bg-white">
-                <div className="mx-auto flex max-w-[1600px] items-center gap-6 px-5 py-5.5 md:gap-10 md:px-12">
-                    <span className="inline-flex">
-                        <img src="/images/m-one-logo.png" alt="M One Material" className="h-12 w-auto md:h-14" />
+        <div ref={scopeRef} className="min-w-0 overflow-x-clip">
+            <nav className="sticky top-0 z-40 border-b border-[#ececee] bg-white">
+                <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-4 py-3.5 sm:gap-6 sm:px-5 sm:py-5.5 md:gap-10 md:px-12">
+                    <span className="inline-flex min-w-0 shrink">
+                        <img src="/images/m-one-logo.png" alt="M One Material" className="h-9 w-auto sm:h-12 md:h-14" />
                     </span>
-                    <div className="ml-auto flex flex-wrap items-center gap-4 md:gap-8">
-                        <a href="#products" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navProducts}</a>
-                        <a href="#about" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navAbout}</a>
-                        <a href="#why" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navWhy}</a>
-                        <a href="#contact" className="hidden text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013] sm:inline">{t.navContact}</a>
+                    <div className="ml-auto hidden flex-wrap items-center gap-4 md:flex md:gap-8">
+                        <a href="#products" className="text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013]">{t.navProducts}</a>
+                        <a href="#about" className="text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013]">{t.navAbout}</a>
+                        <a href="#why" className="text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013]">{t.navWhy}</a>
+                        <a href="#contact" className="text-[12.5px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:text-[#ec3013]">{t.navContact}</a>
                         <span className="inline-flex items-center gap-0.5">
                             <button type="button" onClick={() => setLang('en')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'en' ? ACCENT : '#a1a1aa' }}>EN</button>
                             <span className="text-xs text-[#d4d4d8]">/</span>
@@ -291,11 +299,64 @@ export default function V3() {
                         </span>
                         <a href="#contact" className="whitespace-nowrap rounded-full px-6 py-3 text-[12.5px] font-extrabold tracking-[0.08em] text-white uppercase no-underline hover:opacity-90" style={{ background: ACCENT }}>{t.navCta}</a>
                     </div>
+                    <div className="ml-auto flex items-center gap-2 md:hidden">
+                        <span className="inline-flex items-center gap-0.5">
+                            <button type="button" onClick={() => setLang('en')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'en' ? ACCENT : '#a1a1aa' }}>EN</button>
+                            <span className="text-xs text-[#d4d4d8]">/</span>
+                            <button type="button" onClick={() => setLang('bm')} className="p-1 text-xs font-extrabold" style={{ color: lang === 'bm' ? ACCENT : '#a1a1aa' }}>BM</button>
+                        </span>
+                        <button
+                            type="button"
+                            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#ececee] text-[#161616]"
+                            aria-expanded={isNavOpen}
+                            aria-label={isNavOpen ? 'Close menu' : 'Open menu'}
+                            onClick={() => setIsNavOpen((open) => !open)}
+                        >
+                            {isNavOpen ? (
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+                                    <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+                                </svg>
+                            ) : (
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+                                    <path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h16" />
+                                </svg>
+                            )}
+                        </button>
+                    </div>
                 </div>
+                {isNavOpen && (
+                    <div className="border-t border-[#ececee] bg-white px-4 py-4 md:hidden">
+                        <div className="mx-auto flex max-w-[1600px] flex-col gap-1">
+                            {[
+                                ['#products', t.navProducts],
+                                ['#about', t.navAbout],
+                                ['#why', t.navWhy],
+                                ['#contact', t.navContact],
+                            ].map(([href, label]) => (
+                                <a
+                                    key={href}
+                                    href={href}
+                                    onClick={closeNav}
+                                    className="rounded-lg px-3 py-3 text-[13px] font-bold tracking-[0.1em] text-[#52525b] uppercase no-underline hover:bg-[#fafafa] hover:text-[#ec3013]"
+                                >
+                                    {label}
+                                </a>
+                            ))}
+                            <a
+                                href="#contact"
+                                onClick={closeNav}
+                                className="mt-2 inline-flex items-center justify-center rounded-full px-5 py-3 text-[12.5px] font-extrabold tracking-[0.08em] text-white uppercase no-underline"
+                                style={{ background: ACCENT }}
+                            >
+                                {t.navCta}
+                            </a>
+                        </div>
+                    </div>
+                )}
             </nav>
 
             <section
-                className="relative flex min-h-[calc(100dvh-5.75rem)] flex-col overflow-hidden"
+                className="relative flex min-h-[calc(100dvh-4.5rem)] flex-col overflow-hidden sm:min-h-[calc(100dvh-5.75rem)]"
                 style={{ background: '#0b0b0c', color: '#fff' }}
             >
                 <div
@@ -308,9 +369,9 @@ export default function V3() {
                         style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,.28) 18%,rgba(11,11,12,0) 38%),linear-gradient(180deg,rgba(11,11,12,.18) 0%,rgba(11,11,12,0) 18%)' }}
                     />
                 </div>
-                <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-5.75rem)] w-full max-w-[1600px] flex-1 flex-col gap-8 px-5 py-10 md:px-12 lg:flex-row lg:items-center lg:py-0">
-                    <div key={lang} className="flex max-w-[640px] flex-col justify-center py-4 md:py-10 lg:w-[38%] lg:max-w-none lg:pr-6">
-                        <h1 className="m-0 text-[36px] leading-[1.12] font-black tracking-tight uppercase sm:text-[46px] lg:text-[54px]">
+                <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-4.5rem)] w-full max-w-[1600px] flex-1 flex-col gap-6 px-4 py-8 sm:min-h-[calc(100dvh-5.75rem)] sm:gap-8 sm:px-5 sm:py-10 md:px-12 lg:flex-row lg:items-center lg:py-0">
+                    <div key={lang} className="flex w-full max-w-[640px] min-w-0 flex-col justify-center py-2 sm:py-4 md:py-10 lg:w-[38%] lg:max-w-none lg:pr-6">
+                        <h1 className="m-0 text-[28px] leading-[1.12] font-black tracking-tight uppercase break-words sm:text-[46px] lg:text-[54px]">
                             <span className="block" style={lang === 'en' ? { color: ACCENT } : undefined}>
                                 {lang === 'en' ? (
                                     <TypeAccentLine text={t.heroL1} delay={heroDelays[0]} speed={40} accent={ACCENT} from="#9b9b9f" />
@@ -325,19 +386,19 @@ export default function V3() {
                                     <TypeText text={t.heroL2} delay={heroDelays[1]} speed={40} />
                                 )}
                             </span>
-                            <span className="mt-1 block text-[44px] leading-[1.08] sm:text-[56px] lg:text-[68px]">
+                            <span className="mt-1 block text-[34px] leading-[1.08] sm:text-[56px] lg:text-[68px]">
                                 <TypeText text={t.heroL3} delay={heroDelays[2]} speed={40} />
                             </span>
                         </h1>
-                        <p className="m3-rise mt-6.5 max-w-[46ch] text-[16px] leading-[1.75] text-[#b9b9bf]" style={{ animationDelay: `${heroDoneSec}s` }}>{t.heroSub1}<br />{t.heroSub2}</p>
-                        <div className="m3-rise mt-8" style={{ animationDelay: `${heroDoneSec + 0.1}s` }}>
-                            <a href="#products" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md bg-[#ec3013] px-7.5 py-3.5 text-[12.5px] font-extrabold tracking-[0.1em] text-white uppercase no-underline hover:bg-[#ae1800]">
+                        <p className="m3-rise mt-5 max-w-[46ch] text-[15px] leading-[1.75] text-[#b9b9bf] sm:mt-6.5 sm:text-[16px]" style={{ animationDelay: `${heroDoneSec}s` }}>{t.heroSub1}<br />{t.heroSub2}</p>
+                        <div className="m3-rise mt-6 sm:mt-8" style={{ animationDelay: `${heroDoneSec + 0.1}s` }}>
+                            <a href="#products" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md bg-[#ec3013] px-6 py-3 text-[12px] font-extrabold tracking-[0.1em] text-white uppercase no-underline hover:bg-[#ae1800] sm:px-7.5 sm:py-3.5 sm:text-[12.5px]">
                                 {t.heroCta}
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </a>
                         </div>
                     </div>
-                    <div className="m3-rise relative min-h-[62vh] overflow-hidden lg:hidden" style={{ animationDelay: '.2s' }}>
+                    <div className="m3-rise relative min-h-[42vh] overflow-hidden sm:min-h-[62vh] lg:hidden" style={{ animationDelay: '.2s' }}>
                         <img src="/images/hero/hero3.png" alt="M One Material printing facility" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-center" />
                         <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#0b0b0c 0%,rgba(11,11,12,0) 28%),linear-gradient(0deg,rgba(11,11,12,.4) 0%,rgba(11,11,12,0) 28%)' }} />
                     </div>
@@ -353,19 +414,19 @@ export default function V3() {
             </section>
 
             <section id="products" style={{ background: '#fafafa' }}>
-                <div className="mx-auto max-w-[1600px] px-5 py-18 pb-21 md:px-12">
+                <div className="mx-auto max-w-[1600px] px-4 py-12 pb-14 sm:px-5 sm:py-18 sm:pb-21 md:px-12">
                     <div data-reveal>
                         <Kicker gradient={KICKER_GRADIENT} className="text-xs font-extrabold tracking-[0.14em] uppercase">{t.prodKicker}</Kicker>
-                        <h2 className="m-0 mt-2.5 text-[26px] font-black tracking-tight sm:text-[38px]">{t.prodTitle}</h2>
+                        <h2 className="m-0 mt-2.5 text-[24px] font-black tracking-tight break-words sm:text-[38px]">{t.prodTitle}</h2>
                     </div>
-                    <div data-reveal role="tablist" className="mt-7 flex flex-wrap gap-2.5">
+                    <div data-reveal role="tablist" className="mt-6 flex flex-wrap gap-2 sm:mt-7 sm:gap-2.5">
                         {TABS.map((c, i) => (
                             <button
                                 key={c.en}
                                 type="button"
                                 role="tab"
                                 onClick={() => { setCat(i); setTick((n) => n + 1); }}
-                                className="cursor-pointer rounded whitespace-nowrap px-5 py-2.5 text-[13.5px] font-bold transition-colors"
+                                className="cursor-pointer rounded whitespace-nowrap px-3.5 py-2 text-[12.5px] font-bold transition-colors sm:px-5 sm:py-2.5 sm:text-[13.5px]"
                                 style={{
                                     border: i === cat ? `1px solid ${ACCENT}` : '1px solid #d4d4d8',
                                     background: i === cat ? ACCENT : '#fff',
@@ -377,7 +438,7 @@ export default function V3() {
                         ))}
                     </div>
                     <div data-reveal key={tick} className="m3-fade">
-                        <div className="mt-8 grid gap-5.5" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(230px,1fr))' }}>
+                        <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-5.5" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,230px),1fr))' }}>
                             {products.map((p) => {
                                 const name = lang === 'bm' ? p.nameBm : p.nameEn;
                                 return (
@@ -405,10 +466,10 @@ export default function V3() {
             </section>
 
             <section id="about" className="min-h-screen bg-white">
-                <div className="grid min-h-screen items-stretch lg:grid-cols-2">
-                    <div data-reveal className="ml-auto flex w-full max-w-[680px] flex-col justify-center self-center px-5 py-14 md:px-12 md:py-22">
-                        <Kicker gradient={KICKER_GRADIENT} className="text-[14px] font-extrabold tracking-[0.14em] uppercase">{t.aboutKicker}</Kicker>
-                        <h2 className="m-0 mt-4 text-[36px] leading-tight font-black tracking-tight sm:text-[48px] lg:text-[54px]">
+                <div className="grid min-h-screen items-stretch lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)]">
+                    <div data-reveal className="ml-auto flex w-full max-w-[560px] min-w-0 flex-col justify-center self-center px-4 py-12 sm:px-5 sm:py-14 md:py-22 md:pr-6 md:pl-12">
+                        <Kicker gradient={KICKER_GRADIENT} className="text-[13px] font-extrabold tracking-[0.14em] uppercase sm:text-[14px]">{t.aboutKicker}</Kicker>
+                        <h2 className="m-0 mt-4 text-[28px] leading-tight font-black tracking-tight break-words sm:text-[48px] lg:text-[54px]">
                             {t.aboutTitle.split(t.aboutShine).map((part, i, parts) => {
                                 const accented = t.aboutAccent && part.includes(t.aboutAccent)
                                     ? part.split(t.aboutAccent).map((chunk, j, chunks) => (
@@ -426,26 +487,19 @@ export default function V3() {
                                 );
                             })}
                         </h2>
-                        <p className="mt-6 max-w-[48ch] text-[18px] leading-[1.8] text-[#52525b]">{t.aboutCopy1}</p>
-                        <div className="mt-8">
-                            <a href="#why" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-8 py-3.5 text-[13.5px] font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white">
+                        <p className="mt-5 max-w-[48ch] text-[16px] leading-[1.8] text-[#52525b] sm:mt-6 sm:text-[18px]">{t.aboutCopy1}</p>
+                        <div className="mt-7 sm:mt-8">
+                            <a href="#why" className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-md border-[1.5px] border-[#ec3013] px-6 py-3 text-[12.5px] font-extrabold tracking-[0.1em] text-[#ec3013] uppercase no-underline hover:bg-[#ec3013] hover:text-white sm:px-8 sm:py-3.5 sm:text-[13.5px]">
                                 {t.learnMore}
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </a>
                         </div>
                     </div>
-                    <div className="relative min-h-[50vh] lg:min-h-full">
-                        <img src="/images/about-us/aboutUs.png" alt="M One Material warehouse" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
-                        <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 40%)' }} />
+                    <div className="relative min-h-[42vh] sm:min-h-[50vh] lg:min-h-full">
+                        <img src="/images/about-us/aboutUs.png" alt="M One Material warehouse" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover object-left" />
+                        <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 18%)' }} />
                     </div>
                 </div>
-            </section>
-
-            <section className="border-t border-[#ececee] bg-white py-12 text-center md:py-16">
-                <p className="m-0 text-[22px] leading-snug font-black tracking-tight uppercase sm:text-[30px]">
-                    {t.deliverPrefix}{' '}
-                    <WordRoller words={t.deliverWords} className="min-w-[7ch] text-[#ec3013]" itemClassName="text-left text-[#ec3013]" style={{ color: ACCENT }} />
-                </p>
             </section>
 
             <section id="why">
@@ -481,54 +535,54 @@ export default function V3() {
                     />
                 </div>
 
-                <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] items-center gap-12 px-5 py-16 md:px-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-10">
-                    <div data-reveal className="max-w-[640px] text-white lg:pl-4 xl:pl-6">
-                        <Kicker gradient={KICKER_GRADIENT} className="text-[14px] font-extrabold tracking-[0.14em] uppercase">{t.contactKicker}</Kicker>
-                        <h2 className="m-0 mt-4 text-[42px] font-black tracking-tight sm:text-[56px]">{t.contactTitle}</h2>
-                        <p className="mt-5 max-w-[42ch] text-[18px] leading-[1.75] text-white/85">{t.contactCopy}</p>
+                <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] items-center gap-8 px-4 py-12 sm:gap-12 sm:px-5 sm:py-16 md:px-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-10">
+                    <div data-reveal className="max-w-[640px] min-w-0 text-white lg:pl-4 xl:pl-6">
+                        <Kicker gradient={KICKER_GRADIENT} className="text-[13px] font-extrabold tracking-[0.14em] uppercase sm:text-[14px]">{t.contactKicker}</Kicker>
+                        <h2 className="m-0 mt-4 text-[32px] font-black tracking-tight break-words sm:text-[56px]">{t.contactTitle}</h2>
+                        <p className="mt-4 max-w-[42ch] text-[16px] leading-[1.75] text-white/85 sm:mt-5 sm:text-[18px]">{t.contactCopy}</p>
 
-                        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10">
+                        <div className="mt-8 grid grid-cols-1 gap-7 sm:mt-12 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10">
                             {CONTACTS.map((contact) => (
-                                <div key={contact.email} className="flex items-start gap-4 sm:gap-5">
-                                    <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white sm:h-14 sm:w-14" style={{ color: ACCENT }}>
+                                <div key={contact.email} className="flex min-w-0 items-start gap-3.5 sm:gap-5">
+                                    <span className="inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white sm:h-14 sm:w-14" style={{ color: ACCENT }}>
                                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                                     </span>
                                     <div className="min-w-0">
-                                        <p className="m-0 text-[18px] font-extrabold sm:text-[20px]">{contact.name}</p>
-                                        <p className="m-0 mt-1 text-[12px] font-bold tracking-[0.14em] text-white/60 uppercase">{contact.role}</p>
-                                        <div className="mt-3 grid gap-1.5 text-[15px] leading-[1.55] sm:text-[16px]">
+                                        <p className="m-0 text-[17px] font-extrabold sm:text-[20px]">{contact.name}</p>
+                                        <p className="m-0 mt-1 text-[11px] font-bold tracking-[0.14em] text-white/60 uppercase sm:text-[12px]">{contact.role}</p>
+                                        <div className="mt-2.5 grid gap-1.5 text-[14px] leading-[1.55] sm:mt-3 sm:text-[16px]">
                                             <a href={toWhatsAppHref(contact.phone)} target="_blank" rel="noopener noreferrer" className="text-white no-underline hover:text-white/80">{formatPhoneDisplay(contact.phone)}</a>
                                             <a href={`mailto:${contact.email}`} className="break-all text-white/80 no-underline hover:text-white">{contact.email}</a>
                                         </div>
                                     </div>
                                 </div>
                             ))}
-                            <div className="flex items-start gap-4 sm:gap-5">
-                                <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white sm:h-14 sm:w-14" style={{ color: ACCENT }}>
+                            <div className="flex min-w-0 items-start gap-3.5 sm:col-span-2 sm:gap-5 lg:col-span-1">
+                                <span className="inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-[#ec3013]/35 bg-white sm:h-14 sm:w-14" style={{ color: ACCENT }}>
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /><circle cx="12" cy="10" r="3" /></svg>
                                 </span>
                                 <div className="min-w-0">
-                                    <p className="m-0 text-[16px] leading-[1.55] font-semibold sm:text-[17px]">{t.address}</p>
-                                    <p className="m-0 mt-2 text-[14px] text-white/75 sm:text-[15px]">{t.hours}</p>
-                                    <p className="m-0 mt-1 text-[14px] text-white/75 sm:text-[15px]">{t.emailReply}</p>
+                                    <p className="m-0 text-[15px] leading-[1.55] font-semibold sm:text-[17px]">{t.address}</p>
+                                    <p className="m-0 mt-2 text-[13px] text-white/75 sm:text-[15px]">{t.hours}</p>
+                                    <p className="m-0 mt-1 text-[13px] text-white/75 sm:text-[15px]">{t.emailReply}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div data-reveal className="flex justify-center lg:justify-end">
-                        <div className="w-full max-w-[440px] rounded-2xl bg-white p-10 text-center shadow-[0_24px_60px_rgba(0,0,0,.14)] md:p-12">
-                            <span className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full text-white" style={{ background: ACCENT }}>
+                        <div className="w-full max-w-[440px] rounded-2xl bg-white p-7 text-center shadow-[0_24px_60px_rgba(0,0,0,.14)] sm:p-10 md:p-12">
+                            <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full text-white sm:h-20 sm:w-20" style={{ background: ACCENT }}>
                                 <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                                 </svg>
                             </span>
-                            <h3 className="m-0 mt-6 text-[26px] font-extrabold tracking-tight text-[#161616]">{t.waCardTitle}</h3>
-                            <p className="mt-3 text-[16px] leading-[1.65] text-[#71717a]">{t.waCardCopy}</p>
+                            <h3 className="m-0 mt-5 text-[22px] font-extrabold tracking-tight break-words text-[#161616] sm:mt-6 sm:text-[26px]">{t.waCardTitle}</h3>
+                            <p className="mt-3 text-[15px] leading-[1.65] text-[#71717a] sm:text-[16px]">{t.waCardCopy}</p>
                             <button
                                 type="button"
                                 onClick={() => openWaPicker()}
-                                className="mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-lg px-6 py-4 text-[15px] font-extrabold tracking-[0.08em] text-white uppercase no-underline hover:opacity-90"
+                                className="mt-6 inline-flex w-full items-center justify-center gap-2.5 rounded-lg px-5 py-3.5 text-[14px] font-extrabold tracking-[0.08em] text-white uppercase no-underline hover:opacity-90 sm:mt-8 sm:px-6 sm:py-4 sm:text-[15px]"
                                 style={{ background: ACCENT }}
                             >
                                 {t.waBtn}
@@ -542,15 +596,15 @@ export default function V3() {
             </section>
 
             <footer className="bg-black text-[#9b9b9f]">
-                <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 px-5 pt-13 pb-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)] md:gap-12 md:px-12">
+                <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-8 px-4 pt-10 pb-8 sm:grid-cols-2 sm:gap-10 sm:px-5 sm:pt-13 sm:pb-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)] md:gap-12 md:px-12">
                     <div className="min-w-0 sm:col-span-2 lg:col-span-1">
-                        <img src="/images/m-one-logo-black.png" alt="M One Material" loading="lazy" decoding="async" className="h-16 w-auto md:h-[4.5rem]" />
-                        <p className="mt-4 text-[14px] leading-[1.75]">
+                        <img src="/images/m-one-logo-black.png" alt="M One Material" loading="lazy" decoding="async" className="h-14 w-auto max-w-full md:h-[4.5rem]" />
+                        <p className="mt-4 text-[13px] leading-[1.75] break-words sm:text-[14px]">
                             {t.footerBrand}<br />
                             {t.footerSsm}<br />
                             {t.rights}
                         </p>
-                        <p className="mt-3 max-w-[36ch] text-[14px] leading-[1.65]">{t.footerNote}</p>
+                        <p className="mt-3 max-w-[36ch] text-[13px] leading-[1.65] sm:text-[14px]">{t.footerNote}</p>
                     </div>
                     <div>
                         <p className="m-0 mb-3 text-[13px] font-extrabold text-white">{t.navProducts}</p>
@@ -589,48 +643,50 @@ export default function V3() {
             </footer>
             {isWaPickerOpen && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(11,11,12,0.58)] px-5 py-8"
+                    className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto overscroll-contain bg-[rgba(11,11,12,0.58)] px-3 py-4 sm:items-center sm:px-5 sm:py-8"
                     onClick={closeWaPicker}
                 >
                     <div
-                        className="relative w-full max-w-[460px] rounded-[28px] bg-white p-6 shadow-[0_30px_90px_rgba(0,0,0,.28)] md:p-7"
+                        className="relative my-auto flex max-h-[min(92dvh,720px)] w-full max-w-[460px] flex-col overflow-hidden rounded-[22px] bg-white shadow-[0_30px_90px_rgba(0,0,0,.28)] sm:rounded-[28px]"
                         onClick={(event) => event.stopPropagation()}
                     >
                         <button
                             type="button"
                             onClick={closeWaPicker}
                             aria-label={t.waChooseClose}
-                            className="absolute top-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#ececee] bg-white text-[#71717a] hover:border-[#ec3013] hover:text-[#ec3013]"
+                            className="absolute top-3 right-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#ececee] bg-white text-[#71717a] hover:border-[#ec3013] hover:text-[#ec3013] sm:top-4 sm:right-4 sm:h-10 sm:w-10"
                         >
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                                 <path d="M18 6 6 18" />
                                 <path d="m6 6 12 12" />
                             </svg>
                         </button>
-                        <p className="m-0 text-[12px] font-extrabold tracking-[0.14em] text-[#ec3013] uppercase">{t.waChoosePrompt}</p>
-                        <h3 className="m-0 mt-3 pr-12 text-[24px] leading-tight font-black tracking-tight text-[#161616] sm:text-[28px] whitespace-nowrap">{t.waCardTitle}</h3>
-                        <p className="m-0 mt-3 max-w-[34ch] text-[15px] leading-[1.7] text-[#71717a]">{t.waChooseCopy}</p>
-                        {waPickerProduct && (
-                            <p className="m-0 mt-3 rounded-xl bg-[#fafafa] px-3.5 py-2.5 text-[13.5px] leading-[1.5] text-[#52525b]">
-                                <span className="font-extrabold text-[#161616]">{lang === 'bm' ? waPickerProduct.nameBm : waPickerProduct.nameEn}</span>
-                                {waPickerProduct.spec ? ` · ${waPickerProduct.spec}` : ''}
-                            </p>
-                        )}
-                        <div className="mt-5 grid gap-3">
-                            {CONTACTS.map((contact) => (
-                                <a
-                                    key={contact.email}
-                                    href={toWhatsAppHref(contact.phone, waPickerMessage)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onClick={closeWaPicker}
-                                    className="rounded-2xl border border-[#e4e4e7] bg-[#fafafa] px-4 py-3.5 no-underline transition-transform hover:-translate-y-0.5 hover:border-[#ec3013] hover:bg-white"
-                                >
-                                    <p className="m-0 text-[15px] font-extrabold text-[#161616]">{contact.name}</p>
-                                    <p className="m-0 mt-1 text-[11px] font-bold tracking-[0.12em] text-[#71717a] uppercase">{contact.role}</p>
-                                    <p className="m-0 mt-2 text-[14px] font-semibold" style={{ color: ACCENT }}>{formatPhoneDisplay(contact.phone)}</p>
-                                </a>
-                            ))}
+                        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-5 pb-5 sm:px-6 sm:pt-6 sm:pb-6 md:px-7 md:pt-7 md:pb-7">
+                            <p className="m-0 pr-10 text-[11px] font-extrabold tracking-[0.14em] text-[#ec3013] uppercase sm:text-[12px]">{t.waChoosePrompt}</p>
+                            <h3 className="m-0 mt-2 pr-10 text-[20px] leading-tight font-black tracking-tight break-words text-[#161616] sm:mt-3 sm:text-[28px]">{t.waCardTitle}</h3>
+                            <p className="m-0 mt-2 max-w-[34ch] text-[14px] leading-[1.7] text-[#71717a] sm:mt-3 sm:text-[15px]">{t.waChooseCopy}</p>
+                            {waPickerProduct && (
+                                <p className="m-0 mt-3 rounded-xl bg-[#fafafa] px-3 py-2.5 text-[13px] leading-[1.5] break-words text-[#52525b] sm:px-3.5 sm:text-[13.5px]">
+                                    <span className="font-extrabold text-[#161616]">{lang === 'bm' ? waPickerProduct.nameBm : waPickerProduct.nameEn}</span>
+                                    {waPickerProduct.spec ? ` · ${waPickerProduct.spec}` : ''}
+                                </p>
+                            )}
+                            <div className="mt-4 grid gap-2.5 sm:mt-5 sm:gap-3">
+                                {CONTACTS.map((contact) => (
+                                    <a
+                                        key={contact.email}
+                                        href={toWhatsAppHref(contact.phone, waPickerMessage)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={closeWaPicker}
+                                        className="rounded-2xl border border-[#e4e4e7] bg-[#fafafa] px-3.5 py-3 no-underline transition-transform hover:-translate-y-0.5 hover:border-[#ec3013] hover:bg-white sm:px-4 sm:py-3.5"
+                                    >
+                                        <p className="m-0 text-[14px] font-extrabold text-[#161616] sm:text-[15px]">{contact.name}</p>
+                                        <p className="m-0 mt-1 text-[10px] font-bold tracking-[0.12em] text-[#71717a] uppercase sm:text-[11px]">{contact.role}</p>
+                                        <p className="m-0 mt-2 text-[13px] font-semibold sm:text-[14px]" style={{ color: ACCENT }}>{formatPhoneDisplay(contact.phone)}</p>
+                                    </a>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
