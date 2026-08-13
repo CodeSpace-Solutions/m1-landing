@@ -180,8 +180,8 @@ export default function WhyScrollStory({
                 },
                 'fin+=2.2',
             )
-            .to(q('[data-giant-up]'), { yPercent: -104, duration: 1.3 }, 'fin+=6.2')
-            .to(q('[data-giant-down]'), { yPercent: 104, duration: 1.3 }, 'fin+=6.2')
+            .to(q('[data-giant-up]'), { yPercent: -98, duration: 1.3 }, 'fin+=6.2')
+            .to(q('[data-giant-down]'), { yPercent: 98, duration: 1.3 }, 'fin+=6.2')
             .to(q('[data-giant-up]'), { x: '-120vw', skewX: 8, rotate: -3, duration: 1.7 }, 'fin+=7.7')
             .to(q('[data-giant-down]'), { x: '120vw', skewX: -8, rotate: 3, duration: 1.7 }, 'fin+=7.7')
             .to(q('[data-giant-mid]'), { scale: 8.5, duration: 3, ease: 'power2.in' }, 'fin+=9.2')
@@ -229,24 +229,24 @@ export default function WhyScrollStory({
     const giantFrom = Math.max(2, Math.min(99, Math.round(countFrom)));
     const giantDigits = String(giantFrom).length;
     const giantNumbers = Array.from({ length: giantFrom }, (_, i) => giantFrom - i);
-    // Bigger + wider finale type (mid, up, and bottom clones share these)
+    // Slightly under the previous large size so peeled outlines still fit
     const giantFont = giantDigits >= 2
-        ? 'clamp(84px, 28vw, 240px)'
-        : 'clamp(96px, 34vw, 300px)';
-    const giantStrokeH = giantDigits >= 2
-        ? 'clamp(84px, 28vw, 240px)'
-        : 'clamp(96px, 34vw, 300px)';
-    const giantTracking = giantDigits >= 2 ? '0.03em' : '0.05em';
-    const giantSubFont = 'clamp(15px, 4.8vw, 48px)';
-    const giantSubTracking = '0.38em';
+        ? 'clamp(80px, 26vw, 200px)'
+        : 'clamp(88px, 30vw, 220px)';
+    const giantStrokeH = giantFont;
+    const giantTracking = giantDigits >= 2 ? '0.06em' : '0.1em';
+    const giantSubFont = 'clamp(16px, 3.4vw, 44px)';
+    const giantSubTracking = '0.52em';
     const noRollerWidth = giantDigits >= 2 ? '1.4em' : '0.68em';
 
-    const renderNoRoller = (keyPrefix) => (
+    const renderNoRoller = (keyPrefix, { wide = false } = {}) => (
         <span
             style={{
                 display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.02em',
+                alignItems: 'baseline',
+                justifyContent: wide ? 'space-between' : 'flex-start',
+                gap: wide ? 0 : '0.02em',
+                width: wide ? '100%' : 'auto',
                 whiteSpace: 'nowrap',
                 letterSpacing: giantTracking,
             }}
@@ -262,6 +262,7 @@ export default function WhyScrollStory({
                     minWidth: noRollerWidth,
                     lineHeight: 1,
                     verticalAlign: 'middle',
+                    flexShrink: 0,
                 }}
             >
                 <span data-no-col style={{ display: 'block', willChange: 'transform' }}>
@@ -551,14 +552,15 @@ export default function WhyScrollStory({
                 <div data-giant style={{ position: 'relative', opacity: 0, transform: 'scale(0.6)' }}>
                     <div
                         data-giant-up
+                        data-giant-type
                         style={{
                             position: 'absolute',
                             top: 0,
                             left: 0,
                             right: 0,
                             height: giantStrokeH,
-                            display: 'grid',
-                            placeItems: 'center',
+                            display: 'flex',
+                            alignItems: 'center',
                             fontFamily: "'Anton', sans-serif",
                             fontSize: giantFont,
                             letterSpacing: giantTracking,
@@ -569,20 +571,19 @@ export default function WhyScrollStory({
                             willChange: 'transform',
                         }}
                     >
-                        <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
-                            {renderNoRoller('up')}
-                        </span>
+                        {renderNoRoller('up', { wide: true })}
                     </div>
                     <div
                         data-giant-down
+                        data-giant-type
                         style={{
                             position: 'absolute',
                             top: 0,
                             left: 0,
                             right: 0,
                             height: giantStrokeH,
-                            display: 'grid',
-                            placeItems: 'center',
+                            display: 'flex',
+                            alignItems: 'center',
                             fontFamily: "'Anton', sans-serif",
                             fontSize: giantFont,
                             letterSpacing: giantTracking,
@@ -593,12 +594,22 @@ export default function WhyScrollStory({
                             willChange: 'transform',
                         }}
                     >
-                        <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
-                            {renderNoRoller('down')}
-                        </span>
+                        {renderNoRoller('down', { wide: true })}
                     </div>
-                    <div data-giant-mid style={{ position: 'relative', textAlign: 'center', willChange: 'transform' }}>
+                    <div
+                        data-giant-mid
+                        style={{
+                            position: 'relative',
+                            display: 'inline-flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            textAlign: 'center',
+                            willChange: 'transform',
+                            minWidth: 'min(94vw, 22ch)',
+                        }}
+                    >
                         <div
+                            data-giant-type
                             style={{
                                 fontFamily: "'Anton', sans-serif",
                                 fontSize: giantFont,
@@ -606,9 +617,10 @@ export default function WhyScrollStory({
                                 lineHeight: 1,
                                 color: '#ec3013',
                                 whiteSpace: 'nowrap',
+                                width: '100%',
                             }}
                         >
-                            {renderNoRoller('mid')}
+                            {renderNoRoller('mid', { wide: true })}
                         </div>
                         <div
                             data-giant-sub
@@ -619,8 +631,10 @@ export default function WhyScrollStory({
                                 letterSpacing: giantSubTracking,
                                 color: '#f7f2ee',
                                 whiteSpace: 'nowrap',
-                                marginTop: '1.4vw',
-                                paddingLeft: giantSubTracking,
+                                marginTop: '1.2vw',
+                                textAlign: 'center',
+                                width: '100%',
+                                boxSizing: 'border-box',
                             }}
                         >
                             {copy.inMalaysia}
