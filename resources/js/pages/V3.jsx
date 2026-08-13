@@ -15,6 +15,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ACCENT = '#ec3013';
 const KICKER_GRADIENT = 'linear-gradient(90deg, #ec3013 0%, #ec3013 42%, #ff8a70 50%, #ec3013 58%, #ec3013 100%)';
+const AUTO_SCROLL_PX_PER_SEC = 120;
+const AUTO_SCROLL_LOOP_DELAY_MS = 1200;
+const AUTO_SCROLL_HERO_HOLD_MS = 2000;
+const AUTO_SCROLL_CONTACT_HOLD_MS = 3000;
+const AUTO_SCROLL_WHY_TARGET_MS = 800;
 
 const CONTACTS = [
     {
@@ -112,6 +117,7 @@ function Icon({ paths, size = 20 }) {
 const T = {
     en: {
         navProducts: 'Products', navAbout: 'About us', navWhy: 'Why choose us', navContact: 'Contact', navCta: 'Get in touch',
+        autoModeOn: 'Auto mode on', autoModeOff: 'Auto mode off',
         heroL1: 'The best value', heroL2: 'printing materials', heroL3: 'in Malaysia',
         heroSub1: 'Trusted wholesale supplier for printing shops.', heroSub2: 'Quality materials. Consistent supply. Competitive pricing.',
         heroCta: 'Explore products',
@@ -136,7 +142,7 @@ const T = {
         contactCopy: 'Have questions or need a quotation? Our team is ready to help.',
         hours: 'Mon - Sat: 9:00 AM - 6:00 PM',
         emailReply: "We'll reply within 24 hours",
-        address: 'No. 12, Jalan Industri 1/3, Bandar Teknologi, 47600 Subang Jaya, Selangor, Malaysia',
+        address: 'NO 2, JALAN 6/15, KAWASAN PERINDUSTRIAN TERES, TAMAN TASEK TAMBAHAN, 68000 AMPANG, SELANGOR',
         waCardTitle: 'Chat with us on WhatsApp',
         waCardCopy: 'Get quick support and fast responses from our team.',
         waBtn: 'WhatsApp us',
@@ -151,6 +157,7 @@ const T = {
     },
     bm: {
         navProducts: 'Produk', navAbout: 'Tentang kami', navWhy: 'Kenapa pilih kami', navContact: 'Hubungi', navCta: 'Hubungi kami',
+        autoModeOn: 'Mod auto hidup', autoModeOff: 'Mod auto mati',
         heroL1: 'Bahan cetakan', heroL2: 'nilai terbaik', heroL3: 'di Malaysia',
         heroSub1: 'Pembekal borong dipercayai untuk kedai cetak.', heroSub2: 'Bahan berkualiti. Bekalan konsisten. Harga kompetitif.',
         heroCta: 'Terokai produk',
@@ -176,7 +183,7 @@ const T = {
         contactCopy: 'Ada soalan atau perlukan sebut harga? Pasukan kami sedia membantu.',
         hours: 'Isn - Sab: 9:00 AM - 6:00 PM',
         emailReply: 'Kami balas dalam 24 jam',
-        address: 'No. 12, Jalan Industri 1/3, Bandar Teknologi, 47600 Subang Jaya, Selangor, Malaysia',
+        address: 'NO 2, JALAN 6/15, KAWASAN PERINDUSTRIAN TERES, TAMAN TASEK TAMBAHAN, 68000 AMPANG, SELANGOR',
         waCardTitle: 'Sembang dengan kami di WhatsApp',
         waCardCopy: 'Dapatkan sokongan pantas dan respons cepat daripada pasukan kami.',
         waBtn: 'WhatsApp kami',
@@ -237,9 +244,13 @@ export default function V3() {
     const [lang, setLang] = useState('en');
     const [cat, setCat] = useState(0);
     const [tick, setTick] = useState(0);
+    const [isAutoMode, setIsAutoMode] = useState(false);
     const [isWaPickerOpen, setIsWaPickerOpen] = useState(false);
     const [waPickerProduct, setWaPickerProduct] = useState(null);
     const [isNavOpen, setIsNavOpen] = useState(false);
+    const heroSectionRef = useRef(null);
+    const whySectionRef = useRef(null);
+    const contactSectionRef = useRef(null);
     const contactVideoRef = useRef(null);
     useInViewVideo(contactVideoRef);
     const closeWaPicker = () => {
@@ -251,6 +262,7 @@ export default function V3() {
         setIsWaPickerOpen(true);
     };
     const closeNav = () => setIsNavOpen(false);
+    const toggleAutoMode = () => setIsAutoMode((enabled) => !enabled);
     const waPickerMessage = productWhatsAppMessage(waPickerProduct, lang);
     const scopeRef = useRef(null);
     useScrollReveal(scopeRef);
@@ -263,6 +275,123 @@ export default function V3() {
             document.body.style.overflow = prev;
         };
     }, [isWaPickerOpen, isNavOpen]);
+
+    useEffect(() => {
+        if (!isAutoMode || isWaPickerOpen || isNavOpen) return undefined;
+        let frameId = 0;
+        let restartTimeoutId = 0;
+        let lastTs = 0;
+        let isLooping = false;
+        let holdUntilTs = 0;
+        let hasHeldContactSection = false;
+
+        const getWhyTrigger = () => {
+            const why = whySectionRef.current;
+            if (!why) return null;
+            const whyStage = why.querySelector('.m3-why-story');
+            if (!whyStage) return null;
+
+            return ScrollTrigger.getAll().find((trigger) => trigger.trigger === whyStage || trigger.pin === whyStage) ?? null;
+        };
+
+        const isInHeroSection = () => {
+            const hero = heroSectionRef.current;
+            if (!hero) return false;
+            const heroTop = hero.offsetTop;
+            const heroBottom = heroTop + hero.offsetHeight;
+            return window.scrollY >= heroTop && window.scrollY < heroBottom - 1;
+        };
+
+        const isInWhySection = () => {
+            const why = whySectionRef.current;
+            if (!why) return false;
+            const whyTrigger = getWhyTrigger();
+
+            if (whyTrigger) {
+                return window.scrollY >= whyTrigger.start && window.scrollY < whyTrigger.end;
+            }
+
+            const whyTop = why.offsetTop;
+            const whyBottom = whyTop + Math.max(why.offsetHeight, why.scrollHeight);
+            return window.scrollY >= whyTop && window.scrollY < whyBottom;
+        };
+
+        const isInContactSection = () => {
+            const contact = contactSectionRef.current;
+            if (!contact) return false;
+            const contactTop = contact.offsetTop;
+            const contactBottom = contactTop + contact.offsetHeight;
+            return window.scrollY >= contactTop && window.scrollY < contactBottom;
+        };
+
+        if (isInHeroSection()) {
+            holdUntilTs = window.performance.now() + AUTO_SCROLL_HERO_HOLD_MS;
+        }
+
+        const tickScroll = (ts) => {
+            if (isLooping) return;
+            if (isInContactSection() && !hasHeldContactSection) {
+                holdUntilTs = ts + AUTO_SCROLL_CONTACT_HOLD_MS;
+                hasHeldContactSection = true;
+            }
+            if (!isInContactSection()) {
+                hasHeldContactSection = false;
+            }
+            if (holdUntilTs && ts < holdUntilTs) {
+                lastTs = ts;
+                frameId = window.requestAnimationFrame(tickScroll);
+                return;
+            }
+            if (holdUntilTs && ts >= holdUntilTs) {
+                holdUntilTs = 0;
+                lastTs = ts;
+                frameId = window.requestAnimationFrame(tickScroll);
+                return;
+            }
+            if (!lastTs) {
+                lastTs = ts;
+                frameId = window.requestAnimationFrame(tickScroll);
+                return;
+            }
+
+            const maxScrollTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+            if (maxScrollTop <= 0) return;
+
+            const delta = ts - lastTs;
+            lastTs = ts;
+            const whyTrigger = getWhyTrigger();
+            const whySpeed = whyTrigger
+                ? ((Math.max(whyTrigger.end - whyTrigger.start, window.innerHeight) / AUTO_SCROLL_WHY_TARGET_MS) * 1000)
+                : AUTO_SCROLL_PX_PER_SEC;
+            const speed = isInWhySection() ? whySpeed : AUTO_SCROLL_PX_PER_SEC;
+            const distance = (speed * delta) / 1000;
+            const nextTop = Math.min(window.scrollY + distance, maxScrollTop);
+
+            window.scrollTo({ top: nextTop, behavior: 'auto' });
+
+            if (nextTop >= maxScrollTop - 1) {
+                isLooping = true;
+                restartTimeoutId = window.setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                    lastTs = 0;
+                    holdUntilTs = window.performance.now() + AUTO_SCROLL_HERO_HOLD_MS;
+                    hasHeldContactSection = false;
+                    isLooping = false;
+                    frameId = window.requestAnimationFrame(tickScroll);
+                }, AUTO_SCROLL_LOOP_DELAY_MS);
+                return;
+            }
+
+            frameId = window.requestAnimationFrame(tickScroll);
+        };
+
+        frameId = window.requestAnimationFrame(tickScroll);
+
+        return () => {
+            window.cancelAnimationFrame(frameId);
+            window.clearTimeout(restartTimeoutId);
+        };
+    }, [isAutoMode, isWaPickerOpen, isNavOpen]);
 
     const t = T[lang];
     const tab = TABS[cat];
@@ -356,6 +485,8 @@ export default function V3() {
             </nav>
 
             <section
+                id="home"
+                ref={heroSectionRef}
                 className="relative flex min-h-[calc(100dvh-4.5rem)] flex-col overflow-hidden sm:min-h-[calc(100dvh-5.75rem)]"
                 style={{ background: '#0b0b0c', color: '#fff' }}
             >
@@ -502,11 +633,11 @@ export default function V3() {
                 </div>
             </section>
 
-            <section id="why">
-                <WhyScrollStory copy={t.whyStory} countFrom={10} />
+            <section id="why" ref={whySectionRef}>
+                <WhyScrollStory copy={t.whyStory} countFrom={10} autoMode={isAutoMode} />
             </section>
 
-            <section id="contact" className="relative min-h-screen overflow-hidden bg-white">
+            <section id="contact" ref={contactSectionRef} className="relative min-h-screen overflow-hidden bg-white">
                 <svg width="0" height="0" className="absolute" aria-hidden>
                     <defs>
                         <clipPath id="m3-contact-curve" clipPathUnits="objectBoundingBox">
@@ -641,6 +772,30 @@ export default function V3() {
                     </div>
                 </div>
             </footer>
+            <button
+                type="button"
+                onClick={toggleAutoMode}
+                aria-pressed={isAutoMode}
+                aria-label={isAutoMode ? t.autoModeOff : t.autoModeOn}
+                title={isAutoMode ? t.autoModeOff : t.autoModeOn}
+                className="fixed right-4 bottom-4 z-40 inline-flex h-13 w-13 items-center justify-center rounded-full border shadow-[0_18px_40px_rgba(0,0,0,.18)] transition-colors sm:right-5 sm:bottom-5 sm:h-14 sm:w-14"
+                style={{
+                    borderColor: isAutoMode ? ACCENT : '#d4d4d8',
+                    background: isAutoMode ? ACCENT : '#fff',
+                    color: isAutoMode ? '#fff' : '#52525b',
+                }}
+            >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    {isAutoMode ? (
+                        <>
+                            <rect x="6.5" y="5.5" width="4" height="13" rx="1" fill="currentColor" stroke="none" />
+                            <rect x="13.5" y="5.5" width="4" height="13" rx="1" fill="currentColor" stroke="none" />
+                        </>
+                    ) : (
+                        <path d="M8 6.5v11l9-5.5-9-5.5Z" fill="currentColor" stroke="none" />
+                    )}
+                </svg>
+            </button>
             {isWaPickerOpen && (
                 <div
                     className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto overscroll-contain bg-[rgba(11,11,12,0.58)] px-3 py-4 sm:items-center sm:px-5 sm:py-8"

@@ -38,6 +38,7 @@ export default function WhyScrollStory({
     pinLength = 11200,
     countFrom = 10,
     showGhost = true,
+    autoMode = false,
 }) {
     const uid = useId().replace(/:/g, '');
     const stageRef = useRef(null);
@@ -74,7 +75,7 @@ export default function WhyScrollStory({
 
         teardown();
 
-        const pin = pinLength;
+        const pin = autoMode ? Math.min(pinLength, 900) : pinLength;
         const from = Math.max(2, Math.min(99, Math.round(countFrom)));
         const digits = qa('[data-no-digit]');
         digits.forEach((d) => {
@@ -104,7 +105,7 @@ export default function WhyScrollStory({
                 trigger: stage,
                 start: 'top top',
                 end: `+=${pin}`,
-                scrub: 1,
+                scrub: autoMode ? true : 1,
                 pin: true,
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
@@ -220,7 +221,7 @@ export default function WhyScrollStory({
         ScrollTrigger.refresh();
 
         return teardown;
-    }, [copyKey, copy.w1, pinLength, countFrom, showGhost]);
+    }, [copyKey, copy.w1, pinLength, countFrom, showGhost, autoMode]);
 
     const pricingPhrase = copy.pricingFirst
         ? `${copy.pricingSuffix} ${copy.roller?.[copy.roller.length - 1] || ''}`.trim()
