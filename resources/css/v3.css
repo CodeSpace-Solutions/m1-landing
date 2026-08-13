@@ -107,4 +107,16 @@ body {
         font-size: 10px !important;
         max-width: calc(100% - 96px);
     }
+    .m3-why-story [data-giant-sub] {
+        letter-spacing: 0.22em !important;
+        padding-left: 0.22em !important;
+        font-size: clamp(14px, 4.2vw, 22px) !important;
+        max-width: 92vw;
+        overflow: hidden;
+        text-overflow: clip;
+    }
+    .m3-why-story [data-no-mask] {
+        /* keep roller window crisp on retina phones */
+        transform: translateZ(0);
+    }
 }

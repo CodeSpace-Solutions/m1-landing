@@ -36,7 +36,7 @@ function splitLetters(el) {
 export default function WhyScrollStory({
     copy,
     pinLength = 11200,
-    countFrom = 10,
+    countFrom = 9,
     showGhost = true,
     autoMode = false,
 }) {
@@ -77,11 +77,8 @@ export default function WhyScrollStory({
 
         const pin = autoMode ? Math.min(pinLength, 900) : pinLength;
         const from = Math.max(2, Math.min(99, Math.round(countFrom)));
-        const digits = qa('[data-no-digit]');
-        digits.forEach((d) => {
-            d.textContent = String(from);
-        });
-        const cnt = { n: from };
+        const noCols = qa('[data-no-col]');
+        gsap.set(noCols, { yPercent: 0 });
 
         const ghostTop = q('[data-ghost-top]');
         const ghostBot = q('[data-ghost-bot]');
@@ -171,25 +168,15 @@ export default function WhyScrollStory({
             .addLabel('fin', 18.4)
             .to(q('[data-hud]'), { opacity: 0, duration: 1 }, 'fin+=0.6')
             .to([ghostTop, ghostBot], { opacity: 0, duration: 1.2 }, 'fin+=0.6')
-            // Hold starting number fully visible before counting so NO.10 isn't skipped during fade-in
+            // Hold starting number fully visible, then roll the digit column down to 1
             .fromTo(q('[data-giant]'), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.4 }, 'fin+=0.6')
-            .to(
-                cnt,
+            .fromTo(
+                noCols,
+                { yPercent: 0 },
                 {
-                    n: 1,
+                    yPercent: -((from - 1) / from) * 100,
                     ease: 'none',
                     duration: 3.8,
-                    onUpdate: () => {
-                        const v = Math.max(1, Math.round(cnt.n));
-                        digits.forEach((d) => {
-                            if (d.textContent !== String(v)) d.textContent = String(v);
-                        });
-                    },
-                    onComplete: () => {
-                        digits.forEach((d) => {
-                            d.textContent = '1';
-                        });
-                    },
                 },
                 'fin+=2.2',
             )
@@ -241,16 +228,61 @@ export default function WhyScrollStory({
     );
     const giantFrom = Math.max(2, Math.min(99, Math.round(countFrom)));
     const giantDigits = String(giantFrom).length;
+    const giantNumbers = Array.from({ length: giantFrom }, (_, i) => giantFrom - i);
     // Bigger + wider finale type (mid, up, and bottom clones share these)
     const giantFont = giantDigits >= 2
-        ? 'clamp(56px, 16vw, 220px)'
-        : 'clamp(64px, 20vw, 280px)';
+        ? 'clamp(84px, 28vw, 240px)'
+        : 'clamp(96px, 34vw, 300px)';
     const giantStrokeH = giantDigits >= 2
-        ? 'clamp(56px, 16vw, 220px)'
-        : 'clamp(64px, 20vw, 280px)';
-    const giantTracking = giantDigits >= 2 ? '0.04em' : '0.06em';
-    const giantSubFont = 'clamp(16px, 3.4vw, 48px)';
-    const giantSubTracking = '0.55em';
+        ? 'clamp(84px, 28vw, 240px)'
+        : 'clamp(96px, 34vw, 300px)';
+    const giantTracking = giantDigits >= 2 ? '0.03em' : '0.05em';
+    const giantSubFont = 'clamp(15px, 4.8vw, 48px)';
+    const giantSubTracking = '0.38em';
+    const noRollerWidth = giantDigits >= 2 ? '1.4em' : '0.68em';
+
+    const renderNoRoller = (keyPrefix) => (
+        <span
+            style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.02em',
+                whiteSpace: 'nowrap',
+                letterSpacing: giantTracking,
+            }}
+        >
+            <span style={{ letterSpacing: giantTracking }}>NO.</span>
+            <span
+                data-no-mask
+                style={{
+                    display: 'inline-block',
+                    overflow: 'hidden',
+                    height: '1em',
+                    width: noRollerWidth,
+                    minWidth: noRollerWidth,
+                    lineHeight: 1,
+                    verticalAlign: 'middle',
+                }}
+            >
+                <span data-no-col style={{ display: 'block', willChange: 'transform' }}>
+                    {giantNumbers.map((n) => (
+                        <span
+                            key={`${keyPrefix}-${n}`}
+                            style={{
+                                display: 'block',
+                                height: '1em',
+                                lineHeight: 1,
+                                textAlign: 'center',
+                                fontVariantNumeric: 'tabular-nums',
+                            }}
+                        >
+                            {n}
+                        </span>
+                    ))}
+                </span>
+            </span>
+        </span>
+    );
 
     const rollerBlock = (
         <div style={{ position: 'relative' }}>
@@ -538,7 +570,7 @@ export default function WhyScrollStory({
                         }}
                     >
                         <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
-                            NO. <span data-no-digit>{giantFrom}</span>
+                            {renderNoRoller('up')}
                         </span>
                     </div>
                     <div
@@ -562,7 +594,7 @@ export default function WhyScrollStory({
                         }}
                     >
                         <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
-                            NO. <span data-no-digit>{giantFrom}</span>
+                            {renderNoRoller('down')}
                         </span>
                     </div>
                     <div data-giant-mid style={{ position: 'relative', textAlign: 'center', willChange: 'transform' }}>
@@ -576,9 +608,10 @@ export default function WhyScrollStory({
                                 whiteSpace: 'nowrap',
                             }}
                         >
-                            NO. <span data-no-digit>{giantFrom}</span>
+                            {renderNoRoller('mid')}
                         </div>
                         <div
+                            data-giant-sub
                             style={{
                                 fontFamily: "'Space Grotesk', sans-serif",
                                 fontSize: giantSubFont,

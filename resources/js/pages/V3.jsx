@@ -634,7 +634,7 @@ export default function V3() {
             </section>
 
             <section id="why" ref={whySectionRef}>
-                <WhyScrollStory copy={t.whyStory} countFrom={10} autoMode={isAutoMode} />
+                <WhyScrollStory copy={t.whyStory} countFrom={9} autoMode={isAutoMode} />
             </section>
 
             <section id="contact" ref={contactSectionRef} className="relative min-h-screen overflow-hidden bg-white">
