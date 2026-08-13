@@ -180,13 +180,71 @@ export default function WhyScrollStory({
                 },
                 'fin+=2.2',
             )
-            .to(q('[data-giant-up]'), { yPercent: -104, duration: 1.3 }, 'fin+=6.2')
-            .to(q('[data-giant-down]'), { yPercent: 104, duration: 1.3 }, 'fin+=6.2')
-            .to(q('[data-giant-up]'), { x: '-120vw', skewX: 8, rotate: -3, duration: 1.7 }, 'fin+=7.7')
-            .to(q('[data-giant-down]'), { x: '120vw', skewX: -8, rotate: 3, duration: 1.7 }, 'fin+=7.7')
-            .to(q('[data-giant-mid]'), { scale: 8.5, duration: 3, ease: 'power2.in' }, 'fin+=9.2')
-            .to(q('[data-flood]'), { opacity: 1, duration: 1.2 }, 'fin+=10.8')
-            .addLabel('logo', 'fin+=12.2')
+            // Peel 1 — top / bottom separate
+            .to(qa('[data-giant-up]'), { yPercent: -78, duration: 0.95, ease: 'power2.out' }, 'fin+=6.2')
+            .to(qa('[data-giant-down]'), { yPercent: 78, duration: 0.95, ease: 'power2.out' }, 'fin+=6.2')
+            // Peel 2 — separate again (fan the clones further apart)
+            .to(qa('[data-giant-up]'), {
+                yPercent: (i) => -78 - (i + 1) * 42,
+                duration: 0.72,
+                ease: 'power2.out',
+            }, 'fin+=7.25')
+            .to(qa('[data-giant-down]'), {
+                yPercent: (i) => 78 + (i + 1) * 42,
+                duration: 0.72,
+                ease: 'power2.out',
+            }, 'fin+=7.25')
+            // Peel 3 — separate once more
+            .to(qa('[data-giant-up]'), {
+                yPercent: (i) => -120 - (i + 1) * 52,
+                duration: 0.72,
+                ease: 'power2.out',
+            }, 'fin+=8.05')
+            .to(qa('[data-giant-down]'), {
+                yPercent: (i) => 120 + (i + 1) * 52,
+                duration: 0.72,
+                ease: 'power2.out',
+            }, 'fin+=8.05')
+            // Zigzag — each outline clone opposite the next (mid stays center)
+            // top: L / R / L … then swap R / L / R … then fly out that way
+            // bottom: R / L / R … then swap L / R / L … then fly out that way
+            .to(qa('[data-giant-up]'), {
+                x: (i) => (i % 2 === 0 ? '-30vw' : '30vw'),
+                duration: 0.45,
+                ease: 'power2.inOut',
+            }, 'fin+=8.85')
+            .to(qa('[data-giant-down]'), {
+                x: (i) => (i % 2 === 0 ? '30vw' : '-30vw'),
+                duration: 0.45,
+                ease: 'power2.inOut',
+            }, 'fin+=8.85')
+            .to(qa('[data-giant-up]'), {
+                x: (i) => (i % 2 === 0 ? '30vw' : '-30vw'),
+                duration: 0.45,
+                ease: 'power2.inOut',
+            }, 'fin+=9.35')
+            .to(qa('[data-giant-down]'), {
+                x: (i) => (i % 2 === 0 ? '-30vw' : '30vw'),
+                duration: 0.45,
+                ease: 'power2.inOut',
+            }, 'fin+=9.35')
+            .to(qa('[data-giant-up]'), {
+                x: (i) => (i % 2 === 0 ? '120vw' : '-120vw'),
+                skewX: (i) => (i % 2 === 0 ? -10 : 10),
+                rotate: (i) => (i % 2 === 0 ? 4 : -4),
+                duration: 1.35,
+                ease: 'power2.in',
+            }, 'fin+=9.85')
+            .to(qa('[data-giant-down]'), {
+                x: (i) => (i % 2 === 0 ? '-120vw' : '120vw'),
+                skewX: (i) => (i % 2 === 0 ? 10 : -10),
+                rotate: (i) => (i % 2 === 0 ? -4 : 4),
+                duration: 1.35,
+                ease: 'power2.in',
+            }, 'fin+=9.85')
+            .to(q('[data-giant-mid]'), { scale: 8.5, duration: 3, ease: 'power2.in' }, 'fin+=10.9')
+            .to(q('[data-flood]'), { opacity: 1, duration: 1.2 }, 'fin+=12.5')
+            .addLabel('logo', 'fin+=13.9')
             .to(q('[data-giant-mid]'), { opacity: 0, duration: 0.6 }, 'logo')
             .set(q('[data-logo-scene]'), { autoAlpha: 1 }, 'logo')
             .fromTo(
@@ -549,54 +607,40 @@ export default function WhyScrollStory({
 
             <div style={{ position: 'absolute', inset: 0, zIndex: 4, display: 'grid', placeItems: 'center', pointerEvents: 'none' }}>
                 <div data-giant style={{ position: 'relative', opacity: 0, transform: 'scale(0.6)' }}>
-                    <div
-                        data-giant-up
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: giantStrokeH,
-                            display: 'grid',
-                            placeItems: 'center',
-                            fontFamily: "'Anton', sans-serif",
-                            fontSize: giantFont,
-                            letterSpacing: giantTracking,
-                            lineHeight: 1,
-                            color: 'transparent',
-                            WebkitTextStroke: '2.5px rgba(247,242,238,0.85)',
-                            whiteSpace: 'nowrap',
-                            willChange: 'transform',
-                        }}
-                    >
-                        <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
-                            {renderNoRoller('up')}
-                        </span>
-                    </div>
-                    <div
-                        data-giant-down
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: giantStrokeH,
-                            display: 'grid',
-                            placeItems: 'center',
-                            fontFamily: "'Anton', sans-serif",
-                            fontSize: giantFont,
-                            letterSpacing: giantTracking,
-                            lineHeight: 1,
-                            color: 'transparent',
-                            WebkitTextStroke: '2.5px rgba(236,48,19,0.9)',
-                            whiteSpace: 'nowrap',
-                            willChange: 'transform',
-                        }}
-                    >
-                        <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
-                            {renderNoRoller('down')}
-                        </span>
-                    </div>
+                    {[
+                        { side: 'up', stroke: '2.5px rgba(247,242,238,0.9)' },
+                        { side: 'up', stroke: '2.2px rgba(247,242,238,0.62)' },
+                        { side: 'up', stroke: '2px rgba(247,242,238,0.38)' },
+                        { side: 'down', stroke: '2.5px rgba(236,48,19,0.95)' },
+                        { side: 'down', stroke: '2.2px rgba(236,48,19,0.65)' },
+                        { side: 'down', stroke: '2px rgba(236,48,19,0.4)' },
+                    ].map((layer, i) => (
+                        <div
+                            key={`giant-${layer.side}-${i}`}
+                            {...(layer.side === 'up' ? { 'data-giant-up': '' } : { 'data-giant-down': '' })}
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                height: giantStrokeH,
+                                display: 'grid',
+                                placeItems: 'center',
+                                fontFamily: "'Anton', sans-serif",
+                                fontSize: giantFont,
+                                letterSpacing: giantTracking,
+                                lineHeight: 1,
+                                color: 'transparent',
+                                WebkitTextStroke: layer.stroke,
+                                whiteSpace: 'nowrap',
+                                willChange: 'transform',
+                            }}
+                        >
+                            <span style={{ whiteSpace: 'nowrap', letterSpacing: giantTracking }}>
+                                {renderNoRoller(`${layer.side}-${i}`)}
+                            </span>
+                        </div>
+                    ))}
                     <div data-giant-mid style={{ position: 'relative', textAlign: 'center', willChange: 'transform' }}>
                         <div
                             style={{
